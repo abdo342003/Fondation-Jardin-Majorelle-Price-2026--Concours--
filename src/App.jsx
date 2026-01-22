@@ -225,44 +225,53 @@ function App() {
           <div className="grid md:grid-cols-2 gap-8">
             
             {/* ELIGIBILITY BLOCK */}
-            <div className="bg-gradient-to-br from-primary-50 to-primary-100/50 p-10 rounded-2xl border-l-4 border-primary-600 shadow-lg">
-              <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center mr-4 shadow-md">
-                   {/* Remplacement de l'emoji par SVG Check Badge */}
-                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-white">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
-                  </svg>
+            <div className="group bg-gradient-to-br from-white to-primary-50 p-10 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-primary-100 hover:border-primary-200 relative overflow-hidden">
+              {/* Effet de brillance au survol */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary-100 rounded-full filter blur-3xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 -z-0"></div>
+              
+              <div className="relative z-10">
+                <div className="flex items-center mb-6">
+                  <div className="w-14 h-14 bg-primary-100 rounded-full flex items-center justify-center mr-4 group-hover:bg-primary-200 transition-colors group-hover:scale-110 transform duration-300">
+                    {/* Logo SVG Check Badge - Style unifié avec les cartes du haut */}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-primary-700">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+                    </svg>
+                  </div>
+                  <h3 className="font-serif font-bold text-2xl text-primary-700">
+                    {t('about.eligibility')}
+                  </h3>
                 </div>
-                <h3 className="font-serif font-bold text-2xl text-primary-800">
-                  {t('about.eligibility')}
-                </h3>
+                <ul className="space-y-3">
+                  {t('about.eligibilityItems', { returnObjects: true }).map((item, idx) => (
+                    <li key={idx} className="flex items-start">
+                      <span className="text-primary-600 mr-3 font-bold mt-1">
+                          {/* Petit point stylisé SVG */}
+                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" /></svg>
+                      </span>
+                      <span className="text-sand-700 leading-relaxed">{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <ul className="space-y-3">
-                {t('about.eligibilityItems', { returnObjects: true }).map((item, idx) => (
-                  <li key={idx} className="flex items-start">
-                    <span className="text-primary-600 mr-3 font-bold mt-1">
-                        {/* Petit point stylisé SVG */}
-                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" /></svg>
-                    </span>
-                    <span className="text-sand-800 leading-relaxed">{item}</span>
-                  </li>
-                ))}
-              </ul>
             </div>
 
             {/* CALENDAR BLOCK */}
-            <div className="bg-gradient-to-br from-accent-50 to-accent-100/50 p-10 rounded-2xl border-l-4 border-accent-600 shadow-lg">
-              <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-accent-600 rounded-full flex items-center justify-center mr-4 shadow-md">
-                   {/* Remplacement de l'emoji par SVG Calendar */}
-                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-white">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                  </svg>
+            <div className="group bg-gradient-to-br from-white to-accent-50 p-10 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-accent-100 hover:border-accent-200 relative overflow-hidden">
+              {/* Effet de brillance au survol */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-accent-100 rounded-full filter blur-3xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 -z-0"></div>
+              
+              <div className="relative z-10">
+                <div className="flex items-center mb-6">
+                  <div className="w-14 h-14 bg-accent-100 rounded-full flex items-center justify-center mr-4 group-hover:bg-accent-200 transition-colors group-hover:scale-110 transform duration-300">
+                    {/* Logo SVG Calendar - Style unifié avec les cartes du haut */}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-accent-700">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                    </svg>
+                  </div>
+                  <h3 className="font-serif font-bold text-2xl text-accent-700">
+                    {t('calendar.title')}
+                  </h3>
                 </div>
-                <h3 className="font-serif font-bold text-2xl text-accent-800">
-                  {t('calendar.title')}
-                </h3>
-              </div>
               <ul className="space-y-6"> {/* Espacement augmenté pour la timeline */}
                 
                 {/* 1. ANNONCE - Icône Megaphone */}
@@ -305,7 +314,8 @@ function App() {
                   <span className="leading-relaxed">{t('calendar.opening')}</span>
                 </li>
 
-              </ul>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
