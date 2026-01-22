@@ -143,11 +143,12 @@ function App() {
             </div>
         </div>
       </header>
-
-      {/* --- HERO SECTION --- */}
+{/* --- HERO SECTION --- */}
       <section className="relative h-[85vh] min-h-[600px] flex items-center justify-center text-white overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-900/85 via-primary-800/80 to-primary-700/75 z-10"></div>
+        {/* Assure-toi que l'image Background.png est bien dans ton dossier public */}
         <div className="absolute inset-0 bg-[url('/Background.png')] bg-cover bg-center opacity-20 z-0"></div>
+        
         <div className="relative z-20 max-w-5xl mx-auto px-6 text-center">
           <div className="mb-6 inline-block">
             <span className="text-sm uppercase tracking-[0.3em] font-sans text-sand-100 bg-white/10 backdrop-blur-sm px-6 py-2 rounded-full border border-white/20">
@@ -165,6 +166,7 @@ function App() {
             {t('hero.cta')}
           </a>
         </div>
+        
         <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
           <svg className="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
@@ -186,9 +188,13 @@ function App() {
           </div>
           
           <div className="grid md:grid-cols-2 gap-8 mb-16">
+            {/* CARD 1: Le Défi (Icône Architecture/Bâtiment) */}
             <div className="group bg-gradient-to-br from-white to-sand-50 p-10 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-sand-100 hover:border-primary-200">
               <div className="w-14 h-14 bg-primary-100 rounded-full flex items-center justify-center mb-6 group-hover:bg-primary-200 transition-colors">
-                <span className="text-2xl">🏛️</span>
+                {/* Remplacement de l'emoji par SVG Building/Museum */}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-primary-700">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
+                </svg>
               </div>
               <h3 className="font-serif font-bold text-2xl text-primary-700 mb-4">
                 {t('about.challenge')}
@@ -198,9 +204,13 @@ function App() {
               </p>
             </div>
             
+            {/* CARD 2: Pourquoi Participer (Icône Trophée/Étoile) */}
             <div className="group bg-gradient-to-br from-white to-sand-50 p-10 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-sand-100 hover:border-primary-200">
               <div className="w-14 h-14 bg-accent-100 rounded-full flex items-center justify-center mb-6 group-hover:bg-accent-200 transition-colors">
-                <span className="text-2xl">🏆</span>
+                {/* Remplacement de l'emoji par SVG Trophy */}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-accent-700">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0V5.625a2.25 2.25 0 11-4.5 0v7.125M12 3.75v-1.5" />
+                </svg>
               </div>
               <h3 className="font-serif font-bold text-2xl text-primary-700 mb-4">
                 {t('about.why')}
@@ -213,10 +223,15 @@ function App() {
 
           {/* Eligibility & Calendar */}
           <div className="grid md:grid-cols-2 gap-8">
+            
+            {/* ELIGIBILITY BLOCK */}
             <div className="bg-gradient-to-br from-primary-50 to-primary-100/50 p-10 rounded-2xl border-l-4 border-primary-600 shadow-lg">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center mr-4">
-                  <span className="text-white text-xl">✓</span>
+                <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center mr-4 shadow-md">
+                   {/* Remplacement de l'emoji par SVG Check Badge */}
+                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-white">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+                  </svg>
                 </div>
                 <h3 className="font-serif font-bold text-2xl text-primary-800">
                   {t('about.eligibility')}
@@ -225,39 +240,71 @@ function App() {
               <ul className="space-y-3">
                 {t('about.eligibilityItems', { returnObjects: true }).map((item, idx) => (
                   <li key={idx} className="flex items-start">
-                    <span className="text-primary-600 mr-3 font-bold">•</span>
+                    <span className="text-primary-600 mr-3 font-bold mt-1">
+                        {/* Petit point stylisé SVG */}
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" /></svg>
+                    </span>
                     <span className="text-sand-800 leading-relaxed">{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
+            {/* CALENDAR BLOCK */}
             <div className="bg-gradient-to-br from-accent-50 to-accent-100/50 p-10 rounded-2xl border-l-4 border-accent-600 shadow-lg">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-accent-600 rounded-full flex items-center justify-center mr-4">
-                  <span className="text-white text-xl">📅</span>
+                <div className="w-12 h-12 bg-accent-600 rounded-full flex items-center justify-center mr-4 shadow-md">
+                   {/* Remplacement de l'emoji par SVG Calendar */}
+                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-white">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                  </svg>
                 </div>
                 <h3 className="font-serif font-bold text-2xl text-accent-800">
                   {t('calendar.title')}
                 </h3>
               </div>
-              <ul className="space-y-4">
-                <li className="flex items-start text-sand-800">
-                  <span className="text-2xl mr-3">📅</span>
-                  <span className="leading-relaxed">{t('calendar.announcement')}</span>
+              <ul className="space-y-6"> {/* Espacement augmenté pour la timeline */}
+                
+                {/* 1. ANNONCE - Icône Megaphone */}
+                <li className="flex items-center text-sand-800 group">
+                  <div className="mr-4 w-10 h-10 flex items-center justify-center rounded-full bg-white border border-accent-200 text-accent-600 shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 018.835-2.535m0 0A23.74 23.74 0 0118.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.43.816 1.035.816 1.73 0 .695-.32 1.3-.816 1.73" />
+                    </svg>
+                  </div>
+                  <span className="leading-relaxed font-medium">{t('calendar.announcement')}</span>
                 </li>
-                <li className="flex items-start text-sand-800">
-                  <span className="text-2xl mr-3">⏱️</span>
-                  <span className="leading-relaxed font-bold text-accent-700">{t('calendar.deadline')}</span>
+
+                {/* 2. DEADLINE - Icône Clock (En gras et couleur accent) */}
+                <li className="flex items-center text-accent-700 bg-white/50 p-2 rounded-lg -ml-2">
+                  <div className="mr-4 w-10 h-10 flex items-center justify-center rounded-full bg-accent-100 border border-accent-300 text-accent-700 shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <span className="leading-relaxed font-bold">{t('calendar.deadline')}</span>
                 </li>
-                <li className="flex items-start text-sand-800">
-                  <span className="text-2xl mr-3">🏆</span>
+
+                {/* 3. SELECTION - Icône Clipboard/List */}
+                <li className="flex items-center text-sand-800">
+                  <div className="mr-4 w-10 h-10 flex items-center justify-center rounded-full bg-white border border-accent-200 text-accent-600 shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                    </svg>
+                  </div>
                   <span className="leading-relaxed">{t('calendar.selection')}</span>
                 </li>
-                <li className="flex items-start text-sand-800">
-                  <span className="text-2xl mr-3">🎉</span>
+
+                {/* 4. OUVERTURE - Icône Sparkles/Star */}
+                <li className="flex items-center text-sand-800">
+                  <div className="mr-4 w-10 h-10 flex items-center justify-center rounded-full bg-white border border-accent-200 text-accent-600 shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                    </svg>
+                  </div>
                   <span className="leading-relaxed">{t('calendar.opening')}</span>
                 </li>
+
               </ul>
             </div>
           </div>
