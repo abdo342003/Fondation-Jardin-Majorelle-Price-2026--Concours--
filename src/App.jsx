@@ -28,14 +28,14 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   // Enhanced CSS classes for consistent styling
-const sectionTitleClass = "flex items-center mb-8 pb-3 border-b border-sand-200";
-    const sectionNumberClass = "w-10 h-10 bg-primary-600 text-white rounded-full flex items-center justify-center mr-4 shadow-lg text-lg font-bold shrink-0";
-    const sectionHeaderClass = "text-2xl font-serif font-bold text-primary-800";
-    const labelClass = "block text-xs font-bold text-primary-600 uppercase mb-3 tracking-[0.2em]";
-    const inputClass = "w-full px-6 py-4 bg-sand-50 border-2 border-sand-200 rounded-xl text-primary-900 font-medium focus:outline-none focus:border-primary-500 focus:bg-white focus:shadow-lg transition-all duration-300 placeholder-sand-400";
-
+  const labelClass = "block text-sand-800 font-semibold mb-2 text-sm uppercase tracking-wider";
+  const inputClass = "w-full px-5 py-4 border-2 border-sand-200 rounded-xl focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-100 transition-all duration-200 font-sans";
+  const sectionTitleClass = "flex items-center mb-6 pb-3 border-b-2 border-primary-100";
+  const sectionNumberClass = "w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center mr-4";
+  const sectionHeaderClass = "text-2xl font-serif font-bold text-primary-800";
 
   // --- LOGIQUE ---
   const changeLanguage = (lng) => {
@@ -129,9 +129,9 @@ const sectionTitleClass = "flex items-center mb-8 pb-3 border-b border-sand-200"
             <div className="flex flex-col items-center text-center mx-4">
                  {/* Boutons Langue */}
                  <div className="flex space-x-2 text-xs mb-2">
-                    <button onClick={() => changeLanguage('fr')} className={`px-2 py-0.5 rounded ${i18n.language === 'fr' ? 'bg-primary-600 text-white font-bold' : 'text-sand-500 hover:text-primary-600'}`}>FR</button>
+                    <button onClick={() => changeLanguage('fr')} className={`px-3 py-1 rounded-full transition-all ${i18n.language === 'fr' ? 'bg-primary-100 text-primary-800 font-bold border border-primary-300' : 'text-sand-600 hover:text-primary-700 hover:bg-sand-100'}`}>FR</button>
                     <span className="text-sand-300">|</span>
-                    <button onClick={() => changeLanguage('en')} className={`px-2 py-0.5 rounded ${i18n.language === 'en' ? 'bg-primary-600 text-white font-bold' : 'text-sand-500 hover:text-primary-600'}`}>EN</button>
+                    <button onClick={() => changeLanguage('en')} className={`px-3 py-1 rounded-full transition-all ${i18n.language === 'en' ? 'bg-primary-100 text-primary-800 font-bold border border-primary-300' : 'text-sand-600 hover:text-primary-700 hover:bg-sand-100'}`}>EN</button>
                 </div>
                 <h1 className="font-serif font-bold text-primary-800 text-sm md:text-lg tracking-widest uppercase hidden md:block">
                     {t('title')}
@@ -181,9 +181,15 @@ const sectionTitleClass = "flex items-center mb-8 pb-3 border-b border-sand-200"
             {t('hero.description')}
           </p>
           
-          {/* 5. Bouton: Deja bdelnah l 'text-black' */}
-          <a href="#inscription" className="inline-block bg-accent-500 hover:bg-accent-600 text-black font-bold px-12 py-5 rounded-full shadow-2xl hover:shadow-accent-500/50 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 uppercase tracking-[0.2em] text-sm">
-            {t('hero.cta')}
+          {/* 5. Bouton S'inscrire - Enhanced avec design plus visible et actif */}
+          <a href="#inscription" className="inline-block bg-transparent hover:bg-black/5 text-black font-bold px-16 py-6 rounded-full shadow-2xl hover:shadow-black/30 transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 uppercase tracking-[0.3em] text-base border-2 border-black relative overflow-hidden group">
+            <span className="relative z-10 flex items-center justify-center gap-3">
+              {t('hero.cta')}
+              <svg className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </span>
+            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-black/5 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
           </a>
         </div>
         
@@ -350,7 +356,7 @@ const sectionTitleClass = "flex items-center mb-8 pb-3 border-b border-sand-200"
       </section>
 
       {/* --- MAIN CONTENT --- */}
-      <main id="inscription" className="max-w-3xl mx-auto p-6 my-8">
+      <main id="inscription" className="max-w-6xl mx-auto px-6 my-12">
         
         {/* Titre Mobile (Visible seulement sur petit écran) */}
         <div className="text-center md:hidden mb-8">
@@ -385,215 +391,238 @@ const sectionTitleClass = "flex items-center mb-8 pb-3 border-b border-sand-200"
                 </button>
             </div>
         ) : (
-        /* --- FORMULAIRE D'INSCRIPTION --- */
-        <div id="inscription" className="bg-white p-8 md:p-16 rounded-3xl shadow-2xl border-t-8 border-primary-600 animate-fade-in-up relative overflow-hidden max-w-5xl mx-auto -mt-20 z-30">
             
-            {/* Décoration d'arrière-plan floue */}
-            <div className="absolute top-0 right-0 w-80 h-80 bg-primary-50 rounded-full filter blur-[100px] opacity-40 -z-10"></div>
-            <div className="absolute bottom-0 left-0 w-80 h-80 bg-accent-50 rounded-full filter blur-[100px] opacity-40 -z-10"></div>
-            
-            {/* EN-TÊTE DU FORMULAIRE */}
-            <div className="text-center mb-16 pb-10 border-b-2 border-sand-100">
-                <span className="text-sm uppercase tracking-[0.3em] font-sans text-primary-600 mb-6 block font-bold">
-                  {i18n.language === 'fr' ? 'Étape 1' : 'Step 1'}
-                </span>
-                <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary-900 mb-6">
-                    {t('step1')}
-                </h2>
-                <div className="w-24 h-1.5 bg-accent-500 mx-auto mb-8 rounded-full"></div>
+            /* --- FORMULAIRE --- */
+            <div className="bg-white p-10 md:p-16 rounded-3xl shadow-xl border border-sand-200 animate-fade-in-up relative">
                 
-                <p className="text-primary-800 text-xl font-medium mb-6 max-w-2xl mx-auto leading-relaxed">
-                    {t('subtitle')}
-                </p>
-                
-                {/* Badge Date Limite */}
-                <div className="inline-flex items-center bg-primary-50 border border-primary-100 px-6 py-3 rounded-full mt-4">
-                    <svg className="w-5 h-5 mr-3 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span className="text-primary-800 font-bold text-sm tracking-wide">
-                        {t('deadline')}
-                    </span>
-                </div>
-            </div>
-            
-            {/* Message d'erreur */}
-            {error && (
-                <div className="mb-8 p-6 bg-red-50 border-l-4 border-red-500 text-red-700 rounded-r-lg flex items-center shadow-sm">
-                    <svg className="w-6 h-6 mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span className="font-medium">{error}</span>
-                </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-12">
-                
-                {/* 1. IDENTITÉ */}
-                <div>
-                    <div className={sectionTitleClass}>
-                        <div className={sectionNumberClass}>1</div>
-                        <h3 className={sectionHeaderClass}>Identité / Identity</h3>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="group">
-                            <label className={labelClass}>{t('fields.nom')} *</label>
-                            <input required type="text" name="nom" placeholder="Nom de famille" onChange={handleChange} className={inputClass} />
-                        </div>
-                        <div className="group">
-                            <label className={labelClass}>{t('fields.prenom')} *</label>
-                            <input required type="text" name="prenom" placeholder="Prénom(s)" onChange={handleChange} className={inputClass} />
-                        </div>
-                    </div>
-                    <div className="mt-8 group">
-                        <label className={labelClass}>{t('fields.naissance')} *</label>
-                        <input required type="date" name="date_naissance" onChange={handleChange} className={inputClass} />
-                    </div>
-                </div>
-
-                {/* 2. DOCUMENTS (CIN) */}
-                <div className="bg-blue-50/50 p-8 rounded-3xl border border-blue-100">
-                    <div className="flex items-center mb-8">
-                        <div className={sectionNumberClass}>2</div>
-                        <h3 className={sectionHeaderClass}>
-                            {t('fields.cin')} *
-                        </h3>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
-                        <div>
-                            <label className="block text-xs font-bold text-primary-600 uppercase mb-3 tracking-[0.1em]">Recto</label>
-                            <div className="relative group">
-                                <input required type="file" name="cin_recto" accept=".jpg,.jpeg,.png,.pdf" onChange={handleFileChange} 
-                                    className="block w-full text-sm text-primary-600 
-                                    file:mr-4 file:py-3 file:px-6 
-                                    file:rounded-full file:border-0 
-                                    file:text-sm file:font-bold 
-                                    file:bg-primary-600 file:text-white 
-                                    hover:file:bg-primary-700 
-                                    cursor-pointer border-2 border-dashed border-primary-200 rounded-xl p-6 bg-white transition-all hover:border-primary-400" 
-                                />
-                            </div>
-                        </div>
-                        <div>
-                            <label className="block text-xs font-bold text-primary-600 uppercase mb-3 tracking-[0.1em]">Verso</label>
-                            <div className="relative group">
-                                <input required type="file" name="cin_verso" accept=".jpg,.jpeg,.png,.pdf" onChange={handleFileChange} 
-                                    className="block w-full text-sm text-primary-600 
-                                    file:mr-4 file:py-3 file:px-6 
-                                    file:rounded-full file:border-0 
-                                    file:text-sm file:font-bold 
-                                    file:bg-primary-600 file:text-white 
-                                    hover:file:bg-primary-700 
-                                    cursor-pointer border-2 border-dashed border-primary-200 rounded-xl p-6 bg-white transition-all hover:border-primary-400" 
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <p className="text-sm text-primary-500 flex items-center justify-center font-medium opacity-80">
-                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        {t('messages.fileSize')} (PDF, JPG, PNG - Max 5MB)
-                    </p>
-                </div>
-
-                {/* 3. CONTACT */}
-                <div>
-                    <div className={sectionTitleClass}>
-                        <div className={sectionNumberClass}>3</div>
-                        <h3 className={sectionHeaderClass}>Contact</h3>
-                    </div>
-                    <div className="mb-8">
-                        <label className={labelClass}>{t('fields.adresse')} *</label>
-                        <textarea required name="adresse" rows="3" placeholder="Votre adresse complète" onChange={handleChange} className={inputClass}></textarea>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div>
-                            <label className={labelClass}>{t('fields.email')} *</label>
-                            <input required type="email" name="email" placeholder="exemple@email.com" onChange={handleChange} className={inputClass} />
-                        </div>
-                        <div>
-                            <label className={labelClass}>{t('fields.phone')} *</label>
-                            <div className="flex">
-                                <select name="phone_code" onChange={handleChange} className="px-4 py-4 border-2 border-r-0 border-sand-200 rounded-l-xl bg-sand-100 text-sm font-bold text-primary-800 outline-none focus:border-primary-500 min-w-[100px]">
-                                    <option value="+212">🇲🇦 +212</option>
-                                    <option value="+33">🇫🇷 +33</option>
-                                    <option value="other">🌐 Autre</option>
-                                </select>
-                                <input required type="tel" name="phone_number" placeholder="6 00 00 00 00" onChange={handleChange} className={`${inputClass} rounded-l-none border-l-0`} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* 4. STATUT PROFESSIONNEL */}
-                <div>
-                    <div className={sectionTitleClass}>
-                        <div className={sectionNumberClass}>4</div>
-                        <h3 className={sectionHeaderClass}>Statut Professionnel</h3>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div>
-                            <label className={labelClass}>{t('fields.ecole')} *</label>
-                            <input required type="text" name="ecole_archi" placeholder="Nom de l'école" onChange={handleChange} className={inputClass} />
-                        </div>
-                        <div>
-                            <label className={labelClass}>{t('fields.annee')} *</label>
-                            <input required type="number" name="annee_obtention" placeholder="YYYY" min="2000" max="2026" onChange={handleChange} className={inputClass} />
-                        </div>
-                    </div>
-                    <div className="mt-8">
-                        <label className={labelClass}>{t('fields.ordre')} (CNOA) *</label>
-                        <input required type="text" name="num_ordre" placeholder="Numéro d'inscription" onChange={handleChange} className={inputClass} />
-                    </div>
-                </div>
-
-                {/* BOUTON D'ENVOI */}
-                <div className="pt-12 mt-12 border-t border-sand-200">
-                    <button disabled={loading} type="submit" className="w-full bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-black font-bold py-6 px-8 rounded-full shadow-xl hover:shadow-2xl hover:shadow-accent-500/30 transition-all transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-[0.2em] text-sm relative overflow-hidden group">
-                        <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></span>
-                        <span className="relative flex items-center justify-center text-base">
-                            {loading ? (
-                                <>
-                                    <svg className="animate-spin -ml-1 mr-3 h-6 w-6 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                    </svg>
-                                    {t('buttons.sending')}
-                                </>
-                            ) : (
-                                <>
-                                    {t('buttons.verify')}
-                                    <svg className="w-6 h-6 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                    </svg>
-                                </>
-                            )}
+                {/* Section Header - Now Inside White Card for Maximum Readability */}
+                <div className="text-center mb-14 pb-10 border-b border-sand-200 relative">
+                    {/* Badge d'inscription avec couleurs claires */}
+                    <div className="inline-block mb-6">
+                        <span className="text-xs uppercase tracking-[0.4em] font-sans text-primary-700 bg-primary-50 px-6 py-2 rounded-full border border-primary-200">
+                          {i18n.language === 'fr' ? 'Inscription' : 'Registration'}
                         </span>
-                    </button>
-                    <p className="text-center text-xs text-sand-500 mt-6 font-medium uppercase tracking-widest">
-                        {t('messages.footer')}
+                    </div>
+                    <h2 className="text-4xl md:text-6xl font-serif font-bold text-primary-800 mb-6">
+                        {t('step1')}
+                    </h2>
+                    <div className="flex items-center justify-center gap-2 mb-8">
+                        <div className="w-16 h-0.5 bg-sand-300"></div>
+                        <div className="w-2 h-2 bg-primary-400 rounded-full"></div>
+                        <div className="w-16 h-0.5 bg-sand-300"></div>
+                    </div>
+                    <p className="text-sand-700 text-xl font-light mb-6 max-w-3xl mx-auto">
+                        {t('subtitle')}
                     </p>
+                    <p className="text-sand-600 text-base max-w-3xl mx-auto leading-relaxed mb-10">
+                        {t('intro')}
+                    </p>
+                    <div className="inline-block bg-accent-50 border border-accent-200 px-10 py-4 rounded-full hover:bg-accent-100 transition-all duration-300">
+                        <p className="text-accent-700 font-semibold text-sm flex items-center">
+                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            {t('deadline')}
+                        </p>
+                    </div>
                 </div>
+                
+                {error && (
+                    <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm">
+                        🚨 {error}
+                    </div>
+                )}
 
-            </form>
-        </div>            
+                <form onSubmit={handleSubmit} className="space-y-12">
+                    
+                    {/* 1. Identité */}
+                    <div className="bg-white p-8 rounded-2xl border border-sand-200 hover:border-primary-300 transition-all duration-300 hover:shadow-md">
+                        <div className={sectionTitleClass}>
+                            <div className={sectionNumberClass}>
+                                <span className="text-white font-bold">1</span>
+                            </div>
+                            <h3 className={sectionHeaderClass}>{i18n.language === 'fr' ? 'Identité' : 'Identity'}</h3>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className={labelClass}>{t('fields.nom')} *</label>
+                                <input required type="text" name="nom" onChange={handleChange} className={inputClass} />
+                            </div>
+                            <div>
+                                <label className={labelClass}>{t('fields.prenom')} *</label>
+                                <input required type="text" name="prenom" onChange={handleChange} className={inputClass} />
+                            </div>
+                        </div>
+                        <div className="mt-6">
+                            <label className={labelClass}>{t('fields.naissance')} *</label>
+                            <input required type="date" name="date_naissance" onChange={handleChange} className={inputClass} />
+                        </div>
+                    </div>
+
+                    {/* 2. Documents (CIN) */}
+                    <div className="bg-white p-10 rounded-2xl border border-primary-200 hover:border-primary-300 transition-all duration-300 hover:shadow-md">
+                        <div className="flex items-center mb-6">
+                            <div className={sectionNumberClass}>
+                                <span className="text-white font-bold">2</span>
+                            </div>
+                            <h3 className={sectionHeaderClass}>
+                                {t('fields.cin')} *
+                            </h3>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                            <div>
+                                <label className="block text-sm font-bold text-primary-800 uppercase mb-3 tracking-wider">Recto</label>
+                                <input required type="file" name="cin_recto" accept=".jpg,.jpeg,.png,.pdf" onChange={handleFileChange} className="block w-full text-sm text-sand-600 border-2 border-dashed border-primary-300 rounded-xl p-4 bg-white hover:bg-primary-50 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-primary-600 file:text-white hover:file:bg-primary-700 cursor-pointer transition-all" />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-bold text-primary-800 uppercase mb-3 tracking-wider">Verso</label>
+                                <input required type="file" name="cin_verso" accept=".jpg,.jpeg,.png,.pdf" onChange={handleFileChange} className="block w-full text-sm text-sand-600 border-2 border-dashed border-primary-300 rounded-xl p-4 bg-white hover:bg-primary-50 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-primary-600 file:text-white hover:file:bg-primary-700 cursor-pointer transition-all" />
+                            </div>
+                        </div>
+                        <div className="bg-primary-50 p-4 rounded-lg border border-primary-200 mt-4">
+                            <p className="text-sm text-primary-700 flex items-center">
+                                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                                </svg>
+                                {t('messages.fileSize')}
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* 3. Contact */}
+                    <div className="bg-white p-8 rounded-2xl border border-sand-200 hover:border-accent-300 transition-all duration-300 hover:shadow-md">
+                        <div className={sectionTitleClass}>
+                            <div className={sectionNumberClass}>
+                                <span className="text-white font-bold">3</span>
+                            </div>
+                            <h3 className={sectionHeaderClass}>Contact</h3>
+                        </div>
+                        <div className="mb-6">
+                            <label className={labelClass}>{t('fields.adresse')} *</label>
+                            <textarea required name="adresse" rows="3" onChange={handleChange} className={inputClass}></textarea>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className={labelClass}>{t('fields.email')} *</label>
+                                <input required type="email" name="email" onChange={handleChange} className={inputClass} />
+                            </div>
+                            <div>
+                                <label className={labelClass}>{t('fields.phone')} *</label>
+                                <div className="flex">
+                                    <select name="phone_code" onChange={handleChange} className="px-4 py-4 border-2 border-r-0 border-sand-200 rounded-l-xl bg-sand-50 text-sm font-bold text-primary-700 outline-none focus:border-primary-500">
+                                        <option value="+212">🇲🇦 +212</option>
+                                        <option value="+33">🇫🇷 +33</option>
+                                        <option value="other">Autre</option>
+                                    </select>
+                                    <input required type="tel" name="phone_number" onChange={handleChange} className={`${inputClass} rounded-l-none border-l-0`} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* 4. Statut */}
+                    <div className="bg-white p-8 rounded-2xl border border-sand-200 hover:border-primary-300 transition-all duration-300 hover:shadow-md">
+                        <div className={sectionTitleClass}>
+                            <div className={sectionNumberClass}>
+                                <span className="text-white font-bold">4</span>
+                            </div>
+                            <h3 className={sectionHeaderClass}>Statut Professionnel</h3>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className={labelClass}>{t('fields.ecole')} *</label>
+                                <input required type="text" name="ecole_archi" onChange={handleChange} className={inputClass} />
+                            </div>
+                            <div>
+                                <label className={labelClass}>{t('fields.annee')} *</label>
+                                <input required type="number" name="annee_obtention" onChange={handleChange} className={inputClass} />
+                            </div>
+                        </div>
+                        <div className="mt-4">
+                            <label className={labelClass}>{t('fields.ordre')} (CNOA) *</label>
+                            <input required type="text" name="num_ordre" onChange={handleChange} className={inputClass} />
+                        </div>
+                    </div>
+
+                    {/* Case à cocher - Acceptation des conditions */}
+                    <div className="pt-8 mt-8 border-t border-sand-200">
+                        <div className="bg-primary-50 p-6 rounded-2xl border border-primary-200">
+                            <label className="flex items-start cursor-pointer group">
+                                <input 
+                                    type="checkbox" 
+                                    checked={acceptedTerms}
+                                    onChange={(e) => setAcceptedTerms(e.target.checked)}
+                                    className="mt-1 w-5 h-5 rounded border-2 border-primary-400 text-primary-600 focus:ring-2 focus:ring-primary-300 cursor-pointer"
+                                />
+                                <span className="ml-4 text-sand-800 text-base leading-relaxed">
+                                    {i18n.language === 'fr' ? (
+                                        <>
+                                            J'accepte les <span className="font-bold text-primary-700">termes et conditions</span> du concours et confirme que toutes les informations fournies sont exactes.
+                                        </>
+                                    ) : (
+                                        <>
+                                            I accept the <span className="font-bold text-primary-700">terms and conditions</span> of the competition and confirm that all information provided is accurate.
+                                        </>
+                                    )}
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    {/* Bouton Envoi */}
+                    <div className="pt-8">
+                        <button 
+                            disabled={loading || !acceptedTerms} 
+                            type="submit" 
+                            className="w-full bg-white hover:bg-sand-50 text-sand-900 font-bold py-6 px-8 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none uppercase tracking-[0.3em] text-xl border-2 border-sand-900">
+                            <span className="flex items-center justify-center">
+                                {loading ? (
+                                    <>
+                                        <svg className="animate-spin -ml-1 mr-3 h-6 w-6 text-sand-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        ENVOI EN COURS
+                                    </>
+                                ) : (
+                                    <>
+                                        Inscription
+                                    </>
+                                )}
+                            </span>
+                        </button>
+                        <p className="text-center text-sm text-sand-600 mt-6 leading-relaxed">
+                            {t('messages.footer')}
+                        </p>
+                    </div>
+
+                </form>
+            </div>
         )}
       </main>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900 text-white py-16 mt-16">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-3 gap-12 mb-12">
+      <footer className="relative bg-gradient-to-br from-sand-50 via-primary-50 to-accent-50 text-sand-900 py-16 mt-16 overflow-hidden">
+        {/* Effet de background subtil */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0 bg-[url('/Background.png')] bg-cover bg-center"></div>
+        </div>
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
             {/* About */}
-            <div>
-              <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mr-3">
-                  <span className="text-2xl">🏛️</span>
+            <div className="group bg-white/60 backdrop-blur-sm p-6 rounded-2xl border-2 border-sand-300 hover:border-primary-400 transition-all duration-300 hover:shadow-xl">
+              <div className="flex items-center mb-5">
+                <div className="w-14 h-14 bg-gradient-to-br from-primary-100 to-primary-200 rounded-full flex items-center justify-center mr-3 shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-105">
+                  {/* SVG Building/Museum Icon */}
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 text-primary-700">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
+                  </svg>
                 </div>
-                <h3 className="font-serif font-bold text-xl">
+                <h3 className="font-serif font-bold text-lg text-primary-900">
                   FONDATION JARDIN MAJORELLE
                 </h3>
               </div>
-              <p className="text-sand-100 leading-relaxed text-sm">
+              <p className="text-sand-800 leading-relaxed text-base">
                 {i18n.language === 'fr' ? 
                   "Institution culturelle dédiée à la botanique, aux cultures berbères, à la mode, aux arts décoratifs et à la création contemporaine." :
                   "Cultural institution dedicated to botany, Berber cultures, fashion, decorative arts and contemporary creation."
@@ -602,49 +631,55 @@ const sectionTitleClass = "flex items-center mb-8 pb-3 border-b border-sand-200"
             </div>
             
             {/* Contact */}
-            <div>
-              <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mr-3">
-                  <span className="text-2xl">📧</span>
+            <div className="group bg-white/60 backdrop-blur-sm p-6 rounded-2xl border-2 border-sand-300 hover:border-accent-400 transition-all duration-300 hover:shadow-xl">
+              <div className="flex items-center mb-5">
+                <div className="w-14 h-14 bg-gradient-to-br from-accent-100 to-accent-200 rounded-full flex items-center justify-center mr-3 shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-105">
+                  {/* SVG Mail Icon */}
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 text-accent-700">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                  </svg>
                 </div>
-                <h3 className="font-serif font-bold text-xl">
+                <h3 className="font-serif font-bold text-lg text-accent-900">
                   Contact
                 </h3>
               </div>
-              <ul className="space-y-3 text-sm">
-                <li className="flex items-center text-sand-100 hover:text-white transition-colors">
+              <ul className="space-y-4 text-base">
+                <li className="flex items-center text-sand-800 hover:text-accent-700 transition-colors cursor-pointer font-medium">
                   <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                     <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                   </svg>
                   {t('contact.email')}
                 </li>
-                <li className="flex items-center text-sand-100 hover:text-white transition-colors">
+                <li className="flex items-center text-sand-800 hover:text-accent-700 transition-colors cursor-pointer font-medium">
                   <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.498-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clipRule="evenodd" />
                   </svg>
                   {t('contact.website')}
                 </li>
-                <li className="flex items-start text-sand-100">
+                <li className="flex items-start text-sand-800 font-medium">
                   <svg className="w-5 h-5 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                   </svg>
-                  <span>{t('contact.location')}</span>
+                  <span>Jardin Majorelle & musée YVES SAINT LAURENT marrakech</span>
                 </li>
               </ul>
             </div>
             
             {/* Legal */}
-            <div>
-              <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mr-3">
-                  <span className="text-2xl">⚖️</span>
+            <div className="group bg-white/60 backdrop-blur-sm p-6 rounded-2xl border-2 border-sand-300 hover:border-primary-400 transition-all duration-300 hover:shadow-xl">
+              <div className="flex items-center mb-5">
+                <div className="w-14 h-14 bg-gradient-to-br from-primary-100 to-primary-200 rounded-full flex items-center justify-center mr-3 shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-105">
+                  {/* SVG Scale/Legal Icon */}
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 text-primary-700">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                  </svg>
                 </div>
-                <h3 className="font-serif font-bold text-xl">
+                <h3 className="font-serif font-bold text-lg text-primary-900">
                   {i18n.language === 'fr' ? 'Informations Légales' : 'Legal Information'}
                 </h3>
               </div>
-              <p className="text-sand-100 text-sm leading-relaxed">
+              <p className="text-sand-800 text-base leading-relaxed">
                 {i18n.language === 'fr' ?
                   "Ce concours est organisé par la Fondation Jardin Majorelle conformément à la réglementation en vigueur. Les données collectées sont utilisées uniquement dans le cadre du concours." :
                   "This competition is organized by the Fondation Jardin Majorelle in accordance with current regulations. Data collected is used solely for competition purposes."
@@ -653,12 +688,12 @@ const sectionTitleClass = "flex items-center mb-8 pb-3 border-b border-sand-200"
             </div>
           </div>
           
-          <div className="pt-8 border-t border-white/20">
-            <div className="text-center">
-              <p className="text-sand-200 text-sm mb-3">
+          <div className="pt-10 mt-8">
+            <div className="text-center bg-white/40 backdrop-blur-sm p-6 rounded-2xl">
+              <p className="text-primary-900 text-base mb-3 font-bold">
                 © {new Date().getFullYear()} Fondation Jardin Majorelle - {i18n.language === 'fr' ? 'Tous droits réservés' : 'All rights reserved'}
               </p>
-              <p className="text-sand-300 text-xs">
+              <p className="text-sand-800 text-sm font-medium">
                 Prix Fondation Jardin Majorelle pour la Conception du Nouveau Pavillon Temporaire de la Villa Oasis
               </p>
             </div>
