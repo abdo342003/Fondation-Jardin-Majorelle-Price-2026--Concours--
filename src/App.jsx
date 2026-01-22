@@ -143,36 +143,63 @@ function App() {
             </div>
         </div>
       </header>
+
+
+
+
+
+
+
 {/* --- HERO SECTION --- */}
-      <section className="relative h-[85vh] min-h-[600px] flex items-center justify-center text-white overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-900/85 via-primary-800/80 to-primary-700/75 z-10"></div>
-        {/* Assure-toi que l'image Background.png est bien dans ton dossier public */}
-        <div className="absolute inset-0 bg-[url('/Background.png')] bg-cover bg-center opacity-20 z-0"></div>
+      {/* 1. Bdelna 'text-white' b 'text-primary-950' f section lfo9 */}
+      <section className="relative h-[85vh] min-h-[600px] flex items-center justify-center text-primary-950 overflow-hidden">
+        
+        {/* Gradient: khffefnah chwia bach l'image tban */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-transparent z-10"></div>
+        
+        {/* Background Image */}
+        <div className="absolute inset-0 bg-[url('/Background.png')] bg-cover bg-center opacity-100 z-0"></div>
         
         <div className="relative z-20 max-w-5xl mx-auto px-6 text-center">
           <div className="mb-6 inline-block">
-            <span className="text-sm uppercase tracking-[0.3em] font-sans text-sand-100 bg-white/10 backdrop-blur-sm px-6 py-2 rounded-full border border-white/20">
+            {/* 2. Badge: Bdelna lwan bach ibanou fouq lbyad (text-primary-800) */}
+            <span className="text-sm uppercase tracking-[0.3em] font-sans text-primary-800 bg-primary-900/5 backdrop-blur-sm px-6 py-2 rounded-full border border-primary-900/10">
               {i18n.language === 'fr' ? 'Concours National 2026' : 'National Competition 2026'}
             </span>
           </div>
-          <h1 className="font-serif font-bold text-5xl md:text-7xl mb-6 animate-fade-in-up leading-tight">
+          
+          {/* 3. Titre: Zdna 'text-primary-950' (Noir/Bleu TRES foncé) */}
+          <h1 className="font-serif font-bold text-5xl md:text-7xl mb-6 animate-fade-in-up leading-tight text-primary-950 drop-shadow-sm">
             {t('hero.title')}
           </h1>
+          
           <div className="w-24 h-1 bg-accent-500 mx-auto mb-8"></div>
-          <p className="text-xl md:text-2xl font-light mb-12 max-w-3xl mx-auto leading-relaxed text-sand-50">
+          
+          {/* 4. Description: Bdelna 'text-sand-50' b 'text-primary-800' (Gris foncé) */}
+          <p className="text-xl md:text-2xl font-medium mb-12 max-w-3xl mx-auto leading-relaxed text-primary-800">
             {t('hero.description')}
           </p>
-          <a href="#inscription" className="inline-block bg-accent-500 hover:bg-accent-600 text-white font-bold px-12 py-5 rounded-full shadow-2xl hover:shadow-accent-500/50 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 uppercase tracking-[0.2em] text-sm">
+          
+          {/* 5. Bouton: Deja bdelnah l 'text-black' */}
+          <a href="#inscription" className="inline-block bg-accent-500 hover:bg-accent-600 text-black font-bold px-12 py-5 rounded-full shadow-2xl hover:shadow-accent-500/50 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 uppercase tracking-[0.2em] text-sm">
             {t('hero.cta')}
           </a>
         </div>
         
+        {/* Flèche en bas: bdelnaha l k7al bach tban */}
         <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
-          <svg className="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-6 h-6 text-primary-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
         </div>
       </section>
+
+
+
+
+
+
+
 
       {/* --- ABOUT SECTION --- */}
       <section className="bg-white/95 backdrop-blur-sm py-20">
@@ -497,12 +524,13 @@ function App() {
 
                     {/* Bouton Envoi */}
                     <div className="pt-10 mt-10 border-t-2 border-sand-100">
-                        <button disabled={loading} type="submit" className="w-full bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-white font-bold py-5 px-8 rounded-full shadow-2xl hover:shadow-accent-500/50 transition-all transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-[0.2em] text-sm relative overflow-hidden group">
+                        <button disabled={loading} type="submit" className="w-full bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-black font-bold py-5 px-8 rounded-full shadow-2xl hover:shadow-accent-500/50 transition-all transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-[0.2em] text-sm relative overflow-hidden group">
                             <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></span>
                             <span className="relative flex items-center justify-center">
                                 {loading ? (
                                     <>
-                                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        {/* Hta l'icone dial loading redinha k7la bach tb9a mnas9a */}
+                                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                         </svg>
