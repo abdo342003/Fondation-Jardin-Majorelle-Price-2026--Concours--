@@ -1,113 +1,191 @@
 <?php
-// api/register.php
+// api/register.php - VERSION PRODUCTION FINALE
+// Domaine : concour26.fgm.com
 
-// --- CONFIGURATION ---
-header("Access-Control-Allow-Origin: *"); // ⚠️ A sécuriser en prod (mettre ton domaine React)
-header("Access-Control-Allow-Methods: POST");
+// 1. --- SECURITY HEADERS ---
+header("Access-Control-Allow-Origin: *"); 
+header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header('Content-Type: application/json');
 
+// Désactiver l'affichage des erreurs pour la sécurité en Prod
+ini_set('display_errors', 0);
+error_reporting(0);
+
+// Gestion du Preflight Request (OPTIONS)
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+
 require 'db_connect.php';
 
-// EMAIL JURY
-$jury_email = "abdoraoui9@gmail.com"; 
+// 2. --- CONFIGURATION ---
 
-// --- 1. VERIFICATION DES DONNEES ---
+// ✅ Domaine et URLs
+$domaine = "https://concour26.fgm.com"; 
+$base_url = $domaine . "/api"; 
+
+// ✅ Emails
+$jury_email = "abdoraoui9@gmail.com"; // Email qui reçoit les notifs
+$from_email = "no-reply@concour26.fgm.com"; // ⚠️ Doit exister sur Hostinger !
+
+// 3. --- VERIFICATION METHODE ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
     echo json_encode(["success" => false, "message" => "Méthode non autorisée"]);
     exit;
 }
 
-// Récupération des champs textes
-$nom = $_POST['nom'] ?? '';
-$prenom = $_POST['prenom'] ?? '';
-$email = $_POST['email'] ?? '';
+// 4. --- RECUPERATION & NETTOYAGE DES DONNÉES ---
+$nom            = htmlspecialchars(trim($_POST['nom'] ?? ''));
+$prenom         = htmlspecialchars(trim($_POST['prenom'] ?? ''));
+$email          = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
 $date_naissance = $_POST['date_naissance'] ?? '';
-// ... autres champs (je simplifie pour la lisibilité, mais ajoute tout)
+$adresse        = htmlspecialchars(trim($_POST['adresse'] ?? ''));
+$phone_code     = $_POST['phone_code'] ?? '+212';
+$phone_number   = htmlspecialchars(trim($_POST['phone_number'] ?? ''));
+$ecole_archi    = htmlspecialchars(trim($_POST['ecole_archi'] ?? ''));
+$annee_obtention= intval($_POST['annee_obtention'] ?? 0);
+$num_ordre      = htmlspecialchars(trim($_POST['num_ordre'] ?? '')); // CNOA
 
-// Vérification basique
-if (empty($nom) || empty($email) || !isset($_FILES['cin_recto'])) {
-    echo json_encode(["success" => false, "message" => "Champs manquants"]);
+// 5. --- VALIDATION DES CHAMPS ---
+if (empty($nom) || empty($prenom) || empty($email) || empty($num_ordre) || empty($ecole_archi) || empty($date_naissance)) {
+    echo json_encode(["success" => false, "message" => "Champs obligatoires manquants."]);
     exit;
 }
 
-// --- 2. GESTION DES UPLOADS (SÉCURITÉ CYBER) ---
-$upload_dir = '../uploads/cin/'; // Dossier hors racine web si possible, sinon protéger avec .htaccess
-if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
-
-function uploadFile($file, $prefix, $dir) {
-    $allowed = ['jpg', 'jpeg', 'png', 'pdf'];
-    $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-    
-    if (!in_array($ext, $allowed)) throw new Exception("Format fichier invalide ($ext)");
-    if ($file['size'] > 5 * 1024 * 1024) throw new Exception("Fichier trop volumineux (>5Mo)");
-
-    // Renommage sécurisé : UUID ou Timestamp_Random
-    $new_name = $prefix . '_' . uniqid() . '.' . $ext;
-    $dest = $dir . $new_name;
-
-    if (!move_uploaded_file($file['tmp_name'], $dest)) {
-        throw new Exception("Erreur upload serveur");
-    }
-    return $dest; // On stocke le chemin
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    echo json_encode(["success" => false, "message" => "Format d'email invalide."]);
+    exit;
 }
 
+// Validation Fichiers (CIN)
+if (!isset($_FILES['cin_recto']) || !isset($_FILES['cin_verso'])) {
+    echo json_encode(["success" => false, "message" => "Les fichiers CIN (Recto et Verso) sont obligatoires."]);
+    exit;
+}
+
+// 6. --- FONCTION D'UPLOAD SÉCURISÉE ---
+// Le dossier de stockage (hors api, dans uploads/cin)
+$upload_dir = '../uploads/cin/'; 
+
+if (!is_dir($upload_dir)) {
+    mkdir($upload_dir, 0755, true); 
+}
+
+function uploadFile($file, $prefix, $dir) {
+    $allowed = ['jpg', 'jpeg', 'png', 'pdf', 'webp'];
+    $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    
+    // Vérifications
+    if (!in_array($ext, $allowed)) {
+        throw new Exception("Format de fichier invalide ($ext). Utilisez PDF, JPG ou PNG.");
+    }
+    if ($file['size'] > 5 * 1024 * 1024) { // 5 Mo Max
+        throw new Exception("Le fichier est trop volumineux (> 5Mo).");
+    }
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        throw new Exception("Erreur lors du transfert du fichier.");
+    }
+
+    // Renommage sécurisé (Ex: RECTO_65a4b3c2d1.pdf)
+    $filename = $prefix . '_' . uniqid() . '.' . $ext;
+    $dest = $dir . $filename;
+
+    if (!move_uploaded_file($file['tmp_name'], $dest)) {
+        throw new Exception("Erreur lors de l'enregistrement sur le serveur.");
+    }
+    return $dest; // On retourne le chemin relatif
+}
+
+// 7. --- TRAITEMENT PRINCIPAL (BDD & EMAILS) ---
 try {
+    // Démarrer la transaction (Tout ou rien)
     $pdo->beginTransaction();
 
-    // Upload CIN Recto
+    // A. Upload des fichiers
     $path_recto = uploadFile($_FILES['cin_recto'], 'RECTO', $upload_dir);
-    // Upload CIN Verso
     $path_verso = uploadFile($_FILES['cin_verso'], 'VERSO', $upload_dir);
 
-    // --- 3. INSERTION BASE DE DONNEES ---
-    $sql = "INSERT INTO candidats (nom, prenom, date_naissance, cin_recto, cin_verso, adresse, email, phone_code, phone_number, ecole_archi, annee_obtention, num_ordre, status) 
+    // B. Insertion dans la base de données
+    $sql = "INSERT INTO candidats 
+            (nom, prenom, date_naissance, cin_recto, cin_verso, adresse, email, phone_code, phone_number, ecole_archi, annee_obtention, num_ordre, status) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')";
     
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
-        $_POST['nom'],
-        $_POST['prenom'],
-        $_POST['date_naissance'],
-        $path_recto,
-        $path_verso,
-        $_POST['adresse'],
-        $_POST['email'],
-        $_POST['phone_code'],
-        $_POST['phone_number'],
-        $_POST['ecole_archi'],
-        $_POST['annee_obtention'],
-        $_POST['num_ordre']
+        $nom, 
+        $prenom, 
+        $date_naissance, 
+        $path_recto, 
+        $path_verso, 
+        $adresse, 
+        $email, 
+        $phone_code, 
+        $phone_number, 
+        $ecole_archi, 
+        $annee_obtention, 
+        $num_ordre
     ]);
 
+    // Récupérer l'ID du candidat créé
     $candidat_id = $pdo->lastInsertId();
+
+    // Valider la transaction SQL
     $pdo->commit();
 
-    // --- 4. ENVOI EMAILS ---
-
-    // A. Email au Candidat (Accusé réception)
-    $subject_candidat = "Confirmation Inscription - Prix Jardin Majorelle";
-    $message_candidat = "Bonjour $prenom,\n\nVotre dossier d'inscription a bien été reçu. Il est en cours d'étude par notre jury.\n\nCordialement,\nLa Fondation.";
-    mail($email, $subject_candidat, $message_candidat, "From: no-reply@jardinmajorelle.com");
-
-    // B. Email au JURY (abdoraoui9@gmail.com)
-    $validation_link = "http://ton-site-hostinger.com/api/admin_review.php?id=" . $candidat_id; // Lien à créer plus tard
+    // 8. --- ENVOI DES EMAILS ---
     
-    $subject_jury = "ACTION REQUISE : Nouveau Candidat ($prenom $nom)";
-    $message_jury = "Nouveau dossier reçu !\n\n" .
+    $headers = "From: " . $from_email . "\r\n";
+    $headers .= "Reply-To: " . $from_email . "\r\n";
+    $headers .= "MIME-Version: 1.0\r\n";
+    $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+    $headers .= "X-Mailer: PHP/" . phpversion();
+
+    // A. Email au Candidat (Confirmation)
+    $subject_candidat = "Confirmation de pré-inscription - Prix Fondation Jardin Majorelle 2026";
+    $message_candidat = "Bonjour $prenom $nom,\n\n" .
+                        "Nous accusons réception de votre demande d'inscription au concours.\n" .
+                        "Votre numéro de dossier est le #$candidat_id.\n\n" .
+                        "Votre profil (Architecte CNOA n°$num_ordre) est en cours de vérification par notre comité technique.\n" .
+                        "Vous recevrez une notification dès que votre éligibilité sera validée.\n\n" .
+                        "Cordialement,\nLa Fondation Jardin Majorelle.";
+    
+    @mail($email, $subject_candidat, $message_candidat, $headers);
+
+    // B. Email au JURY (Notification avec lien de validation)
+    $validation_link = $base_url . "/admin_review.php?id=" . $candidat_id;
+    
+    $subject_jury = "[JURY] Nouvelle Candidature : $prenom $nom";
+    $message_jury = "Un nouveau candidat vient de s'inscrire.\n\n" .
+                    "--- Détails ---\n" .
                     "Nom : $nom $prenom\n" .
-                    "École : " . $_POST['ecole_archi'] . "\n\n" .
-                    "Cliquez ici pour valider le dossier et voir la CIN :\n" .
+                    "École : $ecole_archi ($annee_obtention)\n" .
+                    "CNOA : $num_ordre\n\n" .
+                    "--- Action Requise ---\n" .
+                    "Veuillez cliquer sur ce lien pour vérifier la CIN et valider l'éligibilité :\n" .
                     $validation_link;
 
-    // Envoi
-    mail($jury_email, $subject_jury, $message_jury, "From: no-reply@jardinmajorelle.com");
+    @mail($jury_email, $subject_jury, $message_jury, $headers);
 
-    // Réponse Succès pour React
-    echo json_encode(["success" => true, "message" => "Inscription réussie"]);
+    // 9. --- RÉPONSE FINAL AU FRONTEND ---
+    echo json_encode([
+        "success" => true, 
+        "message" => "Inscription réussie. Vérifiez vos emails."
+    ]);
 
 } catch (Exception $e) {
-    $pdo->rollBack();
-    echo json_encode(["success" => false, "message" => "Erreur: " . $e->getMessage()]);
+    // En cas d'erreur, on annule tout ce qui a été fait dans la BDD
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+    
+    // On renvoie une erreur 500
+    http_response_code(500);
+    echo json_encode([
+        "success" => false, 
+        "message" => "Erreur technique : " . $e->getMessage()
+    ]);
 }
 ?>

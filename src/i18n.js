@@ -7,7 +7,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 const resources = {
   fr: {
     translation: {
-      title: "Fondation Jardin Majorelle Prize",
+      title: "Prix Fondation Jardin Majorelle 2026",
       subtitle: "Concours National – Pavillon Temporaire de la Villa Oasis",
       hero: {
         title: "Entre Tradition et Avant-Garde",
@@ -81,7 +81,7 @@ const resources = {
   },
   en: {
     translation: {
-      title: "Fondation Jardin Majorelle Prize",
+      title: "Fondation Jardin Majorelle Prize 2026",
       subtitle: "National Competition – Villa Oasis Temporary Pavilion",
       hero: {
         title: "Between Tradition and Avant-Garde",

@@ -1,3 +1,5 @@
+
+import Step2 from './Step2';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
@@ -8,7 +10,11 @@ import logoYSL from './assets/logo_ysl.png';
 
 function App() {
   const { t, i18n } = useTranslation();
-
+  const queryParams = new URLSearchParams(window.location.search);
+  const token = queryParams.get("token");
+  if (token) {
+      return <Step2 token={token} />;
+  }
   // --- STATE ---
   const [formData, setFormData] = useState({
     nom: '',
