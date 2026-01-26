@@ -68,7 +68,8 @@ export default function Step2({ token }) {
     }
 
     const formData = new FormData();
-    formData.append('token', token);
+    //formData.append('token', token);
+    formData.append('token', token || "TEST_1234");
     formData.append('bio_file', files.bio);
     formData.append('presentation_file', files.note);
     formData.append('aps_file', files.aps);

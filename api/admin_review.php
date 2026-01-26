@@ -289,7 +289,107 @@ if ($id) {
             font-weight: 600;
             letter-spacing: 1px;
             margin-bottom: 5px;
+            text-transform: uppercase;<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jury | Review Candidat #<?php echo htmlspecialchars($id ?? ''); ?></title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --majorelle-blue: #1d4e89; /* Deep Architectural Blue */
+            --majorelle-yellow: #f7b538; /* Accent */
+            --success-green: #10b981;
+            --danger-red: #ef4444;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            /* ✅ BACKGROUND IMAGE INTEGRATION */
+            background: url('../Background.png') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        /* Overlay to ensure text readability over the image */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.4); /* Dark overlay */
+            z-index: -1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .card { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .card-header {
+            background: var(--majorelle-blue);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .card-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
             text-transform: uppercase;
+        }
+
+        .card-header p {
+            font-size: 14px;
+            opacity: 0.8;
+            font-weight: 300;
+        }
+
+        .card-body {
+            padding: 40px;
+        }
+
+        /* Grid Layout for Info */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .info-item {
+            background: #f8f9fc;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--majorelle-blue);
+        }
+
+        .label { 
+            font-size: 12px; 
+            color: #666; 
+            text-transform: uppercase; 
         }
 
         .card-header p {
