@@ -1,6 +1,6 @@
 
 import Step2 from './Step2';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 
@@ -36,12 +36,127 @@ function App() {
   const [error, setError] = useState('');
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
+  // useRef for smooth scrolling to error message
+  const errorMessageRef = useRef(null);
+  const formTopRef = useRef(null);
+
+  // Refs for file inputs (to programmatically reset them)
+  const cinRectoInputRef = useRef(null);
+  const cinVersoInputRef = useRef(null);
+
   // Enhanced CSS classes for consistent styling
   const labelClass = "block text-sand-800 font-semibold mb-2 text-sm uppercase tracking-wider";
   const inputClass = "w-full px-5 py-4 border-2 border-sand-200 rounded-xl focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-100 transition-all duration-200 font-sans";
   const sectionTitleClass = "flex items-center mb-6 pb-3 border-b-2 border-primary-100";
   const sectionNumberClass = "w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center mr-4";
   const sectionHeaderClass = "text-2xl font-serif font-bold text-primary-800";
+
+  // --- CUSTOM FILE UPLOAD COMPONENT ---
+  const CustomFileUpload = ({ label, name, file, inputRef, required = true }) => {
+    const handleFileSelect = (e) => {
+      const selectedFile = e.target.files[0];
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      
+      if (selectedFile && selectedFile.size > maxSize) {
+        setError("Le fichier dépasse la taille maximale autorisée (5 Mo). / File exceeds maximum size (5 MB).");
+        e.target.value = '';
+        if (errorMessageRef.current) {
+          errorMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+      
+      setFormData({ ...formData, [name]: selectedFile });
+    };
+
+    const handleRemoveFile = () => {
+      setFormData({ ...formData, [name]: null });
+      if (inputRef.current) {
+        inputRef.current.value = '';
+      }
+    };
+
+    const formatFileSize = (bytes) => {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+    };
+
+    return (
+      <div>
+        <label className="block text-sm font-bold text-primary-800 uppercase mb-3 tracking-wider">
+          {label} {required && '*'}
+        </label>
+        
+        {/* Hidden file input */}
+        <input
+          ref={inputRef}
+          type="file"
+          name={name}
+          accept=".jpg,.jpeg,.png,.pdf"
+          onChange={handleFileSelect}
+          className="hidden"
+          required={required && !file}
+        />
+        
+        {/* Custom UI */}
+        {!file ? (
+          // EMPTY STATE - Clickable dashed box
+          <div
+            onClick={() => inputRef.current?.click()}
+            className="border-2 border-dashed border-primary-300 rounded-xl p-8 bg-gradient-to-br from-white to-primary-50/30 hover:from-primary-50 hover:to-primary-100/50 cursor-pointer transition-all duration-300 text-center group hover:border-primary-500"
+          >
+            <div className="flex flex-col items-center justify-center space-y-3">
+              <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center group-hover:bg-primary-200 transition-colors">
+                <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-primary-700 font-semibold text-sm">
+                  📎 Cliquez pour déposer
+                </p>
+                <p className="text-sand-600 text-xs mt-1">
+                  PDF, JPG, PNG (Max 5 Mo)
+                </p>
+              </div>
+            </div>
+          </div>
+        ) : (
+          // FILLED STATE - Show file info with remove button
+          <div className="border-2 border-primary-400 bg-gradient-to-br from-white to-primary-50 rounded-xl p-5 transition-all duration-300 shadow-md">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4 flex-1 min-w-0">
+                <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-primary-800 font-semibold text-sm truncate">
+                    ✅ {file.name}
+                  </p>
+                  <p className="text-sand-600 text-xs mt-1">
+                    {formatFileSize(file.size)}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={handleRemoveFile}
+                className="ml-4 flex-shrink-0 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-bold text-xs uppercase tracking-wider transition-all duration-200 hover:shadow-lg transform hover:scale-105 flex items-center space-x-1"
+              >
+                <span>❌</span>
+                <span>Supprimer</span>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   // --- LOGIQUE ---
   const changeLanguage = (lng) => {
@@ -52,18 +167,7 @@ function App() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    const maxSize = 5 * 1024 * 1024; // 5MB
-    
-    if (file && file.size > maxSize) {
-      setError("Le fichier dépasse la taille maximale autorisée (5 Mo). / File exceeds maximum size (5 MB).");
-      e.target.value = '';
-      return;
-    }
-    
-    setFormData({ ...formData, [e.target.name]: file });
-  };
+  // handleFileChange is now handled inside CustomFileUpload component
 
   const validateAge = (birthDate) => {
     const today = new Date();
@@ -87,13 +191,37 @@ function App() {
     if (age >= 40) {
       setError("Vous devez avoir moins de 40 ans pour participer. / You must be under 40 years old to participate.");
       setLoading(false);
-      window.scrollTo(0, 0);
+      // Smooth scroll to error message
+      if (errorMessageRef.current) {
+        errorMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
       return;
+    }
+
+    // Validate Moroccan phone number if +212 is selected
+    if (formData.phone_code === '+212') {
+      const phoneRegex = /^(05|06|07)\d{8}$/;
+      if (!phoneRegex.test(formData.phone_number)) {
+        setError("Numéro de téléphone marocain invalide. Doit commencer par 05, 06 ou 07 et contenir 10 chiffres. / Invalid Moroccan phone number. Must start with 05, 06, or 07 and contain 10 digits.");
+        setLoading(false);
+        // Smooth scroll to error message
+        if (errorMessageRef.current) {
+          errorMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
     }
 
     const data = new FormData();
     Object.keys(formData).forEach((key) => {
-        data.append(key, formData[key]);
+        // Only append files if they are actual File instances, not null/undefined
+        if (key === 'cin_recto' || key === 'cin_verso') {
+          if (formData[key] instanceof File) {
+            data.append(key, formData[key]);
+          }
+        } else {
+          data.append(key, formData[key]);
+        }
     });
 
     try {
@@ -105,15 +233,21 @@ function App() {
 
       if (response.data.success) {
         setSuccess(true);
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         setError(response.data.message || t('messages.error'));
-        window.scrollTo(0, 0);
+        // Smooth scroll to error message
+        if (errorMessageRef.current) {
+          errorMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
       }
     } catch (err) {
       console.error(err);
       setError("Erreur de connexion. Veuillez réessayer.");
-      window.scrollTo(0, 0);
+      // Smooth scroll to error message
+      if (errorMessageRef.current) {
+        errorMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     } finally {
       setLoading(false);
     }
@@ -399,7 +533,7 @@ function App() {
         ) : (
             
             /* --- FORMULAIRE --- */
-            <div className="bg-white p-10 md:p-16 rounded-3xl shadow-xl border border-sand-200 animate-fade-in-up relative">
+            <div ref={formTopRef} className="bg-white p-10 md:p-16 rounded-3xl shadow-xl border border-sand-200 animate-fade-in-up relative">
                 
                 {/* Section Header - Now Inside White Card for Maximum Readability */}
                 <div className="text-center mb-14 pb-10 border-b border-sand-200 relative">
@@ -434,7 +568,7 @@ function App() {
                 </div>
                 
                 {error && (
-                    <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm">
+                    <div ref={errorMessageRef} className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm rounded-lg shadow-md animate-pulse">
                         🚨 {error}
                     </div>
                 )}
@@ -476,14 +610,20 @@ function App() {
                             </h3>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-                            <div>
-                                <label className="block text-sm font-bold text-primary-800 uppercase mb-3 tracking-wider">Recto</label>
-                                <input required type="file" name="cin_recto" accept=".jpg,.jpeg,.png,.pdf" onChange={handleFileChange} className="block w-full text-sm text-sand-600 border-2 border-dashed border-primary-300 rounded-xl p-4 bg-white hover:bg-primary-50 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-primary-600 file:text-white hover:file:bg-primary-700 cursor-pointer transition-all" />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-bold text-primary-800 uppercase mb-3 tracking-wider">Verso</label>
-                                <input required type="file" name="cin_verso" accept=".jpg,.jpeg,.png,.pdf" onChange={handleFileChange} className="block w-full text-sm text-sand-600 border-2 border-dashed border-primary-300 rounded-xl p-4 bg-white hover:bg-primary-50 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-primary-600 file:text-white hover:file:bg-primary-700 cursor-pointer transition-all" />
-                            </div>
+                            <CustomFileUpload
+                              label="Recto"
+                              name="cin_recto"
+                              file={formData.cin_recto}
+                              inputRef={cinRectoInputRef}
+                              required={true}
+                            />
+                            <CustomFileUpload
+                              label="Verso"
+                              name="cin_verso"
+                              file={formData.cin_verso}
+                              inputRef={cinVersoInputRef}
+                              required={true}
+                            />
                         </div>
                         <div className="bg-primary-50 p-4 rounded-lg border border-primary-200 mt-4">
                             <p className="text-sm text-primary-700 flex items-center">

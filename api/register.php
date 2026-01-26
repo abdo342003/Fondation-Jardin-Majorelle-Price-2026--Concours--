@@ -101,6 +101,16 @@ function uploadFile($file, $prefix, $dir) {
 
 // 7. --- TRAITEMENT PRINCIPAL (BDD & EMAILS) ---
 try {
+    // ✅ SECURITY CHECK: Prevent duplicate registrations
+    $check_sql = "SELECT id FROM candidats WHERE email = ? OR num_ordre = ? LIMIT 1";
+    $check_stmt = $pdo->prepare($check_sql);
+    $check_stmt->execute([$email, $num_ordre]);
+    
+    if ($check_stmt->fetch()) {
+        echo json_encode(["success" => false, "message" => "Erreur: Ce numéro CNOA ou cet email est déjà utilisé."]);
+        exit;
+    }
+
     // Démarrer la transaction (Tout ou rien)
     $pdo->beginTransaction();
 
