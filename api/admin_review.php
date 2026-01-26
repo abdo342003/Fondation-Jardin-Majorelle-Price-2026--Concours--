@@ -1,17 +1,54 @@
 <?php
-// api/admin_review.php - PRODUCTION VERSION FOR HOSTINGER
-// Enable error reporting for debugging
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+// api/admin_review.php - ENHANCED VERSION 2.2 - Fault-Tolerant Email System
+// ✅ PRODUCTION: Error logging to file
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
 error_reporting(E_ALL);
+ini_set('log_errors', 1);
+ini_set('error_log', '../error_log.txt');
 
 require 'db_connect.php';
 
 $message = "";
 $messageType = "";
 
-// ✅ PRODUCTION DOMAIN
+// ✅ CONFIGURATION
 $domaine = "https://fondationjardinmajorelleprize.com";
+$adminEmail = "abdoraoui9@gmail.com"; // BCC for admin tracking
+
+// ✅ ENHANCED EMAIL FUNCTION with fault tolerance
+function sendEmailSafely($to, $subject, $htmlMessage, $adminBCC = null) {
+    try {
+        error_log("Email: Attempting to send to $to - Subject: $subject");
+        
+        $headers = "MIME-Version: 1.0\r\n";
+        $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+        $headers .= "From: Prix Fondation Jardin Majorelle <no-reply@fondationjardinmajorelleprize.com>\r\n";
+        $headers .= "Reply-To: contact@fondationjardinmajorelleprize.com\r\n";
+        $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
+        $headers .= "X-Priority: 3\r\n";
+        
+        // ✅ BCC admin for tracking
+        if ($adminBCC) {
+            $headers .= "Bcc: $adminBCC\r\n";
+        }
+        
+        set_time_limit(10); // Timeout protection
+        $result = @mail($to, $subject, $htmlMessage, $headers);
+        set_time_limit(300);
+        
+        if ($result) {
+            error_log("Email: Successfully sent to $to");
+            return true;
+        } else {
+            error_log("Email: WARNING - mail() returned false for $to");
+            return false;
+        }
+    } catch (Throwable $e) {
+        error_log("Email: EXCEPTION - " . $e->getMessage());
+        return false;
+    }
+}
 
 // TRAITEMENT DES ACTIONS (VALIDER / REFUSER) VIA GET PARAMETERS
 if (isset($_GET['action']) && isset($_GET['id'])) {
@@ -83,21 +120,17 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                 </html>
                 ";
 
-                // 6. Configuration des en-têtes email
-                $headers = "MIME-Version: 1.0\r\n";
-                $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-                $headers .= "From: Prix Fondation Jardin Majorelle <no-reply@fondationjardinmajorelleprize.com>\r\n";
-                $headers .= "Reply-To: contact@fondationjardinmajorelleprize.com\r\n";
-                
-                // 7. Envoi de l'email
-                $emailSent = mail($candidat['email'], $subject, $htmlMessage, $headers);
+                // 6. Envoi de l'email avec BCC admin
+                $emailSent = sendEmailSafely($candidat['email'], $subject, $htmlMessage, $adminEmail);
                 
                 if ($emailSent) {
-                    $message = "✅ Candidat VALIDÉ avec succès ! Email d'invitation envoyé à " . htmlspecialchars($candidat['email']);
+                    $message = "✅ Candidat VALIDÉ avec succès ! Email d'invitation envoyé à " . htmlspecialchars($candidat['email']) . " (copie admin envoyée)";
                     $messageType = "success";
+                    error_log("Validation: Candidate #{$candidat_id} approved and notified");
                 } else {
-                    $message = "⚠️ Candidat validé mais l'email n'a pas pu être envoyé. Vérifiez la configuration mail du serveur.";
+                    $message = "⚠️ Candidat validé mais l'email n'a pas pu être envoyé. Token généré : " . substr($token, 0, 20) . "...";
                     $messageType = "warning";
+                    error_log("Validation: Candidate #{$candidat_id} approved but EMAIL FAILED. Token: $token");
                 }
             } else {
                 $message = "❌ Erreur : Candidat introuvable.";
@@ -157,21 +190,17 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                 </html>
                 ";
 
-                // 4. Configuration des en-têtes email
-                $headers = "MIME-Version: 1.0\r\n";
-                $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-                $headers .= "From: Prix Fondation Jardin Majorelle <no-reply@fondationjardinmajorelleprize.com>\r\n";
-                $headers .= "Reply-To: contact@fondationjardinmajorelleprize.com\r\n";
-                
-                // 5. Envoi de l'email
-                $emailSent = mail($candidat['email'], $subject, $htmlMessage, $headers);
+                // 4. Envoi de l'email avec BCC admin
+                $emailSent = sendEmailSafely($candidat['email'], $subject, $htmlMessage, $adminEmail);
                 
                 if ($emailSent) {
-                    $message = "❌ Candidat REFUSÉ. Email de notification envoyé.";
+                    $message = "❌ Candidat REFUSÉ. Email de notification envoyé (copie admin envoyée).";
                     $messageType = "error";
+                    error_log("Rejection: Candidate #{$candidat_id} rejected and notified");
                 } else {
                     $message = "❌ Candidat refusé mais l'email n'a pas pu être envoyé.";
                     $messageType = "error";
+                    error_log("Rejection: Candidate #{$candidat_id} rejected but EMAIL FAILED");
                 }
             }
         }

@@ -163,13 +163,22 @@ try {
     // ✅ AT THIS POINT: Files uploaded + Database updated = SUCCESS guaranteed
     // Email is now OPTIONAL and won't block the response
 
-    // C. Send notification email (ISOLATED - won't block success)
+    // C. Send notification emails (ISOLATED - won't block success)
     try {
-        error_log("Step2: Attempting to send notification email to: " . $candidat['email']);
+        $adminEmail = "abdoraoui9@gmail.com";
+        $domaine = "https://fondationjardinmajorelleprize.com";
         
-        $subject = "Confirmation de dépôt - Prix Fondation Jardin Majorelle 2026";
+        // Convert relative file paths to full URLs for email links
+        $bioUrl = $domaine . "/" . str_replace("../", "", $bio_path);
+        $noteUrl = $domaine . "/" . str_replace("../", "", $note_path);
+        $apsUrl = $domaine . "/" . str_replace("../", "", $aps_path);
         
-        $htmlMessage = "<!DOCTYPE html>
+        // === EMAIL 1: CANDIDATE CONFIRMATION ===
+        error_log("Step2: Sending confirmation email to candidate: " . $candidat['email']);
+        
+        $candidateSubject = "Confirmation de dépôt - Prix Fondation Jardin Majorelle 2026";
+        
+        $candidateMessage = "<!DOCTYPE html>
 <html>
 <head>
     <meta charset='UTF-8'>
@@ -213,23 +222,138 @@ try {
 </body>
 </html>";
 
-        // ✅ ROBUST EMAIL HEADERS for Hostinger
-        $headers = "MIME-Version: 1.0\r\n";
-        $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-        $headers .= "From: Prix Fondation Jardin Majorelle <no-reply@fondationjardinmajorelleprize.com>\r\n";
-        $headers .= "Reply-To: no-reply@fondationjardinmajorelleprize.com\r\n";
-        $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
-        $headers .= "X-Priority: 3\r\n";
+        $candidateHeaders = "MIME-Version: 1.0\r\n";
+        $candidateHeaders .= "Content-Type: text/html; charset=UTF-8\r\n";
+        $candidateHeaders .= "From: Prix Fondation Jardin Majorelle <no-reply@fondationjardinmajorelleprize.com>\r\n";
+        $candidateHeaders .= "Reply-To: contact@fondationjardinmajorelleprize.com\r\n";
+        $candidateHeaders .= "X-Mailer: PHP/" . phpversion() . "\r\n";
+        $candidateHeaders .= "X-Priority: 3\r\n";
         
-        // Send email with timeout protection
-        set_time_limit(10); // Max 10 seconds for email
-        $emailSent = @mail($candidat['email'], $subject, $htmlMessage, $headers);
-        set_time_limit(300); // Reset to normal
+        set_time_limit(10);
+        $candidateEmailSent = @mail($candidat['email'], $candidateSubject, $candidateMessage, $candidateHeaders);
+        set_time_limit(300);
         
-        if ($emailSent) {
-            error_log("Step2: Confirmation email sent successfully to: " . $candidat['email']);
+        if ($candidateEmailSent) {
+            error_log("Step2: Candidate confirmation email sent successfully");
         } else {
-            error_log("Step2: WARNING - Email failed to send to: " . $candidat['email']);
+            error_log("Step2: WARNING - Candidate email failed");
+        }
+        
+        // === EMAIL 2: JURY NOTIFICATION WITH FILE LINKS ===
+        error_log("Step2: Sending detailed notification to jury: $adminEmail");
+        
+        $jurySubject = "[NOUVEAU PROJET] Candidat: " . $candidat['prenom'] . " " . $candidat['nom'] . " (ID #" . $candidat['id'] . ")";
+        
+        $juryMessage = "<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+        .container { max-width: 700px; margin: 20px auto; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #1d4e89 0%, #0055B8 100%); color: white; padding: 30px; text-align: center; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 10px 0 0 0; opacity: 0.9; font-size: 14px; }
+        .content { padding: 30px; }
+        .info-box { background: #f8f9fa; border-left: 4px solid #0055B8; padding: 15px; margin: 20px 0; border-radius: 4px; }
+        .info-box strong { color: #1d4e89; }
+        .files-section { margin: 25px 0; }
+        .file-item { background: white; border: 2px solid #e9ecef; padding: 15px; margin: 10px 0; border-radius: 6px; display: flex; align-items: center; justify-content: space-between; }
+        .file-item:hover { border-color: #0055B8; }
+        .file-icon { font-size: 32px; margin-right: 15px; }
+        .file-info { flex: 1; }
+        .file-name { font-weight: 600; color: #333; font-size: 14px; }
+        .file-type { color: #777; font-size: 12px; }
+        .download-btn { background: #0055B8; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: 600; font-size: 14px; display: inline-block; }
+        .download-btn:hover { background: #1d4e89; }
+        .footer { background: #f8f9fa; padding: 20px; text-align: center; color: #777; font-size: 12px; border-top: 1px solid #e9ecef; }
+        .badge { display: inline-block; background: #28a745; color: white; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='header'>
+            <h1>📁 Nouveau Projet Soumis</h1>
+            <p>Prix Fondation Jardin Majorelle 2026</p>
+        </div>
+        
+        <div class='content'>
+            <p style='font-size: 16px; color: #555;'>Un candidat a déposé son projet complet. Voici les détails :</p>
+            
+            <div class='info-box'>
+                <p><strong>👤 Candidat:</strong> " . htmlspecialchars($candidat['prenom']) . " " . htmlspecialchars($candidat['nom']) . "</p>
+                <p><strong>🆔 ID Dossier:</strong> #" . $candidat['id'] . "</p>
+                <p><strong>📧 Email:</strong> " . htmlspecialchars($candidat['email']) . "</p>
+                <p><strong>📅 Date de soumission:</strong> " . date('d/m/Y à H:i') . "</p>
+                <p><strong>📊 Statut:</strong> <span class='badge'>Dossier Complet</span></p>
+            </div>
+            
+            <div class='files-section'>
+                <h3 style='color: #1d4e89; border-bottom: 2px solid #e9ecef; padding-bottom: 10px;'>📎 Documents Téléchargeables</h3>
+                
+                <div class='file-item'>
+                    <div style='display: flex; align-items: center; flex: 1;'>
+                        <div class='file-icon'>📄</div>
+                        <div class='file-info'>
+                            <div class='file-name'>Biographie Professionnelle</div>
+                            <div class='file-type'>Format: PDF</div>
+                        </div>
+                    </div>
+                    <a href='" . $bioUrl . "' class='download-btn' target='_blank'>⬇️ Télécharger Bio</a>
+                </div>
+                
+                <div class='file-item'>
+                    <div style='display: flex; align-items: center; flex: 1;'>
+                        <div class='file-icon'>📄</div>
+                        <div class='file-info'>
+                            <div class='file-name'>Note d'Intention</div>
+                            <div class='file-type'>Format: PDF</div>
+                        </div>
+                    </div>
+                    <a href='" . $noteUrl . "' class='download-btn' target='_blank'>⬇️ Télécharger Note</a>
+                </div>
+                
+                <div class='file-item'>
+                    <div style='display: flex; align-items: center; flex: 1;'>
+                        <div class='file-icon'>📄</div>
+                        <div class='file-info'>
+                            <div class='file-name'>Avant-Projet Sommaire (APS)</div>
+                            <div class='file-type'>Format: PDF</div>
+                        </div>
+                    </div>
+                    <a href='" . $apsUrl . "' class='download-btn' target='_blank'>⬇️ Télécharger APS</a>
+                </div>
+            </div>
+            
+            <div style='background: #fff7ed; border-left: 4px solid #f59e0b; padding: 15px; margin-top: 25px; border-radius: 4px;'>
+                <p style='margin: 0; color: #92400e;'><strong>📌 Action requise:</strong> Merci de consulter les documents et de procéder à l'évaluation du projet selon les critères du jury.</p>
+            </div>
+        </div>
+        
+        <div class='footer'>
+            <p><strong>Prix Fondation Jardin Majorelle 2026</strong></p>
+            <p>Cet email est une notification automatique du système de gestion des candidatures.</p>
+            <p>© 2026 Fondation Jardin Majorelle - Tous droits réservés</p>
+        </div>
+    </div>
+</body>
+</html>";
+
+        $juryHeaders = "MIME-Version: 1.0\r\n";
+        $juryHeaders .= "Content-Type: text/html; charset=UTF-8\r\n";
+        $juryHeaders .= "From: Système Prix Majorelle <no-reply@fondationjardinmajorelleprize.com>\r\n";
+        $juryHeaders .= "Reply-To: " . $candidat['email'] . "\r\n";
+        $juryHeaders .= "X-Mailer: PHP/" . phpversion() . "\r\n";
+        $juryHeaders .= "X-Priority: 1\r\n"; // High priority for jury
+        
+        set_time_limit(10);
+        $juryEmailSent = @mail($adminEmail, $jurySubject, $juryMessage, $juryHeaders);
+        set_time_limit(300);
+        
+        if ($juryEmailSent) {
+            error_log("Step2: Jury notification email sent successfully to: $adminEmail");
+        } else {
+            error_log("Step2: WARNING - Jury notification email failed");
         }
         
     } catch (Throwable $emailError) {
