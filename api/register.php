@@ -1,9 +1,9 @@
 <?php
 // api/register.php - VERSION PRODUCTION FINALE
-// Domaine : concour26.fgm.com
+// Domaine : fondationjardinmajorelleprize.com
 
 // 1. --- SECURITY HEADERS ---
-header("Access-Control-Allow-Origin: *"); 
+header("Access-Control-Allow-Origin: https://fondationjardinmajorelleprize.com"); 
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header('Content-Type: application/json');
@@ -22,13 +22,13 @@ require 'db_connect.php';
 
 // 2. --- CONFIGURATION ---
 
-// ✅ Domaine et URLs
-$domaine = "https://concour26.fgm.com"; 
+// ✅ Production Domain and URLs
+$domaine = "https://fondationjardinmajorelleprize.com"; 
 $base_url = $domaine . "/api"; 
 
 // ✅ Emails
 $jury_email = "abdoraoui9@gmail.com"; // Email qui reçoit les notifs
-$from_email = "no-reply@concour26.fgm.com"; // ⚠️ Doit exister sur Hostinger !
+$from_email = "no-reply@fondationjardinmajorelleprize.com"; // ⚠️ Doit exister sur Hostinger !
 
 // 3. --- VERIFICATION METHODE ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -181,11 +181,14 @@ try {
         $pdo->rollBack();
     }
     
+    // ✅ PRODUCTION: Log error to file for debugging (hidden from user)
+    error_log("Registration Error: " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine());
+    
     // On renvoie une erreur 500
     http_response_code(500);
     echo json_encode([
         "success" => false, 
-        "message" => "Erreur technique : " . $e->getMessage()
+        "message" => "Erreur lors du traitement de votre demande. Veuillez réessayer plus tard."
     ]);
 }
 ?>

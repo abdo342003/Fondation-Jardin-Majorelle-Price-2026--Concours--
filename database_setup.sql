@@ -2,9 +2,9 @@
 -- Run this SQL on your Hostinger MySQL database
 
 -- Create the database (if not exists)
-CREATE DATABASE IF NOT EXISTS u710497052_concours CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS u710497052_Majorelle CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-USE u710497052_concours;
+USE u710497052_Majorelle;
 
 -- Create candidats table
 CREATE TABLE IF NOT EXISTS candidats (
@@ -21,11 +21,17 @@ CREATE TABLE IF NOT EXISTS candidats (
     ecole_archi VARCHAR(200),
     annee_obtention INT,
     num_ordre VARCHAR(50),
-    status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
+    status ENUM('pending', 'approved', 'rejected', 'completed') DEFAULT 'pending',
+    token_step2 VARCHAR(255) DEFAULT NULL,
+    bio_file VARCHAR(255) DEFAULT NULL,
+    presentation_file VARCHAR(255) DEFAULT NULL,
+    aps_file VARCHAR(255) DEFAULT NULL,
+    date_submission_step2 TIMESTAMP NULL DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_email (email),
     INDEX idx_status (status),
+    INDEX idx_token_step2 (token_step2),
     INDEX idx_created_at (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

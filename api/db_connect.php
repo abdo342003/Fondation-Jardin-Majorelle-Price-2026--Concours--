@@ -1,11 +1,11 @@
 <?php
 // api/db_connect.php
 
-// ⚠️ MODIFIER AVEC TES INFOS HOSTINGER
-$host = "193.203.168.172"; // L'adresse de ton serveur de base de données
-$user = "u710497052_admin"; // Ton username Hostinger
-$pass = "AbdellahErraoui2026"; // Ton password
-$dbname = "u710497052_concours"; // Ta base de données
+// ✅ PRODUCTION HOSTINGER CREDENTIALS
+$host = "localhost";
+$user = "u710497052_Majorelle";
+$pass = "JardinMajorelle@26";
+$dbname = "u710497052_Majorelle";
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);

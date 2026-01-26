@@ -97,8 +97,8 @@ function App() {
     });
 
     try {
-      // URL API - Uses environment variable
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost/concours-api/register.php';
+      // URL API - Uses environment variable or production domain
+      const apiUrl = import.meta.env.VITE_API_URL || '/api/register.php';
       const response = await axios.post(apiUrl, data, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
