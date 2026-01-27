@@ -177,47 +177,88 @@ try {
         // === EMAIL 1: CANDIDATE CONFIRMATION ===
         error_log("Step2: Sending confirmation email to candidate: " . $candidat['email']);
         
-        $candidateSubject = "Confirmation de dépôt - Prix Fondation Jardin Majorelle 2026";
+        $candidateSubject = "✅ Dossier complet reçu - Prix Fondation Jardin Majorelle 2026";
         
         $candidateMessage = "<!DOCTYPE html>
 <html>
 <head>
     <meta charset='UTF-8'>
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; background: #f9f9f9; }
-        .header { background: #0055B8; color: white; padding: 20px; text-align: center; }
-        .content { background: white; padding: 30px; margin-top: 20px; }
-        .footer { text-align: center; margin-top: 30px; color: #777; font-size: 12px; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.7; color: #2d3748; margin:0; padding:0; }
+        .container { max-width: 600px; margin: 0 auto; background: #f7fafc; }
+        .header { background: linear-gradient(135deg, #1d4e89 0%, #2563eb 100%); color: white; padding: 35px 25px; text-align: center; }
+        .header h1 { margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+        .header p { margin: 10px 0 0 0; opacity: 0.95; font-size: 14px; }
+        .badge { background: #10b981; color: white; display: inline-block; padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: 600; margin: 20px 0; }
+        .content { background: white; padding: 35px 30px; margin: 0; }
+        .section { margin: 25px 0; padding: 20px; background: #f8fafc; border-left: 4px solid #1d4e89; border-radius: 6px; }
+        .section-title { font-size: 16px; font-weight: 700; color: #1d4e89; margin: 0 0 12px 0; }
+        .check-list { list-style: none; padding: 0; margin: 15px 0; }
+        .check-list li { padding: 8px 0; color: #4a5568; display: flex; align-items: center; }
+        .check-list li:before { content: '✓'; background: #10b981; color: white; width: 20px; height: 20px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-weight: bold; font-size: 12px; }
+        .info-box { background: #fff7ed; border: 2px solid #f7b538; border-radius: 8px; padding: 18px; margin: 20px 0; }
+        .info-box p { margin: 0; color: #92400e; font-size: 14px; line-height: 1.6; }
+        .timeline { margin: 20px 0; }
+        .timeline-item { display: flex; padding: 12px 0; }
+        .timeline-icon { width: 32px; height: 32px; background: #e0f2fe; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; flex-shrink: 0; }
+        .timeline-text { flex: 1; padding-top: 4px; }
+        .footer { background: #1a202c; color: #cbd5e0; padding: 25px; text-align: center; font-size: 12px; }
+        .footer a { color: #f7b538; text-decoration: none; }
+        strong { color: #1d4e89; }
     </style>
 </head>
 <body>
     <div class='container'>
         <div class='header'>
-            <h1>✅ Projet Reçu !</h1>
+            <h1>🏆 Dossier Complet Reçu !</h1>
+            <p>Prix Fondation Jardin Majorelle 2026</p>
         </div>
         <div class='content'>
-            <p>Bonjour <strong>" . htmlspecialchars($candidat['prenom']) . " " . htmlspecialchars($candidat['nom']) . "</strong>,</p>
+            <div class='badge'>CANDIDATURE FINALISÉE</div>
             
-            <p>Nous avons bien reçu votre dossier de projet pour le <strong>Prix Fondation Jardin Majorelle 2026</strong>.</p>
+            <p style='font-size: 16px; margin-top: 0;'>Bonjour <strong>" . htmlspecialchars($candidat['prenom']) . " " . htmlspecialchars($candidat['nom']) . "</strong>,</p>
             
-            <p><strong>Documents reçus :</strong></p>
-            <ul>
-                <li>✅ Biographie</li>
-                <li>✅ Note d'intention</li>
-                <li>✅ Avant-Projet Sommaire (APS)</li>
-            </ul>
+            <p>Nous accusons réception de votre dossier complet pour le <strong>Prix Fondation Jardin Majorelle 2026</strong>. Votre candidature est désormais finalisée.</p>
             
-            <p>Votre candidature est désormais <strong>complète</strong> et sera examinée par notre jury.</p>
+            <div class='section'>
+                <div class='section-title'>📋 Documents Reçus</div>
+                <ul class='check-list'>
+                    <li>Biographie professionnelle</li>
+                    <li>Note d'intention architecturale</li>
+                    <li>Avant-Projet Sommaire (APS)</li>
+                </ul>
+            </div>
             
-            <p>Les résultats seront annoncés le <strong>15 Mai 2026</strong>.</p>
+            <div class='section'>
+                <div class='section-title'>📅 Prochaines Étapes</div>
+                <div class='timeline'>
+                    <div class='timeline-item'>
+                        <div class='timeline-icon'>1️⃣</div>
+                        <div class='timeline-text'><strong>Janvier - Avril 2026</strong><br>Examen approfondi de votre dossier par notre jury d'experts</div>
+                    </div>
+                    <div class='timeline-item'>
+                        <div class='timeline-icon'>2️⃣</div>
+                        <div class='timeline-text'><strong>15 Mai 2026</strong><br>Annonce officielle des résultats par email</div>
+                    </div>
+                    <div class='timeline-item'>
+                        <div class='timeline-icon'>3️⃣</div>
+                        <div class='timeline-text'><strong>Juin 2026</strong><br>Cérémonie de remise des prix (si lauréat)</div>
+                    </div>
+                </div>
+            </div>
             
-            <p>Nous vous souhaitons plein succès !</p>
+            <div class='info-box'>
+                <p><strong>⚠️ Important :</strong> Conservez cet email comme preuve de votre participation. Aucune action supplémentaire n'est requise de votre part. Nous vous contacterons directement par email.</p>
+            </div>
             
-            <p>Cordialement,<br><strong>L'équipe du Prix Fondation Jardin Majorelle</strong></p>
+            <p style='margin-top: 30px;'>Nous vous souhaitons plein succès dans cette compétition !</p>
+            
+            <p style='margin-top: 25px; padding-top: 20px; border-top: 1px solid #e2e8f0;'>Cordialement,<br><strong>L'équipe du Prix Fondation Jardin Majorelle</strong></p>
         </div>
         <div class='footer'>
-            <p>© 2026 Fondation Jardin Majorelle - Tous droits réservés</p>
+            <p style='margin: 0 0 8px 0;'><strong>Fondation Jardin Majorelle</strong></p>
+            <p style='margin: 0;'>📧 contact@fondationjardinmajorelleprize.com | 🌐 <a href='https://fondationjardinmajorelleprize.com'>fondationjardinmajorelleprize.com</a></p>
+            <p style='margin: 15px 0 0 0; opacity: 0.7;'>© 2026 Fondation Jardin Majorelle - Tous droits réservés</p>
         </div>
     </div>
 </body>
@@ -225,7 +266,7 @@ try {
 
         $candidateHeaders = "MIME-Version: 1.0\r\n";
         $candidateHeaders .= "Content-Type: text/html; charset=UTF-8\r\n";
-        $candidateHeaders .= "From: Prix Fondation Jardin Majorelle <no-reply@fondationjardinmajorelleprize.com>\r\n";
+        $candidateHeaders .= "From: Prix Fondation Jardin Majorelle <contact@fondationjardinmajorelleprize.com>\r\n";
         $candidateHeaders .= "Reply-To: contact@fondationjardinmajorelleprize.com\r\n";
         $candidateHeaders .= "X-Mailer: PHP/" . phpversion() . "\r\n";
         $candidateHeaders .= "X-Priority: 3\r\n";
@@ -586,7 +627,7 @@ try {
 
         $juryHeaders = "MIME-Version: 1.0\r\n";
         $juryHeaders .= "Content-Type: text/html; charset=UTF-8\r\n";
-        $juryHeaders .= "From: Système Prix Majorelle <no-reply@fondationjardinmajorelleprize.com>\r\n";
+        $juryHeaders .= "From: Système Prix Majorelle <contact@fondationjardinmajorelleprize.com>\r\n";
         $juryHeaders .= "Reply-To: " . $candidat['email'] . "\r\n";
         $juryHeaders .= "X-Mailer: PHP/" . phpversion() . "\r\n";
         $juryHeaders .= "X-Priority: 1\r\n"; // High priority for jury

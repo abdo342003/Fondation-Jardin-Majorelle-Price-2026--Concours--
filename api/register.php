@@ -28,7 +28,7 @@ $base_url = $domaine . "/api";
 
 // ✅ Emails
 $jury_email = "abdoraoui9@gmail.com"; // Email qui reçoit les notifs
-$from_email = "no-reply@fondationjardinmajorelleprize.com"; // ⚠️ Doit exister sur Hostinger !
+$from_email = "contact@fondationjardinmajorelleprize.com"; // ✅ Email actif Hostinger
 
 // 3. --- VERIFICATION METHODE ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -154,13 +154,25 @@ try {
     $headers .= "X-Mailer: PHP/" . phpversion();
 
     // A. Email au Candidat (Confirmation)
-    $subject_candidat = "Confirmation de pré-inscription - Prix Fondation Jardin Majorelle 2026";
+    $subject_candidat = "✅ Inscription reçue - Prix Fondation Jardin Majorelle 2026";
     $message_candidat = "Bonjour $prenom $nom,\n\n" .
-                        "Nous accusons réception de votre demande d'inscription au concours.\n" .
-                        "Votre numéro de dossier est le #$candidat_id.\n\n" .
-                        "Votre profil (Architecte CNOA n°$num_ordre) est en cours de vérification par notre comité technique.\n" .
-                        "Vous recevrez une notification dès que votre éligibilité sera validée.\n\n" .
-                        "Cordialement,\nLa Fondation Jardin Majorelle.";
+                        "Nous accusons réception de votre demande d'inscription au Prix Fondation Jardin Majorelle 2026.\n\n" .
+                        "--- INFORMATIONS DE VOTRE DOSSIER ---\n" .
+                        "Numéro de dossier : #$candidat_id\n" .
+                        "Architecte CNOA : n°$num_ordre\n" .
+                        "Email : $email\n\n" .
+                        "--- PROCHAINES ÉTAPES ---\n" .
+                        "1️⃣ Vérification de votre éligibilité par notre jury (48-72h)\n" .
+                        "2️⃣ Vous recevrez un EMAIL avec un LIEN UNIQUE pour déposer votre projet architectural\n" .
+                        "3️⃣ Vous aurez alors accès au formulaire de dépôt de projet\n\n" .
+                        "⚠️ IMPORTANT :\n" .
+                        "- Conservez cet email comme preuve de votre inscription\n" .
+                        "- Surveillez votre boîte de réception (et vos spams)\n" .
+                        "- Le lien de dépôt sera envoyé UNIQUEMENT après validation\n\n" .
+                        "Pour toute question : contact@fondationjardinmajorelleprize.com\n" .
+                        "Site web : https://fondationjardinmajorelleprize.com\n\n" .
+                        "Cordialement,\n" .
+                        "L'équipe du Prix Fondation Jardin Majorelle";
     
     @mail($email, $subject_candidat, $message_candidat, $headers);
 

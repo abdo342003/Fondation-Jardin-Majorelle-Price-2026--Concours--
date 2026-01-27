@@ -23,7 +23,7 @@ function sendEmailSafely($to, $subject, $htmlMessage, $adminBCC = null) {
         
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-        $headers .= "From: Prix Fondation Jardin Majorelle <no-reply@fondationjardinmajorelleprize.com>\r\n";
+        $headers .= "From: Prix Fondation Jardin Majorelle <contact@fondationjardinmajorelleprize.com>\r\n";
         $headers .= "Reply-To: contact@fondationjardinmajorelleprize.com\r\n";
         $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
         $headers .= "X-Priority: 3\r\n";
@@ -34,8 +34,9 @@ function sendEmailSafely($to, $subject, $htmlMessage, $adminBCC = null) {
         }
         
         set_time_limit(10); // Timeout protection
-        $result = @mail($to, $subject, $htmlMessage, $headers);
-        set_time_limit(300);
+// Zidna l-parametre l-kher "-f" bach Gmail y-ti9 f l-email
+    $result = @mail($to, $subject, $htmlMessage, $headers, "-fcontact@fondationjardinmajorelleprize.com");     
+       set_time_limit(300);
         
         if ($result) {
             error_log("Email: Successfully sent to $to");
@@ -74,7 +75,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                 $link_step2 = $domaine . "/?token=" . $token;
                 
                 // 5. Préparer l'email HTML d'acceptation
-                $subject = "Félicitations ! Vous êtes sélectionné(e) - Prix Fondation Jardin Majorelle 2026";
+                $subject = "🎉 Félicitations ! Candidature Approuvée - Prix Fondation Jardin Majorelle 2026";
                 
                 $htmlMessage = "
                 <!DOCTYPE html>
@@ -82,49 +83,94 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                 <head>
                     <meta charset='UTF-8'>
                     <style>
-                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-                        .container { max-width: 600px; margin: 0 auto; padding: 20px; background: #f9f9f9; }
-                        .header { background: #0055B8; color: white; padding: 20px; text-align: center; }
-                        .content { background: white; padding: 30px; margin-top: 20px; }
-                        .button { display: inline-block; padding: 15px 30px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; font-weight: bold; }
-                        .footer { text-align: center; margin-top: 30px; color: #777; font-size: 12px; }
+                        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.7; color: #2d3748; margin: 0; padding: 0; }
+                        .container { max-width: 600px; margin: 0 auto; background: #f7fafc; }
+                        .header { background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: white; padding: 40px 25px; text-align: center; }
+                        .header h1 { margin: 0; font-size: 32px; font-weight: 700; }
+                        .header p { margin: 12px 0 0 0; opacity: 0.95; font-size: 16px; }
+                        .badge { background: #fef3c7; color: #92400e; display: inline-block; padding: 10px 24px; border-radius: 25px; font-size: 14px; font-weight: 700; margin: 25px 0 15px 0; border: 2px solid #f59e0b; }
+                        .content { background: white; padding: 40px 35px; }
+                        .cta-box { background: linear-gradient(135deg, #1d4e89 0%, #2563eb 100%); border-radius: 12px; padding: 30px; text-align: center; margin: 30px 0; }
+                        .button { display: inline-block; padding: 18px 40px; background: #f7b538; color: #1a202c; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 16px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(247, 181, 56, 0.3); }
+                        .button:hover { background: #f59e0b; transform: translateY(-2px); }
+                        .warning-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; margin: 25px 0; border-radius: 6px; }
+                        .warning-box p { margin: 0; color: #92400e; font-size: 14px; }
+                        .steps { margin: 25px 0; }
+                        .step { display: flex; align-items: start; padding: 15px 0; }
+                        .step-num { background: #1d4e89; color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 18px; font-weight: 700; flex-shrink: 0; }
+                        .step-text { flex: 1; padding-top: 6px; }
+                        .deadline { background: #fee2e2; border: 2px solid #ef4444; border-radius: 8px; padding: 18px; margin: 25px 0; text-align: center; }
+                        .deadline p { margin: 0; color: #991b1b; font-weight: 600; }
+                        .footer { background: #1a202c; color: #cbd5e0; padding: 30px; text-align: center; font-size: 13px; }
+                        .footer a { color: #f7b538; text-decoration: none; }
+                        strong { color: #1d4e89; }
                     </style>
                 </head>
                 <body>
                     <div class='container'>
                         <div class='header'>
                             <h1>🎉 Félicitations !</h1>
+                            <p>Votre candidature a été approuvée</p>
                         </div>
                         <div class='content'>
-                            <p>Bonjour <strong>" . htmlspecialchars($candidat['prenom']) . " " . htmlspecialchars($candidat['nom']) . "</strong>,</p>
+                            <div class='badge'>✅ CANDIDATURE APPROUVÉE</div>
                             
-                            <p>Nous avons le plaisir de vous informer que votre candidature a été <strong>retenue</strong> par notre jury pour participer à la phase finale du <strong>Prix Fondation Jardin Majorelle 2026</strong>.</p>
+                            <p style='font-size: 17px;'>Bonjour <strong>" . htmlspecialchars($candidat['prenom']) . " " . htmlspecialchars($candidat['nom']) . "</strong>,</p>
                             
-                            <p>Vous êtes maintenant invité(e) à déposer votre projet architectural via votre lien personnel sécurisé :</p>
+                            <p>Nous avons le grand plaisir de vous informer que votre profil a été <strong>validé par notre jury</strong> pour participer à la phase finale du <strong>Prix Fondation Jardin Majorelle 2026</strong>.</p>
                             
-                            <div style='text-align: center;'>
-                                <a href='" . $link_step2 . "' class='button'>📁 ACCÉDER AU FORMULAIRE DE DÉPÔT</a>
+                            <p>Vous êtes maintenant invité(e) à déposer votre <strong>projet architectural complet</strong> via votre espace personnel sécurisé.</p>
+                            
+                            <div class='cta-box'>
+                                <p style='color: white; margin: 0 0 20px 0; font-size: 16px;'>Accédez au formulaire de dépôt de projet :</p>
+                                <a href='" . $link_step2 . "' class='button'>📁 DÉPOSER MON PROJET</a>
+                                <p style='color: rgba(255,255,255,0.8); font-size: 13px; margin: 20px 0 0 0;'>Cliquez sur le bouton ci-dessus pour commencer</p>
                             </div>
                             
-                            <p><strong>Important :</strong> Ce lien est unique et personnel. Ne le partagez avec personne.</p>
+                            <div class='steps'>
+                                <p style='font-weight: 700; font-size: 16px; margin-bottom: 15px; color: #1d4e89;'>📋 Documents à fournir :</p>
+                                <div class='step'>
+                                    <div class='step-num'>1</div>
+                                    <div class='step-text'><strong>Biographie professionnelle</strong> (PDF, max 2 Mo)<br><span style='color: #64748b; font-size: 14px;'>Votre parcours, réalisations, expertise</span></div>
+                                </div>
+                                <div class='step'>
+                                    <div class='step-num'>2</div>
+                                    <div class='step-text'><strong>Note d'intention architecturale</strong> (PDF, max 2 Mo)<br><span style='color: #64748b; font-size: 14px;'>Votre vision, approche conceptuelle</span></div>
+                                </div>
+                                <div class='step'>
+                                    <div class='step-num'>3</div>
+                                    <div class='step-text'><strong>Avant-Projet Sommaire (APS)</strong> (PDF, max 10 Mo)<br><span style='color: #64748b; font-size: 14px;'>Plans, coupes, élévations, rendus 3D</span></div>
+                                </div>
+                            </div>
                             
-                            <p>Nous vous souhaitons plein succès dans cette nouvelle étape !</p>
+                            <div class='deadline'>
+                                <p>⏰ <strong>Date limite de dépôt :</strong> 30 Mars 2026 à 23h59</p>
+                            </div>
                             
-                            <p>Cordialement,<br><strong>L'équipe du Prix Fondation Jardin Majorelle</strong></p>
+                            <div class='warning-box'>
+                                <p><strong>⚠️ Sécurité & Confidentialité</strong></p>
+                                <p style='margin-top: 10px;'>• Ce lien est <strong>unique et personnel</strong> - Ne le partagez avec personne<br>• Il expire après utilisation ou à la date limite<br>• En cas de problème, contactez-nous immédiatement</p>
+                            </div>
+                            
+                            <p style='margin-top: 35px; font-size: 16px;'>Nous vous souhaitons plein succès dans cette étape décisive !</p>
+                            
+                            <p style='margin-top: 30px; padding-top: 25px; border-top: 1px solid #e2e8f0;'>Avec nos meilleures salutations,<br><strong>L'équipe du Prix Fondation Jardin Majorelle</strong></p>
                         </div>
                         <div class='footer'>
-                            <p>© 2026 Fondation Jardin Majorelle - Tous droits réservés</p>
+                            <p style='margin: 0 0 10px 0;'><strong>Fondation Jardin Majorelle</strong></p>
+                            <p style='margin: 0;'>📧 contact@fondationjardinmajorelleprize.com | 🌐 <a href='https://fondationjardinmajorelleprize.com'>fondationjardinmajorelleprize.com</a></p>
+                            <p style='margin: 20px 0 0 0; opacity: 0.7;'>© 2026 Fondation Jardin Majorelle - Tous droits réservés</p>
                         </div>
                     </div>
                 </body>
                 </html>
                 ";
 
-                // 6. Envoi de l'email avec BCC admin
-                $emailSent = sendEmailSafely($candidat['email'], $subject, $htmlMessage, $adminEmail);
+                // 6. Envoi de l'email (seulement au candidat)
+                $emailSent = sendEmailSafely($candidat['email'], $subject, $htmlMessage);
                 
                 if ($emailSent) {
-                    $message = "✅ Candidat VALIDÉ avec succès ! Email d'invitation envoyé à " . htmlspecialchars($candidat['email']) . " (copie admin envoyée)";
+                    $message = "✅ Candidat VALIDÉ avec succès ! Email d'invitation envoyé à " . htmlspecialchars($candidat['email']);
                     $messageType = "success";
                     error_log("Validation: Candidate #{$candidat_id} approved and notified");
                 } else {
@@ -157,44 +203,63 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                 <head>
                     <meta charset='UTF-8'>
                     <style>
-                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-                        .container { max-width: 600px; margin: 0 auto; padding: 20px; background: #f9f9f9; }
-                        .header { background: #0055B8; color: white; padding: 20px; text-align: center; }
-                        .content { background: white; padding: 30px; margin-top: 20px; }
-                        .footer { text-align: center; margin-top: 30px; color: #777; font-size: 12px; }
+                        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.8; color: #2d3748; margin: 0; padding: 0; }
+                        .container { max-width: 600px; margin: 0 auto; background: #f7fafc; }
+                        .header { background: linear-gradient(135deg, #1d4e89 0%, #2563eb 100%); color: white; padding: 35px 25px; text-align: center; }
+                        .header h1 { margin: 0; font-size: 26px; font-weight: 700; }
+                        .header p { margin: 12px 0 0 0; opacity: 0.9; font-size: 15px; }
+                        .content { background: white; padding: 40px 35px; }
+                        .message-box { background: #f0f9ff; border-left: 4px solid #2563eb; padding: 22px; margin: 25px 0; border-radius: 6px; }
+                        .message-box p { margin: 0; color: #1e40af; line-height: 1.8; }
+                        .encouragement { background: #fef3c7; border-radius: 8px; padding: 22px; margin: 25px 0; }
+                        .encouragement h3 { margin: 0 0 12px 0; color: #92400e; font-size: 16px; }
+                        .encouragement p { margin: 0; color: #78350f; line-height: 1.8; }
+                        .footer { background: #1a202c; color: #cbd5e0; padding: 30px; text-align: center; font-size: 13px; }
+                        .footer a { color: #f7b538; text-decoration: none; }
+                        strong { color: #1d4e89; }
                     </style>
                 </head>
                 <body>
                     <div class='container'>
                         <div class='header'>
                             <h1>Prix Fondation Jardin Majorelle</h1>
+                            <p>Concours National d'Architecture 2026</p>
                         </div>
                         <div class='content'>
-                            <p>Bonjour <strong>" . htmlspecialchars($candidat['prenom']) . " " . htmlspecialchars($candidat['nom']) . "</strong>,</p>
+                            <p style='font-size: 16px;'>Bonjour <strong>" . htmlspecialchars($candidat['prenom']) . " " . htmlspecialchars($candidat['nom']) . "</strong>,</p>
                             
-                            <p>Nous vous remercions sincèrement pour l'intérêt que vous portez au <strong>Prix Fondation Jardin Majorelle 2026</strong> et pour le temps consacré à votre candidature.</p>
+                            <p>Nous vous remercions sincèrement pour l'intérêt que vous portez au <strong>Prix Fondation Jardin Majorelle 2026</strong> et pour le temps et l'attention que vous avez consacrés à votre candidature.</p>
                             
-                            <p>Après une étude attentive de votre dossier, nous avons le regret de vous informer que nous ne pouvons pas donner une suite favorable à votre candidature cette année.</p>
+                            <div class='message-box'>
+                                <p>Après une étude attentive de votre dossier par notre comité de sélection, nous avons le regret de vous informer que nous ne pouvons pas donner une suite favorable à votre candidature pour cette édition.</p>
+                            </div>
                             
-                            <p>Cette décision ne reflète en aucun cas un jugement sur vos compétences professionnelles. Le nombre élevé de candidatures reçues nous contraint à des choix difficiles.</p>
+                            <p>Cette année, nous avons reçu un nombre exceptionnellement élevé de candidatures de grande qualité, ce qui nous a contraints à faire des choix difficiles. <strong>Cette décision ne reflète en aucun cas un jugement sur vos compétences professionnelles ou votre potentiel créatif.</strong></p>
                             
-                            <p>Nous vous encourageons vivement à postuler de nouveau lors des prochaines éditions et vous souhaitons beaucoup de succès dans vos projets futurs.</p>
+                            <div class='encouragement'>
+                                <h3>💡 Pour les prochaines éditions</h3>
+                                <p>Nous vous encourageons <strong>vivement</strong> à postuler de nouveau lors des prochaines éditions du prix. Chaque année apporte de nouvelles opportunités, et nous serions ravis de reconsidérer votre candidature à l'avenir.</p>
+                            </div>
                             
-                            <p>Avec nos salutations distinguées,<br><strong>L'équipe du Prix Fondation Jardin Majorelle</strong></p>
+                            <p>Nous vous souhaitons beaucoup de succès dans vos projets architecturaux futurs et restons convaincus de votre contribution précieuse au domaine de l'architecture.</p>
+                            
+                            <p style='margin-top: 35px; padding-top: 25px; border-top: 1px solid #e2e8f0;'>Avec nos salutations distinguées et nos meilleurs vœux,<br><strong>L'équipe du Prix Fondation Jardin Majorelle</strong></p>
                         </div>
                         <div class='footer'>
-                            <p>© 2026 Fondation Jardin Majorelle - Tous droits réservés</p>
+                            <p style='margin: 0 0 10px 0;'><strong>Fondation Jardin Majorelle</strong></p>
+                            <p style='margin: 0;'>📧 contact@fondationjardinmajorelleprize.com | 🌐 <a href='https://fondationjardinmajorelleprize.com'>fondationjardinmajorelleprize.com</a></p>
+                            <p style='margin: 20px 0 0 0; opacity: 0.7;'>© 2026 Fondation Jardin Majorelle - Tous droits réservés</p>
                         </div>
                     </div>
                 </body>
                 </html>
                 ";
 
-                // 4. Envoi de l'email avec BCC admin
-                $emailSent = sendEmailSafely($candidat['email'], $subject, $htmlMessage, $adminEmail);
+                // 4. Envoi de l'email (seulement au candidat)
+                $emailSent = sendEmailSafely($candidat['email'], $subject, $htmlMessage);
                 
                 if ($emailSent) {
-                    $message = "❌ Candidat REFUSÉ. Email de notification envoyé (copie admin envoyée).";
+                    $message = "❌ Candidat REFUSÉ. Email de notification envoyé.";
                     $messageType = "error";
                     error_log("Rejection: Candidate #{$candidat_id} rejected and notified");
                 } else {
@@ -764,6 +829,12 @@ if ($id) {
 
                     <?php if ($candidat['status'] === 'approved' && $candidat['token_step2']): ?>
                         <div class="token-box">
+                            <p style="font-size: 12px; color: #6b7280; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                                <svg style="width: 16px; height: 16px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span>Email envoyé. Lien de secours ci-dessous :</span>
+                            </p>
                             <div class="token-label">
                                 <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                     <path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

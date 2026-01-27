@@ -126,8 +126,8 @@ export default function Step2({ token }) {
     }
 
     const formData = new FormData();
-    //formData.append('token', token);
-    formData.append('token', token || "TEST_1234");
+    formData.append('token', token);
+    //formData.append('token', token || "TEST_1234");
     formData.append('bio_file', files.bio);
     formData.append('presentation_file', files.note);
     formData.append('aps_file', files.aps);
@@ -413,15 +413,15 @@ export default function Step2({ token }) {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <a 
-              href="/" 
+            <button 
+              onClick={() => window.location.href = '/'}
               className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary-700 to-primary-900 text-white font-bold px-8 py-4 rounded-xl hover:from-primary-800 hover:to-primary-950 transition-all shadow-lg hover:shadow-xl"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
               </svg>
               Retour à l&apos;accueil
-            </a>
+            </button>
             
             <button 
               onClick={() => window.print()}

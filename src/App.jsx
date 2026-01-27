@@ -200,9 +200,9 @@ function App() {
 
     // Validate Moroccan phone number if +212 is selected
     if (formData.phone_code === '+212') {
-      const phoneRegex = /^(05|06|07)\d{8}$/;
+      const phoneRegex = /^(0?[567])\d{8}$/;
       if (!phoneRegex.test(formData.phone_number)) {
-        setError("Numéro de téléphone marocain invalide. Doit commencer par 05, 06 ou 07 et contenir 10 chiffres. / Invalid Moroccan phone number. Must start with 05, 06, or 07 and contain 10 digits.");
+        setError("Numéro de téléphone marocain invalide. Format accepté: 9 chiffres (6XXXXXXXX) ou 10 chiffres (06XXXXXXXX). / Invalid Moroccan phone number. Accepted format: 9 digits (6XXXXXXXX) or 10 digits (06XXXXXXXX).");
         setLoading(false);
         // Smooth scroll to error message
         if (errorMessageRef.current) {
@@ -657,8 +657,6 @@ function App() {
                                 <div className="flex">
                                     <select name="phone_code" onChange={handleChange} className="px-4 py-4 border-2 border-r-0 border-sand-200 rounded-l-xl bg-sand-50 text-sm font-bold text-primary-700 outline-none focus:border-primary-500">
                                         <option value="+212">🇲🇦 +212</option>
-                                        <option value="+33">🇫🇷 +33</option>
-                                        <option value="other">Autre</option>
                                     </select>
                                     <input required type="tel" name="phone_number" onChange={handleChange} className={`${inputClass} rounded-l-none border-l-0`} />
                                 </div>
