@@ -1,6 +1,11 @@
 <?php
-// api/admin_review.php - ENHANCED VERSION 2.2 - Fault-Tolerant Email System
-// ✅ PRODUCTION: Error logging to file
+// api/admin_review.php - PRODUCTION v2.0
+// Prix Fondation Jardin Majorelle 2026 - Jury Review Panel
+
+// ═══════════════════════════════════════════════════════════════════
+// 🔒 PRODUCTION SETTINGS
+// ═══════════════════════════════════════════════════════════════════
+
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(E_ALL);
@@ -12,69 +17,32 @@ require 'db_connect.php';
 $message = "";
 $messageType = "";
 
-// ✅ CONFIGURATION
-$domaine = "https://fondationjardinmajorelleprize.com";
-$adminEmail = "abdoraoui9@gmail.com"; // BCC for admin tracking
+// ═══════════════════════════════════════════════════════════════════
+// 🎯 PROCESS ACTIONS (VALIDATE / REJECT)
+// ═══════════════════════════════════════════════════════════════════
 
-// ✅ ENHANCED EMAIL FUNCTION with fault tolerance
-function sendEmailSafely($to, $subject, $htmlMessage, $adminBCC = null) {
-    try {
-        error_log("Email: Attempting to send to $to - Subject: $subject");
-        
-        $headers = "MIME-Version: 1.0\r\n";
-        $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-        $headers .= "From: Prix Fondation Jardin Majorelle <contact@fondationjardinmajorelleprize.com>\r\n";
-        $headers .= "Reply-To: contact@fondationjardinmajorelleprize.com\r\n";
-        $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
-        $headers .= "X-Priority: 3\r\n";
-        
-        // ✅ BCC admin for tracking
-        if ($adminBCC) {
-            $headers .= "Bcc: $adminBCC\r\n";
-        }
-        
-        set_time_limit(10); // Timeout protection
-// Zidna l-parametre l-kher "-f" bach Gmail y-ti9 f l-email
-    $result = @mail($to, $subject, $htmlMessage, $headers, "-fcontact@fondationjardinmajorelleprize.com");     
-       set_time_limit(300);
-        
-        if ($result) {
-            error_log("Email: Successfully sent to $to");
-            return true;
-        } else {
-            error_log("Email: WARNING - mail() returned false for $to");
-            return false;
-        }
-    } catch (Throwable $e) {
-        error_log("Email: EXCEPTION - " . $e->getMessage());
-        return false;
-    }
-}
-
-// TRAITEMENT DES ACTIONS (VALIDER / REFUSER) VIA GET PARAMETERS
 if (isset($_GET['action']) && isset($_GET['id'])) {
     $candidat_id = intval($_GET['id']);
     $action = $_GET['action'];
 
     try {
         if ($action === 'valider') {
-            // 1. Générer un token unique sécurisé pour l'étape 2
-            $token = bin2hex(random_bytes(32));
+            // Generate secure token for Step 2
+            $token = generateSecureToken();
             
-            // 2. Mettre à jour la base de données
+            // Update database
             $stmt = $pdo->prepare("UPDATE candidats SET status = 'approved', token_step2 = ? WHERE id = ?");
             $stmt->execute([$token, $candidat_id]);
 
-            // 3. Récupérer les informations du candidat
+            // Get candidate info
             $stmt = $pdo->prepare("SELECT nom, prenom, email FROM candidats WHERE id = ?");
             $stmt->execute([$candidat_id]);
             $candidat = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($candidat) {
-                // 4. Préparer le lien unique pour l'étape 2
-                $link_step2 = $domaine . "/?token=" . $token;
+                $link_step2 = SITE_URL . "/?token=" . $token;
                 
-                // 5. Préparer l'email HTML d'acceptation
+                // Approval email
                 $subject = "🎉 Félicitations ! Candidature Approuvée - Prix Fondation Jardin Majorelle 2026";
                 
                 $htmlMessage = "
@@ -166,17 +134,17 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                 </html>
                 ";
 
-                // 6. Envoi de l'email (seulement au candidat)
-                $emailSent = sendEmailSafely($candidat['email'], $subject, $htmlMessage);
+                // Send email to candidate only
+                $emailSent = sendEmail($candidat['email'], $subject, $htmlMessage);
                 
                 if ($emailSent) {
                     $message = "✅ Candidat VALIDÉ avec succès ! Email d'invitation envoyé à " . htmlspecialchars($candidat['email']);
                     $messageType = "success";
-                    error_log("Validation: Candidate #{$candidat_id} approved and notified");
+                    error_log("APPROVED: Candidate #{$candidat_id} - " . $candidat['email']);
                 } else {
                     $message = "⚠️ Candidat validé mais l'email n'a pas pu être envoyé. Token généré : " . substr($token, 0, 20) . "...";
                     $messageType = "warning";
-                    error_log("Validation: Candidate #{$candidat_id} approved but EMAIL FAILED. Token: $token");
+                    error_log("APPROVED (EMAIL FAILED): Candidate #{$candidat_id} - Token: $token");
                 }
             } else {
                 $message = "❌ Erreur : Candidat introuvable.";
@@ -184,17 +152,17 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
             }
 
         } elseif ($action === 'refuser') {
-            // 1. Mettre à jour le statut à 'rejected'
+            // Update status to rejected
             $stmt = $pdo->prepare("UPDATE candidats SET status = 'rejected' WHERE id = ?");
             $stmt->execute([$candidat_id]);
 
-            // 2. Récupérer les informations du candidat pour l'email
+            // Get candidate info
             $stmt = $pdo->prepare("SELECT nom, prenom, email FROM candidats WHERE id = ?");
             $stmt->execute([$candidat_id]);
             $candidat = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($candidat) {
-                // 3. Préparer l'email HTML de refus poli
+                // Rejection email
                 $subject = "Suite de votre candidature - Prix Fondation Jardin Majorelle 2026";
                 
                 $htmlMessage = "
@@ -255,17 +223,17 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                 </html>
                 ";
 
-                // 4. Envoi de l'email (seulement au candidat)
-                $emailSent = sendEmailSafely($candidat['email'], $subject, $htmlMessage);
+                // Send rejection email
+                $emailSent = sendEmail($candidat['email'], $subject, $htmlMessage);
                 
                 if ($emailSent) {
                     $message = "❌ Candidat REFUSÉ. Email de notification envoyé.";
                     $messageType = "error";
-                    error_log("Rejection: Candidate #{$candidat_id} rejected and notified");
+                    error_log("REJECTED: Candidate #{$candidat_id} - " . $candidat['email']);
                 } else {
                     $message = "❌ Candidat refusé mais l'email n'a pas pu être envoyé.";
                     $messageType = "error";
-                    error_log("Rejection: Candidate #{$candidat_id} rejected but EMAIL FAILED");
+                    error_log("REJECTED (EMAIL FAILED): Candidate #{$candidat_id}");
                 }
             }
         }
@@ -841,8 +809,8 @@ if ($id) {
                                 </svg>
                                 Lien d'upload généré
                             </div>
-                            <a href="<?php echo $domaine; ?>/?token=<?php echo htmlspecialchars($candidat['token_step2']); ?>" target="_blank" class="token-link">
-                                <?php echo $domaine; ?>/?token=<?php echo substr($candidat['token_step2'], 0, 15); ?>...
+                            <a href="<?php echo SITE_URL; ?>/?token=<?php echo htmlspecialchars($candidat['token_step2']); ?>" target="_blank" class="token-link">
+                                <?php echo SITE_URL; ?>/?token=<?php echo substr($candidat['token_step2'], 0, 15); ?>...
                             </a>
                         </div>
                     <?php endif; ?>

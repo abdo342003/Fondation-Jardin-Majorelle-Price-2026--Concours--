@@ -1,216 +1,247 @@
 <?php
-// api/register.php - VERSION PRODUCTION FINALE
-// Domaine : fondationjardinmajorelleprize.com
+// api/register.php - PRODUCTION v2.0
+// Prix Fondation Jardin Majorelle 2026 - Step 1 Registration
 
-// 1. --- SECURITY HEADERS ---
-header("Access-Control-Allow-Origin: https://fondationjardinmajorelleprize.com"); 
+// ═══════════════════════════════════════════════════════════════════
+// 🔒 SECURITY HEADERS
+// ═══════════════════════════════════════════════════════════════════
+
+header("Access-Control-Allow-Origin: https://fondationjardinmajorelleprize.com");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: DENY');
 
-// Désactiver l'affichage des erreurs pour la sécurité en Prod
+// Production: Hide errors from users
 ini_set('display_errors', 0);
-error_reporting(0);
+ini_set('display_startup_errors', 0);
+error_reporting(E_ALL);
+ini_set('log_errors', 1);
+ini_set('error_log', '../error_log.txt');
 
-// Gestion du Preflight Request (OPTIONS)
+// Handle preflight
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
 }
 
+// Load configuration & database
 require 'db_connect.php';
 
-// 2. --- CONFIGURATION ---
+// ═══════════════════════════════════════════════════════════════════
+// 🚫 METHOD CHECK
+// ═══════════════════════════════════════════════════════════════════
 
-// ✅ Production Domain and URLs
-$domaine = "https://fondationjardinmajorelleprize.com"; 
-$base_url = $domaine . "/api"; 
-
-// ✅ Emails
-$jury_email = "abdoraoui9@gmail.com"; // Email qui reçoit les notifs
-$from_email = "contact@fondationjardinmajorelleprize.com"; // ✅ Email actif Hostinger
-
-// 3. --- VERIFICATION METHODE ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(["success" => false, "message" => "Méthode non autorisée"]);
     exit;
 }
 
-// 4. --- RECUPERATION & NETTOYAGE DES DONNÉES ---
-$nom            = htmlspecialchars(trim($_POST['nom'] ?? ''));
-$prenom         = htmlspecialchars(trim($_POST['prenom'] ?? ''));
+// ═══════════════════════════════════════════════════════════════════
+// 📝 INPUT SANITIZATION
+// ═══════════════════════════════════════════════════════════════════
+
+$nom            = sanitizeInput($_POST['nom'] ?? '');
+$prenom         = sanitizeInput($_POST['prenom'] ?? '');
 $email          = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
 $date_naissance = $_POST['date_naissance'] ?? '';
-$adresse        = htmlspecialchars(trim($_POST['adresse'] ?? ''));
-$phone_code     = $_POST['phone_code'] ?? '+212';
-$phone_number   = htmlspecialchars(trim($_POST['phone_number'] ?? ''));
-$ecole_archi    = htmlspecialchars(trim($_POST['ecole_archi'] ?? ''));
+$adresse        = sanitizeInput($_POST['adresse'] ?? '');
+$phone_code     = sanitizeInput($_POST['phone_code'] ?? '+212');
+$phone_number   = sanitizeInput($_POST['phone_number'] ?? '');
+$ecole_archi    = sanitizeInput($_POST['ecole_archi'] ?? '');
 $annee_obtention= intval($_POST['annee_obtention'] ?? 0);
-$num_ordre      = htmlspecialchars(trim($_POST['num_ordre'] ?? '')); // CNOA
+$num_ordre      = sanitizeInput($_POST['num_ordre'] ?? '');
 
-// 5. --- VALIDATION DES CHAMPS ---
+// ═══════════════════════════════════════════════════════════════════
+// ✅ VALIDATION
+// ═══════════════════════════════════════════════════════════════════
+
 if (empty($nom) || empty($prenom) || empty($email) || empty($num_ordre) || empty($ecole_archi) || empty($date_naissance)) {
     echo json_encode(["success" => false, "message" => "Champs obligatoires manquants."]);
     exit;
 }
 
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+if (!validateEmail($email)) {
     echo json_encode(["success" => false, "message" => "Format d'email invalide."]);
     exit;
 }
 
-// Validation Fichiers (CIN)
 if (!isset($_FILES['cin_recto']) || !isset($_FILES['cin_verso'])) {
     echo json_encode(["success" => false, "message" => "Les fichiers CIN (Recto et Verso) sont obligatoires."]);
     exit;
 }
 
-// 6. --- FONCTION D'UPLOAD SÉCURISÉE ---
-// Le dossier de stockage (hors api, dans uploads/cin)
-$upload_dir = '../uploads/cin/'; 
+// ═══════════════════════════════════════════════════════════════════
+// 📁 FILE UPLOAD FUNCTION
+// ═══════════════════════════════════════════════════════════════════
 
+$upload_dir = '../uploads/cin/';
 if (!is_dir($upload_dir)) {
-    mkdir($upload_dir, 0755, true); 
+    mkdir($upload_dir, 0755, true);
 }
 
-function uploadFile($file, $prefix, $dir) {
+function uploadCINFile($file, $prefix, $dir) {
     $allowed = ['jpg', 'jpeg', 'png', 'pdf', 'webp'];
     $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     
-    // Vérifications
     if (!in_array($ext, $allowed)) {
         throw new Exception("Format de fichier invalide ($ext). Utilisez PDF, JPG ou PNG.");
     }
-    if ($file['size'] > 5 * 1024 * 1024) { // 5 Mo Max
+    if ($file['size'] > MAX_CIN_SIZE) {
         throw new Exception("Le fichier est trop volumineux (> 5Mo).");
     }
     if ($file['error'] !== UPLOAD_ERR_OK) {
         throw new Exception("Erreur lors du transfert du fichier.");
     }
 
-    // Renommage sécurisé (Ex: RECTO_65a4b3c2d1.pdf)
-    $filename = $prefix . '_' . uniqid() . '.' . $ext;
+    $filename = $prefix . '_' . uniqid() . '_' . time() . '.' . $ext;
     $dest = $dir . $filename;
 
     if (!move_uploaded_file($file['tmp_name'], $dest)) {
         throw new Exception("Erreur lors de l'enregistrement sur le serveur.");
     }
-    return $dest; // On retourne le chemin relatif
+    return $dest;
 }
 
-// 7. --- TRAITEMENT PRINCIPAL (BDD & EMAILS) ---
+// ═══════════════════════════════════════════════════════════════════
+// 🚀 MAIN PROCESSING
+// ═══════════════════════════════════════════════════════════════════
+
 try {
-    // ✅ SECURITY CHECK: Prevent duplicate registrations
-    $check_sql = "SELECT id FROM candidats WHERE email = ? OR num_ordre = ? LIMIT 1";
-    $check_stmt = $pdo->prepare($check_sql);
+    // Check for duplicate registrations
+    $check_stmt = $pdo->prepare("SELECT id FROM candidats WHERE email = ? OR num_ordre = ? LIMIT 1");
     $check_stmt->execute([$email, $num_ordre]);
     
     if ($check_stmt->fetch()) {
-        echo json_encode(["success" => false, "message" => "Erreur: Ce numéro CNOA ou cet email est déjà utilisé."]);
+        echo json_encode(["success" => false, "message" => "Ce numéro CNOA ou cet email est déjà utilisé."]);
         exit;
     }
 
-    // Démarrer la transaction (Tout ou rien)
+    // Start transaction
     $pdo->beginTransaction();
 
-    // A. Upload des fichiers
-    $path_recto = uploadFile($_FILES['cin_recto'], 'RECTO', $upload_dir);
-    $path_verso = uploadFile($_FILES['cin_verso'], 'VERSO', $upload_dir);
+    // Upload files
+    $path_recto = uploadCINFile($_FILES['cin_recto'], 'RECTO', $upload_dir);
+    $path_verso = uploadCINFile($_FILES['cin_verso'], 'VERSO', $upload_dir);
 
-    // B. Insertion dans la base de données
+    // Insert into database
     $sql = "INSERT INTO candidats 
             (nom, prenom, date_naissance, cin_recto, cin_verso, adresse, email, phone_code, phone_number, ecole_archi, annee_obtention, num_ordre, status) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')";
     
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
-        $nom, 
-        $prenom, 
-        $date_naissance, 
-        $path_recto, 
-        $path_verso, 
-        $adresse, 
-        $email, 
-        $phone_code, 
-        $phone_number, 
-        $ecole_archi, 
-        $annee_obtention, 
-        $num_ordre
+        $nom, $prenom, $date_naissance, $path_recto, $path_verso, 
+        $adresse, $email, $phone_code, $phone_number, 
+        $ecole_archi, $annee_obtention, $num_ordre
     ]);
 
-    // Récupérer l'ID du candidat créé
     $candidat_id = $pdo->lastInsertId();
-
-    // Valider la transaction SQL
     $pdo->commit();
-
-    // 8. --- ENVOI DES EMAILS ---
     
-    $headers = "From: " . $from_email . "\r\n";
-    $headers .= "Reply-To: " . $from_email . "\r\n";
-    $headers .= "MIME-Version: 1.0\r\n";
-    $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
-    $headers .= "X-Mailer: PHP/" . phpversion();
+    error_log("NEW REGISTRATION: ID=$candidat_id | $prenom $nom | $email");
 
-    // A. Email au Candidat (Confirmation)
-    $subject_candidat = "✅ Inscription reçue - Prix Fondation Jardin Majorelle 2026";
-    $message_candidat = "Bonjour $prenom $nom,\n\n" .
-                        "Nous accusons réception de votre demande d'inscription au Prix Fondation Jardin Majorelle 2026.\n\n" .
-                        "--- INFORMATIONS DE VOTRE DOSSIER ---\n" .
-                        "Numéro de dossier : #$candidat_id\n" .
-                        "Architecte CNOA : n°$num_ordre\n" .
-                        "Email : $email\n\n" .
-                        "--- PROCHAINES ÉTAPES ---\n" .
-                        "1️⃣ Vérification de votre éligibilité par notre jury (48-72h)\n" .
-                        "2️⃣ Vous recevrez un EMAIL avec un LIEN UNIQUE pour déposer votre projet architectural\n" .
-                        "3️⃣ Vous aurez alors accès au formulaire de dépôt de projet\n\n" .
-                        "⚠️ IMPORTANT :\n" .
-                        "- Conservez cet email comme preuve de votre inscription\n" .
-                        "- Surveillez votre boîte de réception (et vos spams)\n" .
-                        "- Le lien de dépôt sera envoyé UNIQUEMENT après validation\n\n" .
-                        "Pour toute question : contact@fondationjardinmajorelleprize.com\n" .
-                        "Site web : https://fondationjardinmajorelleprize.com\n\n" .
-                        "Cordialement,\n" .
-                        "L'équipe du Prix Fondation Jardin Majorelle";
+    // ═══════════════════════════════════════════════════════════════════
+    // 📧 SEND EMAILS (Non-blocking)
+    // ═══════════════════════════════════════════════════════════════════
     
-    @mail($email, $subject_candidat, $message_candidat, $headers);
-
-    // B. Email au JURY (Notification avec lien de validation)
-    $validation_link = $base_url . "/admin_review.php?id=" . $candidat_id;
+    // Email to Candidate
+    $candidateSubject = "✅ Inscription reçue - Prix Fondation Jardin Majorelle 2026";
+    $candidateBody = "
+    <!DOCTYPE html>
+    <html><head><meta charset='UTF-8'></head>
+    <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
+        <div style='max-width: 600px; margin: 0 auto; padding: 20px;'>
+            <div style='background: linear-gradient(135deg, #1d4e89, #2563eb); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;'>
+                <h1 style='margin: 0;'>✅ Inscription Reçue</h1>
+                <p style='margin: 10px 0 0 0; opacity: 0.9;'>Prix Fondation Jardin Majorelle 2026</p>
+            </div>
+            <div style='background: white; padding: 30px; border: 1px solid #e5e7eb; border-top: none;'>
+                <p>Bonjour <strong>$prenom $nom</strong>,</p>
+                <p>Nous accusons réception de votre demande d'inscription.</p>
+                
+                <div style='background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;'>
+                    <h3 style='margin-top: 0; color: #1d4e89;'>📋 Votre Dossier</h3>
+                    <p><strong>N° Dossier:</strong> #$candidat_id<br>
+                    <strong>CNOA:</strong> $num_ordre<br>
+                    <strong>Email:</strong> $email</p>
+                </div>
+                
+                <div style='background: #fef3c7; padding: 20px; border-radius: 8px; border-left: 4px solid #f59e0b;'>
+                    <h3 style='margin-top: 0; color: #92400e;'>⏳ Prochaines Étapes</h3>
+                    <ol style='margin: 0; padding-left: 20px;'>
+                        <li>Vérification de votre éligibilité (48-72h)</li>
+                        <li>Email avec lien unique pour déposer votre projet</li>
+                        <li>Accès au formulaire de dépôt</li>
+                    </ol>
+                </div>
+                
+                <p style='margin-top: 25px;'>Surveillez votre boîte de réception (et vos spams).</p>
+                <p>Cordialement,<br><strong>L'équipe du Prix Fondation Jardin Majorelle</strong></p>
+            </div>
+            <div style='background: #1a202c; color: #a0aec0; padding: 20px; text-align: center; border-radius: 0 0 10px 10px; font-size: 12px;'>
+                <p style='margin: 0;'>📧 contact@fondationjardinmajorelleprize.com</p>
+                <p style='margin: 5px 0 0 0;'>🌐 fondationjardinmajorelleprize.com</p>
+            </div>
+        </div>
+    </body></html>";
     
-    $subject_jury = "[JURY] Nouvelle Candidature : $prenom $nom";
-    $message_jury = "Un nouveau candidat vient de s'inscrire.\n\n" .
-                    "--- Détails ---\n" .
-                    "Nom : $nom $prenom\n" .
-                    "École : $ecole_archi ($annee_obtention)\n" .
-                    "CNOA : $num_ordre\n\n" .
-                    "--- Action Requise ---\n" .
-                    "Veuillez cliquer sur ce lien pour vérifier la CIN et valider l'éligibilité :\n" .
-                    $validation_link;
+    sendEmail($email, $candidateSubject, $candidateBody);
 
-    @mail($jury_email, $subject_jury, $message_jury, $headers);
+    // Email to Jury
+    $validation_link = API_URL . "/admin_review.php?id=" . $candidat_id;
+    
+    $jurySubject = "🆕 [JURY] Nouvelle Candidature #$candidat_id - $prenom $nom";
+    $juryBody = "
+    <!DOCTYPE html>
+    <html><head><meta charset='UTF-8'></head>
+    <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
+        <div style='max-width: 600px; margin: 0 auto; padding: 20px;'>
+            <div style='background: #f59e0b; color: #1a202c; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;'>
+                <h1 style='margin: 0;'>🆕 Nouvelle Candidature</h1>
+            </div>
+            <div style='background: white; padding: 30px; border: 1px solid #e5e7eb;'>
+                <h2 style='color: #1d4e89; margin-top: 0;'>$prenom $nom</h2>
+                <table style='width: 100%; border-collapse: collapse;'>
+                    <tr><td style='padding: 8px 0;'><strong>Dossier:</strong></td><td>#$candidat_id</td></tr>
+                    <tr><td style='padding: 8px 0;'><strong>Email:</strong></td><td>$email</td></tr>
+                    <tr><td style='padding: 8px 0;'><strong>École:</strong></td><td>$ecole_archi ($annee_obtention)</td></tr>
+                    <tr><td style='padding: 8px 0;'><strong>CNOA:</strong></td><td>$num_ordre</td></tr>
+                </table>
+                
+                <div style='text-align: center; margin: 30px 0;'>
+                    <a href='$validation_link' style='background: #10b981; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;'>
+                        ✅ EXAMINER LE DOSSIER
+                    </a>
+                </div>
+            </div>
+        </div>
+    </body></html>";
+    
+    sendEmail(ADMIN_EMAIL, $jurySubject, $juryBody, true);
 
-    // 9. --- RÉPONSE FINAL AU FRONTEND ---
+    // ═══════════════════════════════════════════════════════════════════
+    // ✅ SUCCESS RESPONSE
+    // ═══════════════════════════════════════════════════════════════════
+    
     echo json_encode([
         "success" => true, 
-        "message" => "Inscription réussie. Vérifiez vos emails."
+        "message" => "Inscription réussie ! Vérifiez vos emails."
     ]);
 
 } catch (Exception $e) {
-    // En cas d'erreur, on annule tout ce qui a été fait dans la BDD
     if ($pdo->inTransaction()) {
         $pdo->rollBack();
     }
     
-    // ✅ PRODUCTION: Log error to file for debugging (hidden from user)
-    error_log("Registration Error: " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine());
+    error_log("REGISTRATION ERROR: " . $e->getMessage() . " | File: " . $e->getFile() . " | Line: " . $e->getLine());
     
-    // On renvoie une erreur 500
     http_response_code(500);
     echo json_encode([
         "success" => false, 
-        "message" => "Erreur lors du traitement de votre demande. Veuillez réessayer plus tard."
+        "message" => "Erreur lors du traitement. Veuillez réessayer."
     ]);
 }
 ?>

@@ -1,0 +1,46 @@
+# ═══════════════════════════════════════════════════════════════════
+# 🔒 API SECURITY - Production Ready
+# Prix Fondation Jardin Majorelle 2026
+# ═══════════════════════════════════════════════════════════════════
+
+# Prevent directory listing
+Options -Indexes
+
+# Protect sensitive files
+<FilesMatch "^(db_connect\.php|\.htaccess|\.htpasswd)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# PHP settings for uploads
+<IfModule mod_php7.c>
+    php_value upload_max_filesize 15M
+    php_value post_max_size 20M
+    php_value max_execution_time 120
+    php_value max_input_time 120
+</IfModule>
+
+<IfModule mod_php8.c>
+    php_value upload_max_filesize 15M
+    php_value post_max_size 20M
+    php_value max_execution_time 120
+    php_value max_input_time 120
+</IfModule>
+
+# Rate limiting (if mod_evasive is available)
+<IfModule mod_evasive24.c>
+    DOSHashTableSize 3097
+    DOSPageCount 5
+    DOSSiteCount 100
+    DOSPageInterval 1
+    DOSSiteInterval 1
+    DOSBlockingPeriod 60
+</IfModule>

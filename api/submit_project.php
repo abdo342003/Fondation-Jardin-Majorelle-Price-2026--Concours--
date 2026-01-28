@@ -1,8 +1,11 @@
 <?php
-// api/submit_project.php - FAULT-TOLERANT VERSION FOR HOSTINGER PRODUCTION
-// Version: 2.1 - Email isolated, no blocking
+// api/submit_project.php - PRODUCTION v2.0
+// Prix Fondation Jardin Majorelle 2026 - Step 2 Project Submission
 
-// 1. --- HEADERS & CONFIG ---
+// ═══════════════════════════════════════════════════════════════════
+// 🔒 CORS & SECURITY HEADERS
+// ═══════════════════════════════════════════════════════════════════
+
 $allowedOrigins = [
     'https://fondationjardinmajorelleprize.com',
     'http://localhost:5173',
@@ -20,25 +23,28 @@ header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json; charset=utf-8');
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: DENY');
 
-// ✅ PRODUCTION: Disable error display for security
+// Production: Hide errors, log to file
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(E_ALL);
-
-// Log all errors to file
 ini_set('log_errors', 1);
 ini_set('error_log', '../error_log.txt');
 
-// Preflight CORS request
+// Handle preflight
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
 }
 
 require 'db_connect.php';
- 
-// 2. --- VERIFICATION DU TOKEN ---
+
+// ═══════════════════════════════════════════════════════════════════
+// 🔑 TOKEN VALIDATION
+// ═══════════════════════════════════════════════════════════════════
+
 $token = $_POST['token'] ?? '';
 
 if (empty($token)) {
@@ -47,8 +53,7 @@ if (empty($token)) {
     exit;
 }
 
-// ✅ FIX: Changed 'accepted' to 'approved' to match database ENUM
-// ✅ ENHANCED: Fetch ALL candidate data for comprehensive jury notification
+// Validate token and get candidate
 $stmt = $pdo->prepare("SELECT * FROM candidats WHERE token_step2 = ? AND status = 'approved'");
 $stmt->execute([$token]);
 $candidat = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -59,14 +64,16 @@ if (!$candidat) {
     exit;
 }
 
-// 3. --- CONFIGURATION UPLOAD ---
-$upload_dir = '../uploads/projets/'; 
+// ═══════════════════════════════════════════════════════════════════
+// 📁 FILE UPLOAD CONFIGURATION
+// ═══════════════════════════════════════════════════════════════════
 
-// Création du dossier s'il n'existe pas
+$upload_dir = '../uploads/projets/';
+
 if (!is_dir($upload_dir)) {
     if (!mkdir($upload_dir, 0755, true)) {
         http_response_code(500);
-        echo json_encode(["success" => false, "message" => "Erreur: Impossible de créer le dossier uploads."]);
+        echo json_encode(["success" => false, "message" => "Erreur serveur: Impossible de créer le dossier uploads."]);
         exit;
     }
 }
@@ -166,16 +173,13 @@ try {
 
     // C. Send notification emails (ISOLATED - won't block success)
     try {
-        $adminEmail = "abdoraoui9@gmail.com";
-        $domaine = "https://fondationjardinmajorelleprize.com";
-        
         // Convert relative file paths to full URLs for email links
-        $bioUrl = $domaine . "/" . str_replace("../", "", $bio_path);
-        $noteUrl = $domaine . "/" . str_replace("../", "", $note_path);
-        $apsUrl = $domaine . "/" . str_replace("../", "", $aps_path);
+        $bioUrl = SITE_URL . "/" . str_replace("../", "", $bio_path);
+        $noteUrl = SITE_URL . "/" . str_replace("../", "", $note_path);
+        $apsUrl = SITE_URL . "/" . str_replace("../", "", $aps_path);
         
         // === EMAIL 1: CANDIDATE CONFIRMATION ===
-        error_log("Step2: Sending confirmation email to candidate: " . $candidat['email']);
+        error_log("STEP2: Sending confirmation email to: " . $candidat['email']);
         
         $candidateSubject = "✅ Dossier complet reçu - Prix Fondation Jardin Majorelle 2026";
         
@@ -264,31 +268,23 @@ try {
 </body>
 </html>";
 
-        $candidateHeaders = "MIME-Version: 1.0\r\n";
-        $candidateHeaders .= "Content-Type: text/html; charset=UTF-8\r\n";
-        $candidateHeaders .= "From: Prix Fondation Jardin Majorelle <contact@fondationjardinmajorelleprize.com>\r\n";
-        $candidateHeaders .= "Reply-To: contact@fondationjardinmajorelleprize.com\r\n";
-        $candidateHeaders .= "X-Mailer: PHP/" . phpversion() . "\r\n";
-        $candidateHeaders .= "X-Priority: 3\r\n";
-        
-        set_time_limit(10);
-        $candidateEmailSent = @mail($candidat['email'], $candidateSubject, $candidateMessage, $candidateHeaders);
-        set_time_limit(300);
+        // Send candidate confirmation using centralized function
+        $candidateEmailSent = sendEmail($candidat['email'], $candidateSubject, $candidateMessage);
         
         if ($candidateEmailSent) {
-            error_log("Step2: Candidate confirmation email sent successfully");
+            error_log("STEP2: Candidate confirmation email sent to: " . $candidat['email']);
         } else {
-            error_log("Step2: WARNING - Candidate email failed");
+            error_log("STEP2: WARNING - Candidate email failed for: " . $candidat['email']);
         }
         
         // === EMAIL 2: JURY NOTIFICATION WITH COMPLETE CANDIDATE PROFILE ===
-        error_log("Step2: Sending comprehensive notification to jury: $adminEmail");
+        error_log("STEP2: Sending jury notification to: " . ADMIN_EMAIL);
         
         // Format CIN URLs if files exist
-        $cinRectoUrl = !empty($candidat['cin_recto']) ? $domaine . "/" . str_replace("../", "", $candidat['cin_recto']) : null;
-        $cinVersoUrl = !empty($candidat['cin_verso']) ? $domaine . "/" . str_replace("../", "", $candidat['cin_verso']) : null;
+        $cinRectoUrl = !empty($candidat['cin_recto']) ? SITE_URL . "/" . str_replace("../", "", $candidat['cin_recto']) : null;
+        $cinVersoUrl = !empty($candidat['cin_verso']) ? SITE_URL . "/" . str_replace("../", "", $candidat['cin_verso']) : null;
         
-        $jurySubject = "[NOUVEAU PROJET] " . $candidat['prenom'] . " " . $candidat['nom'] . " - École " . $candidat['ecole_archi'] . " (ID #" . $candidat['id'] . ")";
+        $jurySubject = "🆕 [NOUVEAU PROJET] " . $candidat['prenom'] . " " . $candidat['nom'] . " - #" . $candidat['id'];
         
         $juryMessage = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
 <html xmlns=\"http://www.w3.org/1999/xhtml\">
@@ -625,49 +621,37 @@ try {
 </body>
 </html>";
 
-        $juryHeaders = "MIME-Version: 1.0\r\n";
-        $juryHeaders .= "Content-Type: text/html; charset=UTF-8\r\n";
-        $juryHeaders .= "From: Système Prix Majorelle <contact@fondationjardinmajorelleprize.com>\r\n";
-        $juryHeaders .= "Reply-To: " . $candidat['email'] . "\r\n";
-        $juryHeaders .= "X-Mailer: PHP/" . phpversion() . "\r\n";
-        $juryHeaders .= "X-Priority: 1\r\n"; // High priority for jury
-        
-        set_time_limit(10);
-        $juryEmailSent = @mail($adminEmail, $jurySubject, $juryMessage, $juryHeaders);
-        set_time_limit(300);
+        // Send jury notification using centralized function (high priority)
+        $juryEmailSent = sendEmail(ADMIN_EMAIL, $jurySubject, $juryMessage, true);
         
         if ($juryEmailSent) {
-            error_log("Step2: Jury notification email sent successfully to: $adminEmail");
+            error_log("STEP2: Jury notification sent to: " . ADMIN_EMAIL);
         } else {
-            error_log("Step2: WARNING - Jury notification email failed");
+            error_log("STEP2: WARNING - Jury notification failed");
         }
         
     } catch (Throwable $emailError) {
-        // ⚠️ CRITICAL: Email failure is logged but DOES NOT BLOCK success response
-        error_log("Step2: Email exception caught: " . $emailError->getMessage());
-        error_log("Step2: Email trace: " . $emailError->getTraceAsString());
-        // Continue to success response below
+        // Email failure is logged but DOES NOT BLOCK success response
+        error_log("STEP2: Email exception: " . $emailError->getMessage());
     }
 
-    // D. ✅ ALWAYS return success if we reached here (files + database OK)
+    // ✅ SUCCESS RESPONSE (files + database OK)
     http_response_code(200);
     echo json_encode([
         "success" => true, 
         "message" => "Félicitations ! Votre projet a été déposé avec succès."
     ], JSON_UNESCAPED_UNICODE);
     
-    error_log("Step2: SUCCESS response sent to frontend for candidate ID: " . $candidat['id']);
+    error_log("STEP2: SUCCESS - Candidate ID: " . $candidat['id'] . " | " . $candidat['email']);
     exit;
 
 } catch (Exception $e) {
-    // ❌ CRITICAL ERROR (file upload or database failed)
-    error_log("Step2: CRITICAL ERROR - " . $e->getMessage());
-    error_log("Step2: Error trace: " . $e->getTraceAsString());
+    // CRITICAL ERROR (file upload or database failed)
+    error_log("STEP2: CRITICAL ERROR - " . $e->getMessage());
     
-    // Rollback database if transaction is active
     if ($pdo->inTransaction()) {
         $pdo->rollBack();
-        error_log("Step2: Database transaction rolled back");
+        error_log("STEP2: Database transaction rolled back");
     }
     
     // Clean up uploaded files if any

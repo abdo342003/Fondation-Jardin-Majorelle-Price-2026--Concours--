@@ -1,5 +1,38 @@
-# api/uploads/.htaccess
-<FilesMatch "\.(php|php5|phtml)$">
-Order Allow,Deny
-Deny from all
+# ═══════════════════════════════════════════════════════════════════
+# 🔒 UPLOADS SECURITY - Production Ready
+# Prix Fondation Jardin Majorelle 2026
+# ═══════════════════════════════════════════════════════════════════
+
+# Block PHP execution
+<FilesMatch "\.(php|php5|phtml|pl|py|jsp|asp|sh|cgi)$">
+    Order Allow,Deny
+    Deny from all
 </FilesMatch>
+
+# Disable script execution
+Options -ExecCGI
+RemoveHandler .php .php5 .phtml
+
+# Prevent directory listing
+Options -Indexes
+
+# Only allow specific safe file types
+<FilesMatch "\.(?i)(pdf|jpg|jpeg|png|gif|webp)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+# Set proper content types
+AddType application/pdf .pdf
+AddType image/jpeg .jpg .jpeg
+AddType image/png .png
+AddType image/webp .webp
+
+# Disable ETags for security
+FileETag None
+
+# Security headers for downloads
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set Content-Security-Policy "default-src 'none'"
+</IfModule>

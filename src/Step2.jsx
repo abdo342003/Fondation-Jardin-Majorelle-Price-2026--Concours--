@@ -378,7 +378,22 @@ export default function Step2({ token }) {
           </p>
 
           <div className="bg-gradient-to-br from-accent-50 via-amber-50 to-accent-50 p-6 rounded-2xl border-2 border-accent-300 mb-8 shadow-lg">
-            <p className="text-sm text-primary-800 font-semibold text-center mb-2">📅 Date d&apos;annonce des résultats</p>
+            <p className="flex items-center justify-center gap-2 text-sm text-[#1d4e89] font-semibold mb-2">
+              <svg 
+                className="w-5 h-5 text-[#f7b538]" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" 
+                />
+              </svg>
+              <span>Date d&apos;annonce des résultats</span>
+            </p>            
             <p className="text-4xl font-bold text-accent-600 text-center">15 Mai 2026</p>
           </div>
 
@@ -412,31 +427,48 @@ export default function Step2({ token }) {
             </ul>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <button 
-              onClick={() => window.location.href = '/'}
-              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary-700 to-primary-900 text-white font-bold px-8 py-4 rounded-xl hover:from-primary-800 hover:to-primary-950 transition-all shadow-lg hover:shadow-xl"
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-              </svg>
-              Retour à l&apos;accueil
-            </button>
-            
-            <button 
-              onClick={() => window.print()}
-              className="inline-flex items-center justify-center gap-2 bg-white text-primary-800 font-semibold px-8 py-4 rounded-xl border-2 border-sand-300 hover:bg-sand-50 transition-all shadow-md hover:shadow-lg"
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-              </svg>
-              Imprimer
-            </button>
-          </div>
+          <div className="flex flex-col items-center w-full max-w-2xl mx-auto mt-8 animate-fade-in-up">
+  
+            {/* Container des Boutons */}
+            <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
+              
+              {/* Bouton Principal : Retour Accueil */}
+              <button 
+                onClick={() => window.location.href = '/'}
+                className="group relative inline-flex items-center justify-center gap-3 bg-[#1d4e89] text-white font-bold px-8 py-4 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-[#1d4e89]/30 hover:-translate-y-1 focus:ring-4 focus:ring-[#1d4e89]/20 w-full sm:w-auto"
+              >
+                {/* Effet de brillance au survol */}
+                <div className="absolute inset-0 w-3 bg-white/20 skew-x-[45deg] -translate-x-32 group-hover:translate-x-72 transition-transform duration-700 ease-in-out"></div>
+                
+                <svg className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Retour à l'accueil</span>
+              </button>
+              
+              {/* Bouton Secondaire : Imprimer */}
+              <button 
+                onClick={() => window.print()}
+                className="group inline-flex items-center justify-center gap-3 bg-white text-gray-700 font-semibold px-8 py-4 rounded-xl border-2 border-gray-200 hover:border-[#f7b538] hover:text-[#1d4e89] transition-all duration-300 hover:shadow-md hover:-translate-y-1 focus:ring-4 focus:ring-gray-100 w-full sm:w-auto"
+              >
+                <svg className="w-5 h-5 transition-colors duration-300 group-hover:text-[#f7b538]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                <span>Imprimer le reçu</span>
+              </button>
+            </div>
 
-          <p className="text-xs text-sand-500 text-center mt-8 italic">
-            💡 Conservez cette page ou prenez une capture d&apos;écran pour vos archives
-          </p>
+            {/* Info Box "Conseil" */}
+            <div className="mt-10 flex items-start gap-3 bg-blue-50/50 border border-blue-100 p-4 rounded-lg max-w-lg text-sm text-[#1d4e89]/80">
+              <svg className="w-5 h-5 text-[#1d4e89] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p>
+                <span className="font-semibold block mb-1 text-[#1d4e89]">Conseil de sécurité</span>
+                Nous vous recommandons de sauvegarder cette page ou d'en faire une capture d'écran pour vos archives personnelles.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     );
