@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS candidats (
     phone_code VARCHAR(10),
     phone_number VARCHAR(20),
     ecole_archi VARCHAR(200),
+    diplome VARCHAR(255),
     annee_obtention INT,
     num_ordre VARCHAR(50),
     status ENUM('pending', 'approved', 'rejected', 'completed') DEFAULT 'pending',

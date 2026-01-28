@@ -26,6 +26,7 @@ function App() {
     phone_code: '+212',
     phone_number: '',
     ecole_archi: '',
+    diplome: '',
     annee_obtention: '',
     num_ordre: ''
   });
@@ -44,8 +45,8 @@ function App() {
   const cinVersoInputRef = useRef(null);
 
   // Enhanced CSS classes for consistent styling
-  const labelClass = "block text-sand-800 font-semibold mb-2 text-sm uppercase tracking-wider";
-  const inputClass = "w-full px-5 py-4 border-2 border-sand-200 rounded-xl focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-100 transition-all duration-200 font-sans";
+  const labelClass = "block text-primary-900 font-bold mb-3 text-sm uppercase tracking-wider";
+  const inputClass = "w-full px-5 py-4 border-2 border-sand-200 rounded-xl focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-100 hover:border-sand-300 transition-all duration-200 font-sans bg-white shadow-sm";
   const sectionTitleClass = "flex items-center mb-6 pb-3 border-b-2 border-primary-100";
   const sectionNumberClass = "w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center mr-4";
   const sectionHeaderClass = "text-2xl font-serif font-bold text-primary-800";
@@ -85,8 +86,8 @@ function App() {
 
     return (
       <div>
-        <label className="block text-sm font-bold text-primary-800 uppercase mb-3 tracking-wider">
-          {label} {required && '*'}
+        <label className="block text-base font-bold text-primary-900 uppercase mb-3 tracking-wider">
+          {label} {required && <span className="text-accent-600">*</span>}
         </label>
         
         {/* Hidden file input */}
@@ -105,39 +106,39 @@ function App() {
           // EMPTY STATE - Clickable dashed box
           <div
             onClick={() => inputRef.current?.click()}
-            className="border-2 border-dashed border-primary-300 rounded-xl p-8 bg-gradient-to-br from-white to-primary-50/30 hover:from-primary-50 hover:to-primary-100/50 cursor-pointer transition-all duration-300 text-center group hover:border-primary-500"
+            className="border-2 border-dashed border-primary-400 rounded-xl p-8 bg-gradient-to-br from-primary-50 to-primary-100/50 hover:from-primary-100 hover:to-primary-200/50 cursor-pointer transition-all duration-300 text-center group hover:border-primary-600 hover:shadow-lg"
           >
             <div className="flex flex-col items-center justify-center space-y-3">
-              <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center group-hover:bg-primary-200 transition-colors">
-                <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              <div className="w-16 h-16 bg-gradient-to-br from-primary-200 to-primary-300 rounded-full flex items-center justify-center group-hover:from-primary-300 group-hover:to-primary-400 transition-all duration-300 shadow-md group-hover:shadow-lg group-hover:scale-110">
+                <svg className="w-8 h-8 text-primary-700 group-hover:text-primary-800" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                 </svg>
               </div>
               <div>
-                <p className="text-primary-700 font-semibold text-sm">
-                  📎 Cliquez pour déposer
+                <p className="text-primary-900 font-bold text-base">
+                  {i18n.language === 'fr' ? 'Cliquez pour télécharger' : 'Click to upload'}
                 </p>
-                <p className="text-sand-600 text-xs mt-1">
-                  PDF, JPG, PNG (Max 5 Mo)
+                <p className="text-primary-700 text-sm mt-1 font-semibold">
+                  PDF, JPG, PNG (Max 5 MB)
                 </p>
               </div>
             </div>
           </div>
         ) : (
           // FILLED STATE - Show file info with remove button
-          <div className="border-2 border-primary-400 bg-gradient-to-br from-white to-primary-50 rounded-xl p-5 transition-all duration-300 shadow-md">
+          <div className="border-2 border-accent-500 bg-gradient-to-br from-accent-50 to-accent-100 rounded-xl p-5 transition-all duration-300 shadow-lg">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4 flex-1 min-w-0">
-                <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                <div className="w-14 h-14 bg-gradient-to-br from-accent-200 to-accent-300 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                  <svg className="w-7 h-7 text-accent-700" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-primary-800 font-semibold text-sm truncate">
-                    ✅ {file.name}
+                  <p className="text-accent-900 font-bold text-sm truncate">
+                    {file.name}
                   </p>
-                  <p className="text-sand-600 text-xs mt-1">
+                  <p className="text-accent-700 text-xs mt-1 font-semibold">
                     {formatFileSize(file.size)}
                   </p>
                 </div>
@@ -145,10 +146,12 @@ function App() {
               <button
                 type="button"
                 onClick={handleRemoveFile}
-                className="ml-4 flex-shrink-0 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-bold text-xs uppercase tracking-wider transition-all duration-200 hover:shadow-lg transform hover:scale-105 flex items-center space-x-1"
+                className="ml-4 flex-shrink-0 bg-gradient-to-br from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-5 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 hover:shadow-xl transform hover:scale-105 flex items-center gap-2 shadow-lg border border-red-400"
               >
-                <span>❌</span>
-                <span>Supprimer</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                <span className="font-bold">{i18n.language === 'fr' ? 'Supprimer' : 'Remove'}</span>
               </button>
             </div>
           </div>
@@ -188,7 +191,7 @@ function App() {
     // Validate age
     const age = validateAge(formData.date_naissance);
     if (age >= 40) {
-      setError("Vous devez avoir moins de 40 ans pour participer. / You must be under 40 years old to participate.");
+      setError("You must be under 40 years old to participate in this competition.");
       setLoading(false);
       // Smooth scroll to error message
       if (errorMessageRef.current) {
@@ -241,8 +244,8 @@ function App() {
         }
       }
     } catch (err) {
-      console.error(err);
-      setError("Erreur de connexion. Veuillez réessayer.");
+      const errorMessage = err.response?.data?.message || "Connection error. Please check your internet connection and try again.";
+      setError(errorMessage);
       // Smooth scroll to error message
       if (errorMessageRef.current) {
         errorMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -256,8 +259,8 @@ function App() {
     <div className="min-h-screen bg-sand-50 text-sand-900 font-sans selection:bg-primary-100 selection:text-primary-900" style={{backgroundImage: 'url(/Background.png)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed'}}>
       
       {/* --- HEADER LOGO --- */}
-      <header className="bg-white/70 backdrop-blur-lg shadow-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-2 flex justify-between items-end">
+      <header className="bg-white/80 backdrop-blur-xl shadow-lg shadow-primary-900/5 sticky top-0 z-50 border-b border-sand-100/50">
+        <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-end">
             
             {/* Logo à Gauche en bas */}
             <div className="flex-shrink-0 pb-1">
@@ -273,17 +276,19 @@ function App() {
             </div>
 
             {/* Boutons Langue à Droite */}
-            <div className="flex-shrink-0 flex items-center gap-2 pb-1">
+            <div className="flex-shrink-0 flex items-center gap-3 pb-1">
                 <button 
                     onClick={() => changeLanguage('fr')} 
-                    className={`px-4 py-1.5 rounded-md font-bold text-xs uppercase tracking-wider transition-all duration-300 ${i18n.language === 'fr' ? 'bg-black text-white shadow-md' : 'text-black/70 hover:text-black hover:bg-black/10 border border-black/20'}`}
+                    className={`px-5 py-2 rounded-lg font-bold text-xs uppercase tracking-wider transition-all duration-300 ${i18n.language === 'fr' ? 'text-white shadow-lg scale-105' : 'text-primary-800 hover:text-primary-900 border border-primary-300 hover:shadow-md'}`}
+                    style={i18n.language === 'fr' ? {background: 'linear-gradient(135deg, #003F88 0%, #002F66 100%)'} : {background: 'rgba(255,255,255,0.8)'}}
                 >
                     FR
                 </button>
-                <div className="w-px h-6 bg-black/20"></div>
+                <div className="w-px h-6 bg-primary-400"></div>
                 <button 
                     onClick={() => changeLanguage('en')} 
-                    className={`px-4 py-1.5 rounded-md font-bold text-xs uppercase tracking-wider transition-all duration-300 ${i18n.language === 'en' ? 'bg-black text-white shadow-md' : 'text-black/70 hover:text-black hover:bg-black/10 border border-black/20'}`}
+                    className={`px-5 py-2 rounded-lg font-bold text-xs uppercase tracking-wider transition-all duration-300 ${i18n.language === 'en' ? 'text-white shadow-lg scale-105' : 'text-primary-800 hover:text-primary-900 border border-primary-300 hover:shadow-md'}`}
+                    style={i18n.language === 'en' ? {background: 'linear-gradient(135deg, #003F88 0%, #002F66 100%)'} : {background: 'rgba(255,255,255,0.8)'}}
                 >
                     EN
                 </button>
@@ -307,22 +312,22 @@ function App() {
         <div className="absolute inset-0 bg-gradient-to-br from-white/25 via-transparent to-white/15 z-10"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.1)_100%)] z-10"></div>
         
-        {/* Bouton S'inscrire - Design transparent adapté au background */}
+        {/* Bouton S'inscrire - Design avec terracotta accent */}
         <div className="absolute bottom-24 md:bottom-28 left-1/2 -translate-x-1/2 z-30 animate-fade-in-scale">
-          <a href="#inscription" className="group relative inline-flex items-center justify-center gap-3 bg-white/30 backdrop-blur-md hover:bg-white/50 text-black font-bold px-12 py-5 md:px-14 md:py-6 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.1)] hover:shadow-[0_20px_60px_rgb(0,0,0,0.15)] transition-all duration-500 transform hover:-translate-y-2 hover:scale-105 uppercase tracking-[0.3em] text-sm md:text-base border-2 border-white/40 overflow-hidden">
-            {/* Effet de lueur subtile */}
-            <span className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
+          <a href="#inscription" className="group relative inline-flex items-center justify-center gap-3 text-white font-bold px-12 py-5 md:px-14 md:py-6 rounded-2xl shadow-2xl transition-all duration-500 transform hover:-translate-y-3 hover:scale-[1.08] uppercase tracking-[0.35em] text-sm md:text-base border-2 border-white/30 hover:border-white/50 overflow-hidden" style={{background: 'linear-gradient(135deg, #D64521 0%, #B03618 50%, #8B2B13 100%)'}}>
+            {/* Effet de lueur */}
+            <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{background: 'linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%, rgba(255,255,255,0.1) 100%)'}}></span>
             
-            <span className="relative z-10 font-semibold">{t('hero.cta')}</span>
-            <svg className="relative z-10 w-5 h-5 md:w-6 md:h-6 transform group-hover:translate-x-2 transition-all duration-300" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+            <span className="relative z-10 font-bold drop-shadow-lg">{t('hero.cta')}</span>
+            <svg className="relative z-10 w-5 h-5 md:w-6 md:h-6 transform group-hover:translate-x-2 group-hover:scale-110 transition-all duration-300" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
             
             {/* Effet brillance premium au survol */}
             <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></span>
             
-            {/* Bordure animée */}
-            <span className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 shadow-[0_0_15px_rgba(255,255,255,0.4)]"></span>
+            {/* Glow effect */}
+            <span className="absolute -inset-1 rounded-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-500 blur-lg -z-10" style={{background: 'linear-gradient(135deg, #D64521 0%, #B03618 100%)'}}></span>
           </a>
         </div>
         
@@ -330,10 +335,10 @@ function App() {
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex flex-col items-center gap-2 animate-bounce">
           <div className="relative group cursor-pointer">
             {/* Glow effect */}
-            <div className="absolute inset-0 bg-white/20 rounded-full blur-md scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="absolute inset-0 bg-primary-400/30 rounded-full blur-lg scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             {/* Icon container */}
-            <div className="relative bg-stone-900/70 backdrop-blur-md p-3.5 rounded-full border border-stone-100/30 shadow-lg group-hover:bg-stone-900/80 group-hover:border-stone-100/50 transition-all duration-300">
-              <svg className="w-5 h-5 text-stone-50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+            <div className="relative bg-primary-900/80 backdrop-blur-md p-4 rounded-full border border-white/40 shadow-xl group-hover:bg-primary-900/90 group-hover:border-white/60 group-hover:scale-110 transition-all duration-300">
+              <svg className="w-5 h-5 text-white drop-shadow-lg" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
               </svg>
             </div>
@@ -349,49 +354,61 @@ function App() {
 
 
       {/* --- ABOUT SECTION --- */}
-      <section className="bg-white/95 backdrop-blur-sm py-20">
+      <section className="py-24" style={{background: 'linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(242,239,230,0.9) 50%, rgba(255,255,255,0.95) 100%)'}}>
         <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <span className="text-sm uppercase tracking-[0.3em] font-sans text-primary-600 mb-4 block">
+          <div className="text-center mb-20">
+            <span className="inline-block text-xs uppercase tracking-[0.4em] font-bold text-white px-6 py-2 rounded-full mb-6 shadow-lg" style={{background: 'linear-gradient(135deg, #D64521 0%, #B03618 100%)'}}>
               {i18n.language === 'fr' ? 'À Propos' : 'About'}
             </span>
-            <h2 className="font-serif font-bold text-5xl text-primary-800 mb-4">
+            <h2 className="font-serif font-bold text-5xl md:text-6xl text-primary-900 mb-6 tracking-tight">
               {t('about.title')}
             </h2>
-            <div className="w-20 h-1 bg-accent-500 mx-auto"></div>
+            <div className="flex items-center justify-center gap-3">
+              <div className="w-24 h-1 rounded-full" style={{background: 'linear-gradient(to right, transparent, #D64521, #D64521)'}}></div>
+              <div className="w-3 h-3 rounded-full" style={{background: '#D64521'}}></div>
+              <div className="w-24 h-1 rounded-full" style={{background: 'linear-gradient(to left, transparent, #D64521, #D64521)'}}></div>
+            </div>
           </div>
           
           <div className="grid md:grid-cols-2 gap-8 mb-16">
             {/* CARD 1: Le Défi (Icône Architecture/Bâtiment) */}
-            <div className="group bg-gradient-to-br from-white to-sand-50 p-10 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-sand-100 hover:border-primary-200">
-              <div className="w-14 h-14 bg-primary-100 rounded-full flex items-center justify-center mb-6 group-hover:bg-primary-200 transition-colors">
-                {/* Remplacement de l'emoji par SVG Building/Museum */}
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-primary-700">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
-                </svg>
+            <div className="group relative p-10 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border-2 border-sand-200 hover:border-primary-400 overflow-hidden hover:-translate-y-2" style={{background: 'linear-gradient(135deg, #FFFFFF 0%, #F2EFE6 50%, #EDF5FF 100%)'}}>
+              {/* Decorative glow effect */}
+              <div className="absolute -top-24 -right-24 w-56 h-56 rounded-full blur-3xl opacity-40 group-hover:opacity-60 transition-all duration-700" style={{background: 'radial-gradient(circle, #A3CFFF 0%, transparent 70%)'}}></div>
+              
+              <div className="relative z-10">
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg" style={{background: 'linear-gradient(135deg, #0050AA 0%, #003F88 100%)'}}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="white" className="w-8 h-8">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
+                  </svg>
+                </div>
+                <h3 className="font-serif font-bold text-2xl text-primary-800 mb-4 group-hover:text-primary-900 transition-colors">
+                  {t('about.challenge')}
+                </h3>
+                <p className="text-sand-800 leading-relaxed">
+                  {t('about.challengeDesc')}
+                </p>
               </div>
-              <h3 className="font-serif font-bold text-2xl text-primary-700 mb-4">
-                {t('about.challenge')}
-              </h3>
-              <p className="text-sand-700 leading-relaxed">
-                {t('about.challengeDesc')}
-              </p>
             </div>
             
             {/* CARD 2: Pourquoi Participer (Icône Trophée/Étoile) */}
-            <div className="group bg-gradient-to-br from-white to-sand-50 p-10 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-sand-100 hover:border-primary-200">
-              <div className="w-14 h-14 bg-accent-100 rounded-full flex items-center justify-center mb-6 group-hover:bg-accent-200 transition-colors">
-                {/* Remplacement de l'emoji par SVG Trophy */}
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-accent-700">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0V5.625a2.25 2.25 0 11-4.5 0v7.125M12 3.75v-1.5" />
-                </svg>
+            <div className="group relative p-10 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border-2 border-sand-200 hover:border-accent-400 overflow-hidden hover:-translate-y-2" style={{background: 'linear-gradient(135deg, #FFFFFF 0%, #F2EFE6 50%, #FFF2ED 100%)'}}>
+              {/* Decorative glow effect */}
+              <div className="absolute -top-24 -right-24 w-56 h-56 rounded-full blur-3xl opacity-40 group-hover:opacity-60 transition-all duration-700" style={{background: 'radial-gradient(circle, #FFBFA6 0%, transparent 70%)'}}></div>
+              
+              <div className="relative z-10">
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500 shadow-lg" style={{background: 'linear-gradient(135deg, #D64521 0%, #B03618 100%)'}}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="white" className="w-8 h-8">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0V5.625a2.25 2.25 0 11-4.5 0v7.125M12 3.75v-1.5" />
+                  </svg>
+                </div>
+                <h3 className="font-serif font-bold text-2xl text-primary-800 mb-4 group-hover:text-primary-900 transition-colors">
+                  {t('about.why')}
+                </h3>
+                <p className="text-sand-800 leading-relaxed">
+                  {t('about.whyDesc')}
+                </p>
               </div>
-              <h3 className="font-serif font-bold text-2xl text-primary-700 mb-4">
-                {t('about.why')}
-              </h3>
-              <p className="text-sand-700 leading-relaxed">
-                {t('about.whyDesc')}
-              </p>
             </div>
           </div>
 
@@ -399,30 +416,28 @@ function App() {
           <div className="grid md:grid-cols-2 gap-8">
             
             {/* ELIGIBILITY BLOCK */}
-            <div className="group bg-gradient-to-br from-white to-primary-50 p-10 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-primary-100 hover:border-primary-200 relative overflow-hidden">
-              {/* Effet de brillance au survol */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary-100 rounded-full filter blur-3xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 -z-0"></div>
+            <div className="group relative p-10 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border-2 border-sand-200 hover:border-primary-400 overflow-hidden hover:-translate-y-2" style={{background: 'linear-gradient(135deg, #FFFFFF 0%, #EDF5FF 50%, #D0E6FF 100%)'}}>
+              {/* Enhanced glow effect */}
+              <div className="absolute -top-24 -right-24 w-56 h-56 rounded-full filter blur-3xl opacity-40 group-hover:opacity-60 transition-all duration-700" style={{background: 'radial-gradient(circle, #71B2FF 0%, transparent 70%)'}}></div>
               
               <div className="relative z-10">
                 <div className="flex items-center mb-6">
-                  <div className="w-14 h-14 bg-primary-100 rounded-full flex items-center justify-center mr-4 group-hover:bg-primary-200 transition-colors group-hover:scale-110 transform duration-300">
-                    {/* Logo SVG Check Badge - Style unifié avec les cartes du haut */}
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-primary-700">
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center mr-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg" style={{background: 'linear-gradient(135deg, #0050AA 0%, #003F88 100%)'}}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="white" className="w-8 h-8">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
                     </svg>
                   </div>
-                  <h3 className="font-serif font-bold text-2xl text-primary-700">
+                  <h3 className="font-serif font-bold text-2xl text-primary-800 group-hover:text-primary-900 transition-colors">
                     {t('about.eligibility')}
                   </h3>
                 </div>
                 <ul className="space-y-3">
                   {t('about.eligibilityItems', { returnObjects: true }).map((item, idx) => (
-                    <li key={idx} className="flex items-start">
-                      <span className="text-primary-600 mr-3 font-bold mt-1">
-                          {/* Petit point stylisé SVG */}
+                    <li key={idx} className="flex items-start group/item">
+                      <span className="text-primary-600 mr-3 font-bold mt-1 group-hover/item:text-primary-700 transition-colors">
                           <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" /></svg>
                       </span>
-                      <span className="text-sand-700 leading-relaxed">{item}</span>
+                      <span className="text-sand-700 leading-relaxed group-hover/item:text-sand-800 transition-colors">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -430,65 +445,101 @@ function App() {
             </div>
 
             {/* CALENDAR BLOCK */}
-            <div className="group bg-gradient-to-br from-white to-accent-50 p-10 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-accent-100 hover:border-accent-200 relative overflow-hidden">
-              {/* Effet de brillance au survol */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-accent-100 rounded-full filter blur-3xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 -z-0"></div>
+            <div className="group relative p-10 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border-2 border-sand-200 hover:border-accent-400 overflow-hidden hover:-translate-y-2" style={{background: 'linear-gradient(135deg, #FFFFFF 0%, #FFF5F0 50%, #FFE8DF 100%)'}}>
+              {/* Enhanced glow effect */}
+              <div className="absolute -top-24 -right-24 w-56 h-56 rounded-full filter blur-3xl opacity-40 group-hover:opacity-60 transition-all duration-700" style={{background: 'radial-gradient(circle, #FFBFA6 0%, transparent 70%)'}}></div>
               
               <div className="relative z-10">
                 <div className="flex items-center mb-6">
-                  <div className="w-14 h-14 bg-accent-100 rounded-full flex items-center justify-center mr-4 group-hover:bg-accent-200 transition-colors group-hover:scale-110 transform duration-300">
-                    {/* Logo SVG Calendar - Style unifié avec les cartes du haut */}
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-accent-700">
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center mr-4 group-hover:scale-110 group-hover:-rotate-6 transition-all duration-500 shadow-lg" style={{background: 'linear-gradient(135deg, #D64521 0%, #B03618 100%)'}}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="white" className="w-8 h-8">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
                     </svg>
                   </div>
-                  <h3 className="font-serif font-bold text-2xl text-accent-700">
+                  <h3 className="font-serif font-bold text-2xl text-primary-800 group-hover:text-primary-900 transition-colors">
                     {t('calendar.title')}
                   </h3>
                 </div>
-              <ul className="space-y-6"> {/* Espacement augmenté pour la timeline */}
+              <ul className="space-y-5">
                 
                 {/* 1. ANNONCE - Icône Megaphone */}
                 <li className="flex items-center text-sand-800 group">
-                  <div className="mr-4 w-10 h-10 flex items-center justify-center rounded-full bg-white border border-accent-200 text-accent-600 shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                  <div className="mr-4 w-11 h-11 flex items-center justify-center rounded-full shrink-0 shadow-md" style={{background: 'linear-gradient(135deg, #EBF5FF 0%, #D0E6FF 100%)', border: '2px solid #71B2FF'}}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#0050AA" className="w-5 h-5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 018.835-2.535m0 0A23.74 23.74 0 0118.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.43.816 1.035.816 1.73 0 .695-.32 1.3-.816 1.73" />
                     </svg>
                   </div>
                   <span className="leading-relaxed font-medium">{t('calendar.announcement')}</span>
                 </li>
 
-                {/* 2. DEADLINE - Icône Clock (En gras et couleur accent) */}
-                <li className="flex items-center text-accent-700 bg-white/50 p-2 rounded-lg -ml-2">
-                  <div className="mr-4 w-10 h-10 flex items-center justify-center rounded-full bg-accent-100 border border-accent-300 text-accent-700 shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                {/* 2. DEADLINE - Icône Clock (Important - highlighted) */}
+                <li className="flex items-center text-white p-3 rounded-xl -ml-2 shadow-lg" style={{background: 'linear-gradient(135deg, #D64521 0%, #B03618 100%)'}}>
+                  <div className="mr-4 w-11 h-11 flex items-center justify-center rounded-full bg-white shrink-0 shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#D64521" className="w-5 h-5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <span className="leading-relaxed font-bold">{t('calendar.deadline')}</span>
+                  <span className="leading-relaxed font-bold drop-shadow-sm">{t('calendar.deadline')}</span>
                 </li>
 
                 {/* 3. SELECTION - Icône Clipboard/List */}
                 <li className="flex items-center text-sand-800">
-                  <div className="mr-4 w-10 h-10 flex items-center justify-center rounded-full bg-white border border-accent-200 text-accent-600 shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                  <div className="mr-4 w-11 h-11 flex items-center justify-center rounded-full shrink-0 shadow-md" style={{background: 'linear-gradient(135deg, #FFF5F0 0%, #FFE8DF 100%)', border: '2px solid #FFBFA6'}}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#D64521" className="w-5 h-5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
                     </svg>
                   </div>
-                  <span className="leading-relaxed">{t('calendar.selection')}</span>
+                  <span className="leading-relaxed font-medium">{t('calendar.selection')}</span>
                 </li>
 
                 {/* 4. OUVERTURE - Icône Sparkles/Star */}
                 <li className="flex items-center text-sand-800">
-                  <div className="mr-4 w-10 h-10 flex items-center justify-center rounded-full bg-white border border-accent-200 text-accent-600 shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                  <div className="mr-4 w-11 h-11 flex items-center justify-center rounded-full shrink-0 shadow-md" style={{background: 'linear-gradient(135deg, #FFF9E6 0%, #FFF0B3 100%)', border: '2px solid #FFD700'}}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#B8860B" className="w-5 h-5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
                     </svg>
                   </div>
-                  <span className="leading-relaxed">{t('calendar.opening')}</span>
+                  <span className="leading-relaxed font-medium">{t('calendar.opening')}</span>
                 </li>
 
                 </ul>
+              </div>
+            </div>
+
+            {/* CARD 5: Cahier des Charges - Terms of Reference */}
+            <div className="group relative p-10 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border-2 border-sand-200 hover:border-sand-400 overflow-hidden hover:-translate-y-2 md:col-span-2" style={{background: 'linear-gradient(135deg, #FFFFFF 0%, #F5F4F0 50%, #E8E6DD 100%)'}}>
+              {/* Enhanced glow effect */}
+              <div className="absolute -top-24 -right-24 w-56 h-56 rounded-full filter blur-3xl opacity-40 group-hover:opacity-60 transition-all duration-700" style={{background: 'radial-gradient(circle, #D5D2C4 0%, transparent 70%)'}}></div>
+              
+              <div className="relative z-10">
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg" style={{background: 'linear-gradient(135deg, #8B7355 0%, #6B5344 100%)'}}>
+                  <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                
+                <h3 className="text-2xl font-serif font-bold text-primary-800 mb-4 group-hover:text-primary-900 transition-colors">
+                  {i18n.language === 'fr' ? 'Cahier des Charges' : 'Terms of Reference'}
+                </h3>
+                
+                <p className="text-sand-800 mb-6 leading-relaxed">
+                  {i18n.language === 'fr' 
+                    ? "Consultez le document détaillé comprenant toutes les spécifications techniques, le règlement complet et les plans de la Villa Oasis."
+                    : "Access the detailed document including all technical specifications, full regulations, and Villa Oasis plans."
+                  }
+                </p>
+
+                {/* Download Button */}
+                <a 
+                  href="/Reglement.pdf" 
+                  download="Cahier_des_Charges_Jardin_Majorelle_2026.pdf"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary-900 text-white font-medium rounded-xl hover:bg-primary-800 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  <span>{i18n.language === 'fr' ? 'Télécharger le PDF' : 'Download PDF'}</span>
+                </a>
               </div>
             </div>
           </div>
@@ -510,7 +561,9 @@ function App() {
             <div className="bg-gradient-to-br from-white to-accent-50/30 border-t-4 border-accent-500 p-12 md:p-16 rounded-2xl shadow-2xl text-center animate-fade-in-up relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-accent-100 rounded-full filter blur-3xl opacity-20 -z-10"></div>
                 <div className="w-24 h-24 bg-gradient-to-br from-accent-500 to-accent-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl">
-                    <span className="text-5xl">✅</span>
+                    <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                 </div>
                 <h2 className="text-2xl font-serif font-bold text-primary-800 mb-4">
                     {t('messages.success')}
@@ -533,37 +586,75 @@ function App() {
         ) : (
             
             /* --- FORMULAIRE --- */
-            <div ref={formTopRef} className="bg-white p-10 md:p-16 rounded-3xl shadow-xl border border-sand-200 animate-fade-in-up relative">
+            <div ref={formTopRef} className="bg-white p-10 md:p-16 rounded-3xl shadow-2xl shadow-primary-900/10 border-2 border-sand-100/50 animate-fade-in-up relative overflow-hidden">
                 
-                {/* Section Header - Now Inside White Card for Maximum Readability */}
-                <div className="text-center mb-14 pb-10 border-b border-sand-200 relative">
-                    {/* Badge d'inscription avec couleurs claires */}
+                {/* Decorative background elements */}
+                <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-primary-100/20 to-accent-100/20 rounded-full blur-3xl opacity-50 -z-0"></div>
+                <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-accent-100/20 to-primary-100/20 rounded-full blur-3xl opacity-50 -z-0"></div>
+                
+                {/* Section Header - Enhanced Design */}
+                <div className="text-center mb-16 pb-12 border-b-2 border-gradient-to-r from-transparent via-sand-200 to-transparent relative z-10">
+                    {/* Step indicator with animation */}
+                    <div className="flex items-center justify-center gap-3 mb-8">
+                        <div className="flex items-center gap-2">
+                            <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg ring-4 ring-orange-100" style={{background: 'linear-gradient(135deg, #D64521 0%, #B03618 100%)'}}>
+                                <span className="text-white font-bold text-lg">1</span>
+                            </div>
+                            <div className="h-1 w-16 rounded-full" style={{background: 'linear-gradient(90deg, #D64521 0%, #E6E0D1 100%)'}}></div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <div className="w-12 h-12 rounded-full bg-sand-200 flex items-center justify-center shadow-sm border-2 border-sand-300">
+                                <span className="text-sand-600 font-bold text-lg">2</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Badge d'inscription avec design premium */}
                     <div className="inline-block mb-6">
-                        <span className="text-xs uppercase tracking-[0.4em] font-sans text-primary-700 bg-primary-50 px-6 py-2 rounded-full border border-primary-200">
-                          {i18n.language === 'fr' ? 'Inscription' : 'Registration'}
+                        <span className="inline-flex items-center gap-3 text-xs uppercase tracking-[0.5em] font-bold text-white px-10 py-4 rounded-full shadow-xl border border-white/20" style={{background: 'linear-gradient(90deg, #003F88 0%, #002F66 50%, #D64521 100%)'}}>
+                          <svg className="w-5 h-5" fill="none" stroke="white" strokeWidth={2.5} viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                          </svg>
+                          {i18n.language === 'fr' ? 'Pré-Inscription' : 'Pre-Registration'}
                         </span>
                     </div>
-                    <h2 className="text-4xl md:text-6xl font-serif font-bold text-primary-800 mb-6">
+
+                    {/* Main title with enhanced typography */}
+                    <h2 className="text-4xl md:text-7xl font-serif font-bold bg-gradient-to-r from-primary-900 via-primary-800 to-accent-700 bg-clip-text text-transparent mb-4 tracking-tight leading-tight">
                         {t('step1')}
                     </h2>
-                    <div className="flex items-center justify-center gap-2 mb-8">
-                        <div className="w-16 h-0.5 bg-sand-300"></div>
-                        <div className="w-2 h-2 bg-primary-400 rounded-full"></div>
-                        <div className="w-16 h-0.5 bg-sand-300"></div>
+                    
+                    {/* Decorative divider */}
+                    <div className="flex items-center justify-center gap-4 mb-8">
+                        <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-primary-400 to-primary-500 rounded-full"></div>
+                        <div className="relative">
+                            <div className="w-3 h-3 bg-gradient-to-br from-accent-500 to-primary-600 rounded-full shadow-lg shadow-accent-500/50"></div>
+                            <div className="absolute inset-0 w-3 h-3 bg-accent-400 rounded-full animate-ping opacity-75"></div>
+                        </div>
+                        <div className="w-24 h-0.5 bg-gradient-to-l from-transparent via-primary-400 to-primary-500 rounded-full"></div>
                     </div>
-                    <p className="text-sand-700 text-xl font-light mb-6 max-w-3xl mx-auto">
+
+                    {/* Subtitle with better hierarchy */}
+                    <p className="text-primary-800 text-xl md:text-2xl font-semibold mb-6 max-w-3xl mx-auto tracking-wide">
                         {t('subtitle')}
                     </p>
-                    <p className="text-sand-600 text-base max-w-3xl mx-auto leading-relaxed mb-10">
+                    
+                    {/* Description with improved readability */}
+                    <p className="text-sand-700 text-base md:text-lg max-w-3xl mx-auto leading-relaxed mb-10 font-light">
                         {t('intro')}
                     </p>
-                    <div className="inline-block bg-accent-50 border border-accent-200 px-10 py-4 rounded-full hover:bg-accent-100 transition-all duration-300">
-                        <p className="text-accent-700 font-semibold text-sm flex items-center">
-                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            {t('deadline')}
-                        </p>
+
+                    {/* Enhanced deadline badge */}
+                    <div className="inline-block relative group">
+                        <div className="absolute inset-0 bg-gradient-to-r from-accent-400 to-accent-500 rounded-full blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
+                        <div className="relative bg-gradient-to-br from-accent-50 via-accent-100/80 to-accent-200/50 border-2 border-accent-400 px-10 py-4 rounded-full hover:border-accent-500 hover:shadow-2xl hover:shadow-accent-500/20 hover:scale-105 transition-all duration-300 backdrop-blur-sm">
+                            <p className="text-accent-900 font-bold text-sm md:text-base flex items-center gap-3">
+                                <svg className="w-6 h-6 text-accent-600 animate-pulse" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span className="tracking-wide">{t('deadline')}</span>
+                            </p>
+                        </div>
                     </div>
                 </div>
                 
@@ -576,36 +667,68 @@ function App() {
                 <form onSubmit={handleSubmit} className="space-y-12">
                     
                     {/* 1. Identité */}
-                    <div className="bg-white p-8 rounded-2xl border border-sand-200 hover:border-primary-300 transition-all duration-300 hover:shadow-md">
+                    <div className="bg-gradient-to-br from-white to-sand-50/30 p-8 rounded-2xl border-2 border-sand-100 hover:border-primary-300 transition-all duration-300 hover:shadow-lg shadow-sm">
                         <div className={sectionTitleClass}>
-                            <div className={sectionNumberClass}>
-                                <span className="text-white font-bold">1</span>
+                            <div className="w-14 h-14 rounded-xl flex items-center justify-center mr-4 shadow-lg" style={{background: 'linear-gradient(135deg, #003F88 0%, #002F66 100%)'}}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="white" className="w-8 h-8">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                                </svg>
                             </div>
-                            <h3 className={sectionHeaderClass}>{i18n.language === 'fr' ? 'Identité' : 'Identity'}</h3>
+                            <h3 className="text-2xl font-serif font-bold text-primary-900">{i18n.language === 'fr' ? 'Identité' : 'Identity'}</h3>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label className={labelClass}>{t('fields.nom')} *</label>
-                                <input required type="text" name="nom" onChange={handleChange} className={inputClass} />
+                                <input 
+                                    required 
+                                    type="text" 
+                                    name="nom" 
+                                    onChange={handleChange} 
+                                    className={inputClass}
+                                    minLength="2"
+                                    maxLength="100"
+                                    pattern="[A-Za-zÀ-ÿ\s\-']+"
+                                    title="Please enter a valid last name (letters only)"
+                                />
                             </div>
                             <div>
                                 <label className={labelClass}>{t('fields.prenom')} *</label>
-                                <input required type="text" name="prenom" onChange={handleChange} className={inputClass} />
+                                <input 
+                                    required 
+                                    type="text" 
+                                    name="prenom" 
+                                    onChange={handleChange} 
+                                    className={inputClass}
+                                    minLength="2"
+                                    maxLength="100"
+                                    pattern="[A-Za-zÀ-ÿ\s\-']+"
+                                    title="Please enter a valid first name (letters only)"
+                                />
                             </div>
                         </div>
                         <div className="mt-6">
                             <label className={labelClass}>{t('fields.naissance')} *</label>
-                            <input required type="date" name="date_naissance" onChange={handleChange} className={inputClass} />
+                            <input 
+                                required 
+                                type="date" 
+                                name="date_naissance" 
+                                onChange={handleChange} 
+                                className={inputClass}
+                                max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
+                                min={new Date(new Date().setFullYear(new Date().getFullYear() - 39)).toISOString().split('T')[0]}
+                            />
                         </div>
                     </div>
 
                     {/* 2. Documents (CIN) */}
-                    <div className="bg-white p-10 rounded-2xl border border-primary-200 hover:border-primary-300 transition-all duration-300 hover:shadow-md">
-                        <div className="flex items-center mb-6">
-                            <div className={sectionNumberClass}>
-                                <span className="text-white font-bold">2</span>
+                    <div className="bg-gradient-to-br from-white to-primary-50/20 p-10 rounded-2xl border-2 border-primary-100 hover:border-primary-300 transition-all duration-300 hover:shadow-lg shadow-sm">
+                        <div className="flex items-center mb-6 pb-3 border-b-2 border-primary-100">
+                            <div className="w-14 h-14 rounded-xl flex items-center justify-center mr-4 shadow-lg" style={{background: 'linear-gradient(135deg, #D64521 0%, #B03618 100%)'}}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="white" className="w-8 h-8">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" />
+                                </svg>
                             </div>
-                            <h3 className={sectionHeaderClass}>
+                            <h3 className="text-2xl font-serif font-bold text-primary-900">
                                 {t('fields.cin')} *
                             </h3>
                         </div>
@@ -636,21 +759,41 @@ function App() {
                     </div>
 
                     {/* 3. Contact */}
-                    <div className="bg-white p-8 rounded-2xl border border-sand-200 hover:border-accent-300 transition-all duration-300 hover:shadow-md">
+                    <div className="bg-gradient-to-br from-white to-accent-50/20 p-8 rounded-2xl border-2 border-sand-100 hover:border-accent-300 transition-all duration-300 hover:shadow-lg shadow-sm">
                         <div className={sectionTitleClass}>
-                            <div className={sectionNumberClass}>
-                                <span className="text-white font-bold">3</span>
+                            <div className="w-14 h-14 rounded-xl flex items-center justify-center mr-4 shadow-lg" style={{background: 'linear-gradient(135deg, #D64521 0%, #B03618 100%)'}}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="white" className="w-8 h-8">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                                </svg>
                             </div>
-                            <h3 className={sectionHeaderClass}>Contact</h3>
+                            <h3 className="text-2xl font-serif font-bold text-primary-900">Contact</h3>
                         </div>
                         <div className="mb-6">
                             <label className={labelClass}>{t('fields.adresse')} *</label>
-                            <textarea required name="adresse" rows="3" onChange={handleChange} className={inputClass}></textarea>
+                            <textarea 
+                                required 
+                                name="adresse" 
+                                rows="3" 
+                                onChange={handleChange} 
+                                className={inputClass}
+                                minLength="10"
+                                maxLength="500"
+                                placeholder="Enter your complete address"
+                            ></textarea>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label className={labelClass}>{t('fields.email')} *</label>
-                                <input required type="email" name="email" onChange={handleChange} className={inputClass} />
+                                <input 
+                                    required 
+                                    type="email" 
+                                    name="email" 
+                                    onChange={handleChange} 
+                                    className={inputClass}
+                                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                    title="Please enter a valid email address"
+                                    placeholder="example@email.com"
+                                />
                             </div>
                             <div>
                                 <label className={labelClass}>{t('fields.phone')} *</label>
@@ -658,33 +801,84 @@ function App() {
                                     <select name="phone_code" onChange={handleChange} className="px-4 py-4 border-2 border-r-0 border-sand-200 rounded-l-xl bg-sand-50 text-sm font-bold text-primary-700 outline-none focus:border-primary-500">
                                         <option value="+212">🇲🇦 +212</option>
                                     </select>
-                                    <input required type="tel" name="phone_number" onChange={handleChange} className={`${inputClass} rounded-l-none border-l-0`} />
+                                    <input 
+                                        required 
+                                        type="tel" 
+                                        name="phone_number" 
+                                        onChange={handleChange} 
+                                        className={`${inputClass} rounded-l-none border-l-0`}
+                                        pattern="[0-9]{9,10}"
+                                        title="Please enter a valid phone number (9-10 digits)"
+                                        placeholder="6XXXXXXXX"
+                                    />
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     {/* 4. Statut */}
-                    <div className="bg-white p-8 rounded-2xl border border-sand-200 hover:border-primary-300 transition-all duration-300 hover:shadow-md">
+                    <div className="bg-gradient-to-br from-white to-primary-50/20 p-8 rounded-2xl border-2 border-sand-100 hover:border-primary-300 transition-all duration-300 hover:shadow-lg shadow-sm">
                         <div className={sectionTitleClass}>
-                            <div className={sectionNumberClass}>
-                                <span className="text-white font-bold">4</span>
+                            <div className="w-14 h-14 rounded-xl flex items-center justify-center mr-4 shadow-lg" style={{background: 'linear-gradient(135deg, #003F88 0%, #002F66 100%)'}}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="white" className="w-8 h-8">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" />
+                                </svg>
                             </div>
-                            <h3 className={sectionHeaderClass}>Statut Professionnel</h3>
+                            <h3 className="text-2xl font-serif font-bold text-primary-900">Statut Professionnel</h3>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label className={labelClass}>{t('fields.ecole')} *</label>
-                                <input required type="text" name="ecole_archi" onChange={handleChange} className={inputClass} />
+                                <input 
+                                    required 
+                                    type="text" 
+                                    name="ecole_archi" 
+                                    onChange={handleChange} 
+                                    className={inputClass}
+                                    minLength="3"
+                                    maxLength="200"
+                                    placeholder="Architecture School Name"
+                                />
+                            </div>
+                            <div>
+                                <label className={labelClass}>{t('fields.diplome')} *</label>
+                                <input 
+                                    required 
+                                    type="text" 
+                                    name="diplome" 
+                                    onChange={handleChange} 
+                                    className={inputClass} 
+                                    placeholder="e.g., State Architect Degree"
+                                    minLength="5"
+                                    maxLength="255"
+                                />
                             </div>
                             <div>
                                 <label className={labelClass}>{t('fields.annee')} *</label>
-                                <input required type="number" name="annee_obtention" onChange={handleChange} className={inputClass} />
+                                <input 
+                                    required 
+                                    type="number" 
+                                    name="annee_obtention" 
+                                    onChange={handleChange} 
+                                    className={inputClass}
+                                    min="1980"
+                                    max={new Date().getFullYear()}
+                                    placeholder={new Date().getFullYear().toString()}
+                                />
                             </div>
-                        </div>
-                        <div className="mt-4">
-                            <label className={labelClass}>{t('fields.ordre')} (CNOA) *</label>
-                            <input required type="text" name="num_ordre" onChange={handleChange} className={inputClass} />
+                            <div>
+                                <label className={labelClass}>{t('fields.ordre')} (CNOA) *</label>
+                                <input 
+                                    required 
+                                    type="text" 
+                                    name="num_ordre" 
+                                    onChange={handleChange} 
+                                    className={inputClass}
+                                    pattern="[A-Za-z0-9\-]+"
+                                    title="Please enter a valid CNOA number"
+                                    placeholder="CNOA Number"
+                                />
+                            </div>
                         </div>
                     </div>
 
@@ -736,22 +930,50 @@ function App() {
                         <button 
                             disabled={loading || !acceptedTerms} 
                             type="submit" 
-                            className="w-full bg-white hover:bg-sand-50 text-sand-900 font-bold py-6 px-8 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none uppercase tracking-[0.3em] text-xl border-2 border-sand-900">
-                            <span className="flex items-center justify-center">
+                            style={{background: 'linear-gradient(135deg, #003F88 0%, #002F66 50%, #D64521 100%)'}}
+                            className="group relative w-full overflow-hidden text-white font-bold py-8 px-10 rounded-2xl shadow-2xl hover:shadow-[0_25px_70px_-10px_rgba(0,80,170,0.5)] transition-all duration-500 transform hover:-translate-y-3 hover:scale-[1.03] disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none disabled:hover:scale-100 uppercase tracking-[0.3em] text-lg border-2 border-white/20">
+                            {/* Animated background waves */}
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
+                            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-primary-400/20 to-transparent translate-x-full group-hover:-translate-x-full transition-transform duration-1200 ease-out"></div>
+                            
+                            {/* Multi-layer glow effect */}
+                            <div className="absolute -inset-1 bg-gradient-to-br from-accent-400/40 via-accent-500/30 to-primary-600/40 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div className="absolute inset-0 bg-gradient-to-br from-accent-300/20 via-transparent to-primary-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            
+                            {/* Pulse effect on hover */}
+                            <div className="absolute inset-0 rounded-2xl bg-white/10 scale-0 group-hover:scale-100 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                            
+                            {/* Content */}
+                            <span className="relative flex items-center justify-center gap-4 z-10">
                                 {loading ? (
                                     <>
-                                        <svg className="animate-spin -ml-1 mr-3 h-6 w-6 text-sand-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        <svg className="animate-spin h-7 w-7 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-30" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-100" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                         </svg>
-                                        ENVOI EN COURS
+                                        <span className="font-bold text-xl text-white">{i18n.language === 'fr' ? 'Traitement en cours...' : 'Processing...'}</span>
                                     </>
                                 ) : (
                                     <>
-                                        Inscription
+                                        <svg className="w-8 h-8 text-white transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <span className="font-bold text-xl text-white">{i18n.language === 'fr' ? 'Soumettre Inscription' : 'Submit Registration'}</span>
+                                        <svg className="w-7 h-7 text-white transform group-hover:translate-x-2 transition-all duration-500" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                        </svg>
                                     </>
                                 )}
                             </span>
+                            
+                            {/* Top shine effect */}
+                            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/60 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            {/* Bottom shine effect */}
+                            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            
+                            {/* Corner accents */}
+                            <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-white/20 to-transparent rounded-tl-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tl from-white/20 to-transparent rounded-br-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </button>
                         <p className="text-center text-sm text-sand-600 mt-6 leading-relaxed">
                             {t('messages.footer')}
@@ -764,19 +986,22 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="relative bg-gradient-to-br from-sand-50 via-primary-50 to-accent-50 text-sand-900 py-16 mt-16 overflow-hidden">
+      <footer className="relative text-sand-900 py-16 mt-16 overflow-hidden" style={{background: 'linear-gradient(135deg, #F2EFE6 0%, #E8E6DD 30%, #FFF5F0 70%, #FFE8DF 100%)'}}>
         {/* Effet de background subtil */}
-        <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-[url('/Background.png')] bg-cover bg-center"></div>
         </div>
+        {/* Decorative elements */}
+        <div className="absolute top-0 left-0 w-96 h-96 rounded-full blur-3xl opacity-30" style={{background: 'radial-gradient(circle, #FFBFA6 0%, transparent 70%)'}}></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-30" style={{background: 'radial-gradient(circle, #A3CFFF 0%, transparent 70%)'}}></div>
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             {/* About */}
-            <div className="group bg-white/60 backdrop-blur-sm p-6 rounded-2xl border-2 border-sand-300 hover:border-primary-400 transition-all duration-300 hover:shadow-xl">
+            <div className="group p-8 rounded-2xl border-2 border-sand-200 hover:border-primary-400 transition-all duration-300 hover:shadow-2xl shadow-xl hover:-translate-y-1" style={{background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(237,245,255,0.9) 100%)'}}>
               <div className="flex items-center mb-5">
-                <div className="w-14 h-14 bg-gradient-to-br from-primary-100 to-primary-200 rounded-full flex items-center justify-center mr-3 shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-105">
+                <div className="w-16 h-16 rounded-xl flex items-center justify-center mr-3 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110 group-hover:rotate-3" style={{background: 'linear-gradient(135deg, #0050AA 0%, #003F88 100%)'}}>
                   {/* SVG Building/Museum Icon */}
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 text-primary-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="white" className="w-7 h-7">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
                   </svg>
                 </div>
@@ -794,15 +1019,15 @@ function App() {
             </div>
             
             {/* Contact */}
-            <div className="group bg-white/60 backdrop-blur-sm p-6 rounded-2xl border-2 border-sand-300 hover:border-accent-400 transition-all duration-300 hover:shadow-xl">
+            <div className="group p-8 rounded-2xl border-2 border-sand-200 hover:border-accent-400 transition-all duration-300 hover:shadow-2xl shadow-xl hover:-translate-y-1" style={{background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,245,240,0.9) 100%)'}}>
               <div className="flex items-center mb-5">
-                <div className="w-14 h-14 bg-gradient-to-br from-accent-100 to-accent-200 rounded-full flex items-center justify-center mr-3 shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-105">
+                <div className="w-16 h-16 rounded-xl flex items-center justify-center mr-3 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110 group-hover:-rotate-3" style={{background: 'linear-gradient(135deg, #D64521 0%, #B03618 100%)'}}>
                   {/* SVG Mail Icon */}
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 text-accent-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="white" className="w-7 h-7">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                   </svg>
                 </div>
-                <h3 className="font-serif font-bold text-lg text-accent-900">
+                <h3 className="font-serif font-bold text-lg text-primary-900">
                   Contact
                 </h3>
               </div>
@@ -847,11 +1072,11 @@ function App() {
             </div>
             
             {/* Legal */}
-            <div className="group bg-white/60 backdrop-blur-sm p-6 rounded-2xl border-2 border-sand-300 hover:border-primary-400 transition-all duration-300 hover:shadow-xl">
+            <div className="group p-8 rounded-2xl border-2 border-sand-200 hover:border-primary-400 transition-all duration-300 hover:shadow-2xl shadow-xl hover:-translate-y-1" style={{background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(237,245,255,0.9) 100%)'}}>
               <div className="flex items-center mb-5">
-                <div className="w-14 h-14 bg-gradient-to-br from-primary-100 to-primary-200 rounded-full flex items-center justify-center mr-3 shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-105">
+                <div className="w-16 h-16 rounded-xl flex items-center justify-center mr-3 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110 group-hover:rotate-3" style={{background: 'linear-gradient(135deg, #8B7355 0%, #6B5344 100%)'}}>
                   {/* SVG Scale/Legal Icon */}
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 text-primary-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="white" className="w-7 h-7">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
                   </svg>
                 </div>
@@ -868,14 +1093,20 @@ function App() {
             </div>
           </div>
           
-          <div className="pt-10 mt-8">
-            <div className="text-center bg-white/40 backdrop-blur-sm p-6 rounded-2xl">
-              <p className="text-primary-900 text-base mb-3 font-bold">
+          <div className="pt-12 mt-10 border-t-2 border-sand-300">
+            <div className="text-center p-8 rounded-2xl shadow-xl border-2 border-sand-200" style={{background: 'linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(242,239,230,0.95) 100%)'}}>
+              <p className="text-primary-900 text-base mb-3 font-bold tracking-wide">
                 © {new Date().getFullYear()} Fondation Jardin Majorelle - {i18n.language === 'fr' ? 'Tous droits réservés' : 'All rights reserved'}
               </p>
-              <p className="text-sand-800 text-sm font-medium">
+              <p className="text-sand-700 text-sm font-semibold">
                 Prix Fondation Jardin Majorelle pour la Conception du Nouveau Pavillon Temporaire de la Villa Oasis
               </p>
+              {/* Decorative line */}
+              <div className="flex items-center justify-center gap-2 mt-4">
+                <div className="w-16 h-0.5 rounded-full" style={{background: 'linear-gradient(to right, transparent, #D64521)'}}></div>
+                <div className="w-2 h-2 rounded-full" style={{background: '#D64521'}}></div>
+                <div className="w-16 h-0.5 rounded-full" style={{background: 'linear-gradient(to left, transparent, #D64521)'}}></div>
+              </div>
             </div>
           </div>
         </div>

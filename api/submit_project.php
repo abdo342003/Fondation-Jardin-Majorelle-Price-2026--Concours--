@@ -214,45 +214,61 @@ try {
 <body>
     <div class='container'>
         <div class='header'>
-            <h1>📥 Dossier Complet Reçu !</h1>
+            <svg width=\"56\" height=\"56\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" style=\"margin-bottom: 16px;\">
+                <path d=\"M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>
+            </svg>
+            <h1>Application Complete</h1>
             <p>Prix Fondation Jardin Majorelle 2026</p>
         </div>
         <div class='content'>
-            <div class='badge'>CANDIDATURE FINALISÉE</div>
+            <div class='badge'>APPLICATION FINALIZED</div>
             
             <p style='font-size: 16px; margin-top: 0;'>Bonjour <strong>" . htmlspecialchars($candidat['prenom']) . " " . htmlspecialchars($candidat['nom']) . "</strong>,</p>
             
             <p>Nous accusons réception de votre dossier complet pour le <strong>Prix Fondation Jardin Majorelle 2026</strong>. Votre candidature est désormais finalisée.</p>
             
             <div class='section'>
-                <div class='section-title'>📋 Documents Reçus</div>
+                <div class='section-title'>
+                    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" style=\"margin-right: 8px; vertical-align: middle;\">
+                        <path d=\"M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>
+                    </svg>
+                    Documents Received
+                </div>
                 <ul class='check-list'>
-                    <li>Biographie professionnelle</li>
-                    <li>Note d'intention architecturale</li>
-                    <li>Avant-Projet Sommaire (APS)</li>
+                    <li>Professional Biography</li>
+                    <li>Architectural Intent Statement</li>
+                    <li>Preliminary Project Summary (APS)</li>
                 </ul>
             </div>
             
             <div class='section'>
-                <div class='section-title'>📅 Prochaines Étapes</div>
+                <div class='section-title'>
+                    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" style=\"margin-right: 8px; vertical-align: middle;\">
+                        <path d=\"M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>
+                    </svg>
+                    Timeline
+                </div>
                 <div class='timeline'>
                     <div class='timeline-item'>
-                        <div class='timeline-icon'>1️⃣</div>
-                        <div class='timeline-text'><strong>Janvier - Avril 2026</strong><br>Examen approfondi de votre dossier par notre jury d'experts</div>
+                        <div class='timeline-icon'>1</div>
+                        <div class='timeline-text'><strong>January - April 2026</strong><br>Thorough review by our expert jury</div>
                     </div>
                     <div class='timeline-item'>
-                        <div class='timeline-icon'>2️⃣</div>
-                        <div class='timeline-text'><strong>15 Mai 2026</strong><br>Annonce officielle des résultats par email</div>
+                        <div class='timeline-icon'>2</div>
+                        <div class='timeline-text'><strong>May 15, 2026</strong><br>Official results announcement by email</div>
                     </div>
                     <div class='timeline-item'>
-                        <div class='timeline-icon'>3️⃣</div>
-                        <div class='timeline-text'><strong>Juin 2026</strong><br>Cérémonie de remise des prix (si lauréat)</div>
+                        <div class='timeline-icon'>3</div>
+                        <div class='timeline-text'><strong>June 2026</strong><br>Award ceremony (if winner)</div>
                     </div>
                 </div>
             </div>
             
             <div class='info-box'>
-                <p><strong>⚠️ Important :</strong> Conservez cet email comme preuve de votre participation. Aucune action supplémentaire n'est requise de votre part. Nous vous contacterons directement par email.</p>
+                <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" style=\"margin-right: 8px; vertical-align: middle; flex-shrink: 0;\">
+                    <path d=\"M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>
+                </svg>
+                <p style=\"margin: 0;\"><strong>Important:</strong> Please keep this email as proof of your participation. No further action is required from you. We will contact you directly by email.</p>
             </div>
             
             <p style='margin-top: 30px;'>Nous vous souhaitons plein succès dans cette compétition !</p>
@@ -261,7 +277,7 @@ try {
         </div>
         <div class='footer'>
             <p style='margin: 0 0 8px 0;'><strong>Fondation Jardin Majorelle</strong></p>
-            <p style='margin: 0;'>📧 contact@fondationjardinmajorelleprize.com | 🌐 <a href='https://fondationjardinmajorelleprize.com'>fondationjardinmajorelleprize.com</a></p>
+            <p style='margin: 0;'>contact@fondationjardinmajorelleprize.com | <a href='https://fondationjardinmajorelleprize.com'>fondationjardinmajorelleprize.com</a></p>
             <p style='margin: 15px 0 0 0; opacity: 0.7;'>© 2026 Fondation Jardin Majorelle - Tous droits réservés</p>
         </div>
     </div>
@@ -284,7 +300,7 @@ try {
         $cinRectoUrl = !empty($candidat['cin_recto']) ? SITE_URL . "/" . str_replace("../", "", $candidat['cin_recto']) : null;
         $cinVersoUrl = !empty($candidat['cin_verso']) ? SITE_URL . "/" . str_replace("../", "", $candidat['cin_verso']) : null;
         
-        $jurySubject = "📂 [NOUVEAU PROJET] " . $candidat['prenom'] . " " . $candidat['nom'] . " - #" . $candidat['id'];
+        $jurySubject = "[NEW PROJECT] " . $candidat['prenom'] . " " . $candidat['nom'] . " - #" . $candidat['id'];
         
         $juryMessage = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
 <html xmlns=\"http://www.w3.org/1999/xhtml\">
@@ -332,7 +348,8 @@ try {
                     <tr>
                         <td style=\"padding:30px 30px 10px 30px;\">
                             <h2 style=\"margin:0; color:#1d4e89; font-size:22px; font-weight:700;\">" . htmlspecialchars($candidat['prenom'] . ' ' . $candidat['nom']) . "</h2>
-                            <p style=\"margin:5px 0 0 0; color:#666; font-size:14px;\">" . htmlspecialchars($candidat['ecole_archi']) . " • Promo " . htmlspecialchars($candidat['annee_obtention']) . "</p>
+                            <p style=\"margin:5px 0 0 0; color:#666; font-size:14px;\">" . htmlspecialchars($candidat['ecole_archi']) . "</p>
+                            <p style=\"margin:5px 0 0 0; color:#666; font-size:14px;\">" . htmlspecialchars($candidat['diplome']) . " • Promo " . htmlspecialchars($candidat['annee_obtention']) . "</p>
                         </td>
                     </tr>
                     

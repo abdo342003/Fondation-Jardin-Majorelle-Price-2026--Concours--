@@ -43,33 +43,34 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // 📝 INPUT SANITIZATION
 // ═══════════════════════════════════════════════════════════════════
 
-$nom            = sanitizeInput($_POST['nom'] ?? '');
-$prenom         = sanitizeInput($_POST['prenom'] ?? '');
+$nom            = sanitizeInput(trim($_POST['nom'] ?? ''));
+$prenom         = sanitizeInput(trim($_POST['prenom'] ?? ''));
 $email          = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
-$date_naissance = $_POST['date_naissance'] ?? '';
-$adresse        = sanitizeInput($_POST['adresse'] ?? '');
-$phone_code     = sanitizeInput($_POST['phone_code'] ?? '+212');
-$phone_number   = sanitizeInput($_POST['phone_number'] ?? '');
-$ecole_archi    = sanitizeInput($_POST['ecole_archi'] ?? '');
+$date_naissance = trim($_POST['date_naissance'] ?? '');
+$adresse        = sanitizeInput(trim($_POST['adresse'] ?? ''));
+$phone_code     = sanitizeInput(trim($_POST['phone_code'] ?? '+212'));
+$phone_number   = sanitizeInput(trim($_POST['phone_number'] ?? ''));
+$ecole_archi    = sanitizeInput(trim($_POST['ecole_archi'] ?? ''));
+$diplome        = sanitizeInput(trim($_POST['diplome'] ?? ''));
 $annee_obtention= intval($_POST['annee_obtention'] ?? 0);
-$num_ordre      = sanitizeInput($_POST['num_ordre'] ?? '');
+$num_ordre      = sanitizeInput(trim($_POST['num_ordre'] ?? ''));
 
 // ═══════════════════════════════════════════════════════════════════
 // ✅ VALIDATION
 // ═══════════════════════════════════════════════════════════════════
 
-if (empty($nom) || empty($prenom) || empty($email) || empty($num_ordre) || empty($ecole_archi) || empty($date_naissance)) {
-    echo json_encode(["success" => false, "message" => "Champs obligatoires manquants."]);
+if (empty($nom) || empty($prenom) || empty($email) || empty($num_ordre) || empty($ecole_archi) || empty($diplome) || empty($date_naissance)) {
+    echo json_encode(["success" => false, "message" => "Required fields are missing. Please fill in all mandatory fields."]);
     exit;
 }
 
 if (!validateEmail($email)) {
-    echo json_encode(["success" => false, "message" => "Format d'email invalide."]);
+    echo json_encode(["success" => false, "message" => "Invalid email format. Please provide a valid email address."]);
     exit;
 }
 
 if (!isset($_FILES['cin_recto']) || !isset($_FILES['cin_verso'])) {
-    echo json_encode(["success" => false, "message" => "Les fichiers CIN (Recto et Verso) sont obligatoires."]);
+    echo json_encode(["success" => false, "message" => "National ID files (Front and Back) are required."]);
     exit;
 }
 
@@ -87,20 +88,20 @@ function uploadCINFile($file, $prefix, $dir) {
     $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     
     if (!in_array($ext, $allowed)) {
-        throw new Exception("Format de fichier invalide ($ext). Utilisez PDF, JPG ou PNG.");
+        throw new Exception("Invalid file format ($ext). Please use PDF, JPG, PNG, or WEBP.");
     }
     if ($file['size'] > MAX_CIN_SIZE) {
-        throw new Exception("Le fichier est trop volumineux (> 5Mo).");
+        throw new Exception("File size exceeds maximum limit of 5MB.");
     }
     if ($file['error'] !== UPLOAD_ERR_OK) {
-        throw new Exception("Erreur lors du transfert du fichier.");
+        throw new Exception("Error occurred during file upload. Please try again.");
     }
 
     $filename = $prefix . '_' . uniqid() . '_' . time() . '.' . $ext;
     $dest = $dir . $filename;
 
     if (!move_uploaded_file($file['tmp_name'], $dest)) {
-        throw new Exception("Erreur lors de l'enregistrement sur le serveur.");
+        throw new Exception("Failed to save file to server. Please try again.");
     }
     return $dest;
 }
@@ -115,7 +116,7 @@ try {
     $check_stmt->execute([$email, $num_ordre]);
     
     if ($check_stmt->fetch()) {
-        echo json_encode(["success" => false, "message" => "Ce numéro CNOA ou cet email est déjà utilisé."]);
+        echo json_encode(["success" => false, "message" => "This CNOA number or email address is already registered. Each participant can only register once."]);
         exit;
     }
 
@@ -128,14 +129,14 @@ try {
 
     // Insert into database
     $sql = "INSERT INTO candidats 
-            (nom, prenom, date_naissance, cin_recto, cin_verso, adresse, email, phone_code, phone_number, ecole_archi, annee_obtention, num_ordre, status) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')";
+            (nom, prenom, date_naissance, cin_recto, cin_verso, adresse, email, phone_code, phone_number, ecole_archi, diplome, annee_obtention, num_ordre, status) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')";
     
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         $nom, $prenom, $date_naissance, $path_recto, $path_verso, 
         $adresse, $email, $phone_code, $phone_number, 
-        $ecole_archi, $annee_obtention, $num_ordre
+        $ecole_archi, $diplome, $annee_obtention, $num_ordre
     ]);
 
     $candidat_id = $pdo->lastInsertId();
@@ -148,42 +149,58 @@ try {
     // ═══════════════════════════════════════════════════════════════════
     
     // Email to Candidate
-    $candidateSubject = "📥 Inscription reçue - Prix Fondation Jardin Majorelle 2026";
+    $candidateSubject = "Registration Received - Prix Fondation Jardin Majorelle 2026";
     $candidateBody = "
     <!DOCTYPE html>
     <html><head><meta charset='UTF-8'></head>
-    <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
-        <div style='max-width: 600px; margin: 0 auto; padding: 20px;'>
-            <div style='background: linear-gradient(135deg, #1d4e89, #2563eb); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;'>
-                <h1 style='margin: 0;'>📥 Inscription Reçue</h1>
-                <p style='margin: 10px 0 0 0; opacity: 0.9;'>Prix Fondation Jardin Majorelle 2026</p>
+    <body style='font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif; line-height: 1.6; color: #1e293b; margin: 0; padding: 0; background-color: #f8fafc;'>
+        <div style='max-width: 600px; margin: 0 auto; background: #ffffff;'>
+            <div style='background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%); color: white; padding: 40px 30px; text-align: center;'>
+                <svg width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" style=\"margin-bottom: 16px;\">
+                    <path d=\"M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>
+                </svg>
+                <h1 style='margin: 0; font-size: 24px; font-weight: 600;'>Registration Confirmed</h1>
+                <p style='margin: 12px 0 0 0; opacity: 0.9; font-size: 14px;'>Prix Fondation Jardin Majorelle 2026</p>
             </div>
-            <div style='background: white; padding: 30px; border: 1px solid #e5e7eb; border-top: none;'>
-                <p>Bonjour <strong>$prenom $nom</strong>,</p>
-                <p>Nous accusons réception de votre demande d'inscription.</p>
+            <div style='padding: 40px 30px;'>
+                <p style='margin: 0 0 20px 0; font-size: 15px;'>Dear <strong>$prenom $nom</strong>,</p>
+                <p style='margin: 0 0 24px 0;'>We acknowledge receipt of your registration application.</p>
                 
-                <div style='background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;'>
-                    <h3 style='margin-top: 0; color: #1d4e89;'>📋 Votre Dossier</h3>
-                    <p><strong>N° Dossier:</strong> #$candidat_id<br>
-                    <strong>CNOA:</strong> $num_ordre<br>
-                    <strong>Email:</strong> $email</p>
+                <div style='background: #f1f5f9; padding: 24px; border-radius: 8px; margin: 24px 0; border-left: 4px solid #1d4ed8;'>
+                    <h3 style='margin: 0 0 16px 0; color: #1e3a8a; font-size: 16px; font-weight: 600; display: flex; align-items: center;'>
+                        <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" style=\"margin-right: 8px;\">
+                            <path d=\"M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>
+                        </svg>
+                        Your Application
+                    </h3>
+                    <table style='width: 100%; font-size: 14px;'>
+                        <tr><td style='padding: 4px 0; color: #64748b;'>Application Number:</td><td style='padding: 4px 0;'><strong>#$candidat_id</strong></td></tr>
+                        <tr><td style='padding: 4px 0; color: #64748b;'>CNOA Number:</td><td style='padding: 4px 0;'><strong>$num_ordre</strong></td></tr>
+                        <tr><td style='padding: 4px 0; color: #64748b;'>Email:</td><td style='padding: 4px 0;'><strong>$email</strong></td></tr>
+                    </table>
                 </div>
                 
-                <div style='background: #fef3c7; padding: 20px; border-radius: 8px; border-left: 4px solid #f59e0b;'>
-                    <h3 style='margin-top: 0; color: #92400e;'>⏳ Prochaines Étapes</h3>
-                    <ol style='margin: 0; padding-left: 20px;'>
-                        <li>Vérification de votre éligibilité (48-72h)</li>
-                        <li>Email avec lien unique pour déposer votre projet</li>
-                        <li>Accès au formulaire de dépôt</li>
+                <div style='background: #fef3c7; padding: 24px; border-radius: 8px; border-left: 4px solid #f59e0b; margin: 24px 0;'>
+                    <h3 style='margin: 0 0 16px 0; color: #92400e; font-size: 16px; font-weight: 600; display: flex; align-items: center;'>
+                        <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" style=\"margin-right: 8px;\">
+                            <path d=\"M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>
+                        </svg>
+                        Next Steps
+                    </h3>
+                    <ol style='margin: 0; padding-left: 20px; font-size: 14px; color: #78350f;'>
+                        <li style='margin-bottom: 8px;'>Eligibility verification (48-72 hours)</li>
+                        <li style='margin-bottom: 8px;'>Email with unique link to submit your project</li>
+                        <li>Access to submission form</li>
                     </ol>
                 </div>
                 
-                <p style='margin-top: 25px;'>Surveillez votre boîte de réception (et vos spams).</p>
-                <p>Cordialement,<br><strong>L'équipe du Prix Fondation Jardin Majorelle</strong></p>
+                <p style='margin: 32px 0 0 0; font-size: 14px; color: #64748b;'>Please monitor your inbox (including spam folder).</p>
+                <p style='margin: 24px 0 0 0; padding-top: 24px; border-top: 1px solid #e2e8f0; font-size: 14px;'>Best regards,<br><strong style='color: #1e293b;'>Prix Fondation Jardin Majorelle Team</strong></p>
             </div>
-            <div style='background: #1a202c; color: #a0aec0; padding: 20px; text-align: center; border-radius: 0 0 10px 10px; font-size: 12px;'>
-                <p style='margin: 0;'>📧 contact@fondationjardinmajorelleprize.com</p>
-                <p style='margin: 5px 0 0 0;'>🌐 fondationjardinmajorelleprize.com</p>
+            <div style='background: #0f172a; color: #94a3b8; padding: 24px 30px; text-align: center; font-size: 12px;'>
+                <p style='margin: 0 0 8px 0;'><strong style='color: #e2e8f0;'>Fondation Jardin Majorelle</strong></p>
+                <p style='margin: 0;'>contact@fondationjardinmajorelleprize.com</p>
+                <p style='margin: 8px 0 0 0;'>www.fondationjardinmajorelleprize.com</p>
             </div>
         </div>
     </body></html>";
@@ -193,27 +210,31 @@ try {
     // Email to Jury
     $validation_link = API_URL . "/admin_review.php?id=" . $candidat_id;
     
-    $jurySubject = "📂 [JURY] Nouvelle Candidature #$candidat_id - $prenom $nom";
+    $jurySubject = "[JURY] New Application #$candidat_id - $prenom $nom";
     $juryBody = "
     <!DOCTYPE html>
     <html><head><meta charset='UTF-8'></head>
-    <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
-        <div style='max-width: 600px; margin: 0 auto; padding: 20px;'>
-            <div style='background: #f59e0b; color: #1a202c; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;'>
-                <h1 style='margin: 0;'>📂 Nouvelle Candidature</h1>
+    <body style='font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif; line-height: 1.6; color: #1e293b; margin: 0; padding: 0; background-color: #f8fafc;'>
+        <div style='max-width: 600px; margin: 0 auto; background: #ffffff;'>
+            <div style='background: linear-gradient(135deg, #dc2626 0%, #ea580c 100%); color: white; padding: 32px 30px; text-align: center;'>
+                <svg width=\"40\" height=\"40\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" style=\"margin-bottom: 12px;\">
+                    <path d=\"M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>
+                </svg>
+                <h1 style='margin: 0; font-size: 22px; font-weight: 600;'>New Application Received</h1>
             </div>
-            <div style='background: white; padding: 30px; border: 1px solid #e5e7eb;'>
-                <h2 style='color: #1d4e89; margin-top: 0;'>$prenom $nom</h2>
-                <table style='width: 100%; border-collapse: collapse;'>
-                    <tr><td style='padding: 8px 0;'><strong>Dossier:</strong></td><td>#$candidat_id</td></tr>
-                    <tr><td style='padding: 8px 0;'><strong>Email:</strong></td><td>$email</td></tr>
-                    <tr><td style='padding: 8px 0;'><strong>École:</strong></td><td>$ecole_archi ($annee_obtention)</td></tr>
-                    <tr><td style='padding: 8px 0;'><strong>CNOA:</strong></td><td>$num_ordre</td></tr>
+            <div style='padding: 32px 30px; background: white;'>
+                <h2 style='color: #1e3a8a; margin: 0 0 24px 0; font-size: 20px; font-weight: 600;'>$prenom $nom</h2>
+                <table style='width: 100%; border-collapse: collapse; font-size: 14px;'>
+                    <tr style='border-bottom: 1px solid #e2e8f0;'><td style='padding: 12px 0; color: #64748b;'>Application ID:</td><td style='padding: 12px 0;'><strong>#$candidat_id</strong></td></tr>
+                    <tr style='border-bottom: 1px solid #e2e8f0;'><td style='padding: 12px 0; color: #64748b;'>Email:</td><td style='padding: 12px 0;'><strong>$email</strong></td></tr>
+                    <tr style='border-bottom: 1px solid #e2e8f0;'><td style='padding: 12px 0; color: #64748b;'>School:</td><td style='padding: 12px 0;'><strong>$ecole_archi</strong></td></tr>
+                    <tr style='border-bottom: 1px solid #e2e8f0;'><td style='padding: 12px 0; color: #64748b;'>Degree:</td><td style='padding: 12px 0;'><strong>$diplome ($annee_obtention)</strong></td></tr>
+                    <tr><td style='padding: 12px 0; color: #64748b;'>CNOA:</td><td style='padding: 12px 0;'><strong>$num_ordre</strong></td></tr>
                 </table>
                 
-                <div style='text-align: center; margin: 30px 0;'>
-                    <a href='$validation_link' style='background: #10b981; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;'>
-                        📥 EXAMINER LE DOSSIER
+                <div style='text-align: center; margin: 32px 0;'>
+                    <a href='$validation_link' style='background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: white; padding: 14px 32px; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block; font-size: 15px; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);'>
+                        REVIEW APPLICATION
                     </a>
                 </div>
             </div>

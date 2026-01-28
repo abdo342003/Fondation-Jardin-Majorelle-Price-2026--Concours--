@@ -77,11 +77,14 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                 <body>
                     <div class='container'>
                         <div class='header'>
-                            <h1> Félicitations !</h1>
-                            <p>Votre candidature a été approuvée</p>
+                            <svg width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" style=\"margin-bottom: 12px;\">
+                                <path d=\"M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>
+                            </svg>
+                            <h1>Congratulations!</h1>
+                            <p>Your application has been approved</p>
                         </div>
                         <div class='content'>
-                            <div class='badge'>📥 CANDIDATURE APPROUVÉE</div>
+                            <div class='badge'>APPLICATION APPROVED</div>
                             
                             <p style='font-size: 17px;'>Bonjour <strong>" . htmlspecialchars($candidat['prenom']) . " " . htmlspecialchars($candidat['nom']) . "</strong>,</p>
                             
@@ -90,13 +93,18 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                             <p>Vous êtes maintenant invité(e) à déposer votre <strong>projet architectural complet</strong> via votre espace personnel sécurisé.</p>
                             
                             <div class='cta-box'>
-                                <p style='color: white; margin: 0 0 20px 0; font-size: 16px;'>Accédez au formulaire de dépôt de projet :</p>
-                                <a href='" . $link_step2 . "' class='button'>📁 DÉPOSER MON PROJET</a>
-                                <p style='color: rgba(255,255,255,0.8); font-size: 13px; margin: 20px 0 0 0;'>Cliquez sur le bouton ci-dessus pour commencer</p>
+                                <p style='color: white; margin: 0 0 20px 0; font-size: 16px;'>Access your project submission form:</p>
+                                <a href='" . $link_step2 . "' class='button'>SUBMIT PROJECT</a>
+                                <p style='color: rgba(255,255,255,0.8); font-size: 13px; margin: 20px 0 0 0;'>Click the button above to begin</p>
                             </div>
                             
                             <div class='steps'>
-                                <p style='font-weight: 700; font-size: 16px; margin-bottom: 15px; color: #1d4e89;'>📋 Documents à fournir :</p>
+                                <p style='font-weight: 700; font-size: 16px; margin-bottom: 15px; color: #1d4e89;'>
+                                    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" style=\"margin-right: 8px; vertical-align: middle;\">
+                                        <path d=\"M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>
+                                    </svg>
+                                    Required Documents:
+                                </p>
                                 <div class='step'>
                                     <div class='step-num'>1</div>
                                     <div class='step-text'><strong>Biographie professionnelle</strong> (PDF, max 2 Mo)<br><span style='color: #64748b; font-size: 14px;'>Votre parcours, réalisations, expertise</span></div>
@@ -112,12 +120,19 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                             </div>
                             
                             <div class='deadline'>
-                                <p>⏰ <strong>Date limite de dépôt :</strong> 30 Mars 2026 à 23h59</p>
+                                <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" style=\"margin-right: 8px; vertical-align: middle;\">
+                                    <path d=\"M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>
+                                </svg>
+                                <p style=\"display: inline;\"><strong>Submission Deadline:</strong> March 30, 2026 at 11:59 PM</p>
                             </div>
                             
                             <div class='warning-box'>
-                                <p><strong>⚠️ Sécurité & Confidentialité</strong></p>
-                                <p style='margin-top: 10px;'>• Ce lien est <strong>unique et personnel</strong> - Ne le partagez avec personne<br>• Il expire après utilisation ou à la date limite<br>• En cas de problème, contactez-nous immédiatement</p>
+                                <p><strong>
+                                    <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" style=\"margin-right: 6px; vertical-align: middle;\">
+                                        <path d=\"M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>
+                                    </svg>
+                                    Security & Confidentiality</strong></p>
+                                <p style='margin-top: 10px;'>• This link is <strong>unique and personal</strong> - Do not share with anyone<br>• It expires after use or at the deadline<br>• If you encounter any problems, contact us immediately</p>
                             </div>
                             
                             <p style='margin-top: 35px; font-size: 16px;'>Nous vous souhaitons plein succès dans cette étape décisive !</p>
@@ -126,7 +141,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                         </div>
                         <div class='footer'>
                             <p style='margin: 0 0 10px 0;'><strong>Fondation Jardin Majorelle</strong></p>
-                            <p style='margin: 0;'>📧 contact@fondationjardinmajorelleprize.com | 🌐 <a href='https://fondationjardinmajorelleprize.com'>fondationjardinmajorelleprize.com</a></p>
+                            <p style='margin: 0;'>contact@fondationjardinmajorelleprize.com | <a href='https://fondationjardinmajorelleprize.com'>fondationjardinmajorelleprize.com</a></p>
                             <p style='margin: 20px 0 0 0; opacity: 0.7;'>© 2026 Fondation Jardin Majorelle - Tous droits réservés</p>
                         </div>
                     </div>
@@ -138,16 +153,16 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                 $emailSent = sendEmail($candidat['email'], $subject, $htmlMessage);
                 
                 if ($emailSent) {
-                    $message = " Candidat VALIDÉ avec succès ! Email d'invitation envoyé à " . htmlspecialchars($candidat['email']);
+                    $message = "Candidat VALIDÉ avec succès ! Email d'invitation envoyé à " . htmlspecialchars($candidat['email']);
                     $messageType = "success";
                     error_log("APPROVED: Candidate #{$candidat_id} - " . $candidat['email']);
                 } else {
-                    $message = "⚠️ Candidat validé mais l'email n'a pas pu être envoyé. Token généré : " . substr($token, 0, 20) . "...";
+                    $message = "WARNING: Candidate approved but email could not be sent. Token generated: " . substr($token, 0, 20) . "...";
                     $messageType = "warning";
                     error_log("APPROVED (EMAIL FAILED): Candidate #{$candidat_id} - Token: $token");
                 }
             } else {
-                $message = "❌ Erreur : Candidat introuvable.";
+                $message = "ERROR: Candidate not found.";
                 $messageType = "error";
             }
 
@@ -215,7 +230,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                         </div>
                         <div class='footer'>
                             <p style='margin: 0 0 10px 0;'><strong>Fondation Jardin Majorelle</strong></p>
-                            <p style='margin: 0;'>📧 contact@fondationjardinmajorelleprize.com | 🌐 <a href='https://fondationjardinmajorelleprize.com'>fondationjardinmajorelleprize.com</a></p>
+                            <p style='margin: 0;'>contact@fondationjardinmajorelleprize.com | <a href='https://fondationjardinmajorelleprize.com'>fondationjardinmajorelleprize.com</a></p>
                             <p style='margin: 20px 0 0 0; opacity: 0.7;'>© 2026 Fondation Jardin Majorelle - Tous droits réservés</p>
                         </div>
                     </div>
@@ -227,11 +242,11 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                 $emailSent = sendEmail($candidat['email'], $subject, $htmlMessage);
                 
                 if ($emailSent) {
-                    $message = "❌ Candidat REFUSÉ. Email de notification envoyé.";
+                    $message = "Candidate REJECTED. Notification email sent.";
                     $messageType = "error";
                     error_log("REJECTED: Candidate #{$candidat_id} - " . $candidat['email']);
                 } else {
-                    $message = "❌ Candidat refusé mais l'email n'a pas pu être envoyé.";
+                    $message = "Candidate rejected but email could not be sent.";
                     $messageType = "error";
                     error_log("REJECTED (EMAIL FAILED): Candidate #{$candidat_id}");
                 }
@@ -721,7 +736,17 @@ if ($id) {
                             </svg>
                             École d'Architecture
                         </div>
-                        <div class="value"><?php echo htmlspecialchars($candidat['ecole_archi']); ?> (<?php echo htmlspecialchars($candidat['annee_obtention']); ?>)</div>
+                        <div class="value"><?php echo htmlspecialchars($candidat['ecole_archi']); ?></div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="label">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Diplôme
+                        </div>
+                        <div class="value"><?php echo htmlspecialchars($candidat['diplome']); ?> (<?php echo htmlspecialchars($candidat['annee_obtention']); ?>)</div>
                     </div>
 
                     <div class="info-item">
@@ -821,16 +846,16 @@ if ($id) {
                         <div class="actions-container">
                             <a href="?action=valider&id=<?php echo $candidat['id']; ?>" 
                                class="btn btn-accept" 
-                               onclick="return confirm('⚠️ VALIDATION DU CANDIDAT\n\n✅ Un email d\'invitation avec lien sécurisé sera envoyé automatiquement.\n\nConfirmer la validation ?')">
+                               onclick="return confirm('CANDIDATE VALIDATION\n\nAn invitation email with a secure link will be automatically sent.\n\nConfirm validation?')">
                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                </svg>
-                               Valider & Inviter
+                               Approve & Invite
                             </a>
                             
                             <a href="?action=refuser&id=<?php echo $candidat['id']; ?>" 
                                class="btn btn-reject" 
-                               onclick="return confirm('⚠️ REFUS DU CANDIDAT\n\n❌ Cette action est IRRÉVERSIBLE.\n❌ Un email de refus poli sera envoyé.\n\nConfirmer le refus ?')">
+                               onclick="return confirm('CANDIDATE REJECTION\n\nThis action is IRREVERSIBLE.\nA polite rejection email will be sent.\n\nConfirm rejection?')">
                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                    <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                </svg>

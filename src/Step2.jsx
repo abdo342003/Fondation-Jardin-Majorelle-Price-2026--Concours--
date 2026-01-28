@@ -137,8 +137,6 @@ export default function Step2({ token }) {
         ? import.meta.env.VITE_API_URL.replace('register.php', 'submit_project.php') 
         : '/api/submit_project.php';
 
-      console.log('📤 Envoi vers:', apiUrl);
-
       const res = await axios.post(apiUrl, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -149,8 +147,6 @@ export default function Step2({ token }) {
         },
         timeout: 60000 // 60 seconds timeout for large files
       });
-
-      console.log('✅ Réponse serveur:', res.data);
 
       if (res.data.success) {
         setStatus('success');
