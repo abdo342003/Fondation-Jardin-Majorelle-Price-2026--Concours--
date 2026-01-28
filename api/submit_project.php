@@ -181,7 +181,7 @@ try {
         // === EMAIL 1: CANDIDATE CONFIRMATION ===
         error_log("STEP2: Sending confirmation email to: " . $candidat['email']);
         
-        $candidateSubject = "✅ Dossier complet reçu - Prix Fondation Jardin Majorelle 2026";
+        $candidateSubject = "Dossier complet reçu - Prix Fondation Jardin Majorelle 2026";
         
         $candidateMessage = "<!DOCTYPE html>
 <html>
@@ -214,7 +214,7 @@ try {
 <body>
     <div class='container'>
         <div class='header'>
-            <h1>🏆 Dossier Complet Reçu !</h1>
+            <h1>📥 Dossier Complet Reçu !</h1>
             <p>Prix Fondation Jardin Majorelle 2026</p>
         </div>
         <div class='content'>
@@ -284,7 +284,7 @@ try {
         $cinRectoUrl = !empty($candidat['cin_recto']) ? SITE_URL . "/" . str_replace("../", "", $candidat['cin_recto']) : null;
         $cinVersoUrl = !empty($candidat['cin_verso']) ? SITE_URL . "/" . str_replace("../", "", $candidat['cin_verso']) : null;
         
-        $jurySubject = "🆕 [NOUVEAU PROJET] " . $candidat['prenom'] . " " . $candidat['nom'] . " - #" . $candidat['id'];
+        $jurySubject = "📂 [NOUVEAU PROJET] " . $candidat['prenom'] . " " . $candidat['nom'] . " - #" . $candidat['id'];
         
         $juryMessage = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
 <html xmlns=\"http://www.w3.org/1999/xhtml\">

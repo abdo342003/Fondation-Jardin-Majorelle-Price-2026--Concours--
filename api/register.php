@@ -148,14 +148,14 @@ try {
     // ═══════════════════════════════════════════════════════════════════
     
     // Email to Candidate
-    $candidateSubject = "✅ Inscription reçue - Prix Fondation Jardin Majorelle 2026";
+    $candidateSubject = "📥 Inscription reçue - Prix Fondation Jardin Majorelle 2026";
     $candidateBody = "
     <!DOCTYPE html>
     <html><head><meta charset='UTF-8'></head>
     <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
         <div style='max-width: 600px; margin: 0 auto; padding: 20px;'>
             <div style='background: linear-gradient(135deg, #1d4e89, #2563eb); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;'>
-                <h1 style='margin: 0;'>✅ Inscription Reçue</h1>
+                <h1 style='margin: 0;'>📥 Inscription Reçue</h1>
                 <p style='margin: 10px 0 0 0; opacity: 0.9;'>Prix Fondation Jardin Majorelle 2026</p>
             </div>
             <div style='background: white; padding: 30px; border: 1px solid #e5e7eb; border-top: none;'>
@@ -193,14 +193,14 @@ try {
     // Email to Jury
     $validation_link = API_URL . "/admin_review.php?id=" . $candidat_id;
     
-    $jurySubject = "🆕 [JURY] Nouvelle Candidature #$candidat_id - $prenom $nom";
+    $jurySubject = "📂 [JURY] Nouvelle Candidature #$candidat_id - $prenom $nom";
     $juryBody = "
     <!DOCTYPE html>
     <html><head><meta charset='UTF-8'></head>
     <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
         <div style='max-width: 600px; margin: 0 auto; padding: 20px;'>
             <div style='background: #f59e0b; color: #1a202c; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;'>
-                <h1 style='margin: 0;'>🆕 Nouvelle Candidature</h1>
+                <h1 style='margin: 0;'>📂 Nouvelle Candidature</h1>
             </div>
             <div style='background: white; padding: 30px; border: 1px solid #e5e7eb;'>
                 <h2 style='color: #1d4e89; margin-top: 0;'>$prenom $nom</h2>
@@ -213,7 +213,7 @@ try {
                 
                 <div style='text-align: center; margin: 30px 0;'>
                     <a href='$validation_link' style='background: #10b981; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;'>
-                        ✅ EXAMINER LE DOSSIER
+                        📥 EXAMINER LE DOSSIER
                     </a>
                 </div>
             </div>

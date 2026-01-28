@@ -43,7 +43,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                 $link_step2 = SITE_URL . "/?token=" . $token;
                 
                 // Approval email
-                $subject = "🎉 Félicitations ! Candidature Approuvée - Prix Fondation Jardin Majorelle 2026";
+                $subject = " Félicitations ! Candidature Approuvée - Prix Fondation Jardin Majorelle 2026";
                 
                 $htmlMessage = "
                 <!DOCTYPE html>
@@ -77,11 +77,11 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                 <body>
                     <div class='container'>
                         <div class='header'>
-                            <h1>🎉 Félicitations !</h1>
+                            <h1> Félicitations !</h1>
                             <p>Votre candidature a été approuvée</p>
                         </div>
                         <div class='content'>
-                            <div class='badge'>✅ CANDIDATURE APPROUVÉE</div>
+                            <div class='badge'>📥 CANDIDATURE APPROUVÉE</div>
                             
                             <p style='font-size: 17px;'>Bonjour <strong>" . htmlspecialchars($candidat['prenom']) . " " . htmlspecialchars($candidat['nom']) . "</strong>,</p>
                             
@@ -138,7 +138,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                 $emailSent = sendEmail($candidat['email'], $subject, $htmlMessage);
                 
                 if ($emailSent) {
-                    $message = "✅ Candidat VALIDÉ avec succès ! Email d'invitation envoyé à " . htmlspecialchars($candidat['email']);
+                    $message = " Candidat VALIDÉ avec succès ! Email d'invitation envoyé à " . htmlspecialchars($candidat['email']);
                     $messageType = "success";
                     error_log("APPROVED: Candidate #{$candidat_id} - " . $candidat['email']);
                 } else {
