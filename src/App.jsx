@@ -1186,230 +1186,165 @@ function App() {
 
 
 {/* --- ABOUT SECTION --- */}
-<section className="relative py-16 sm:py-24 md:py-32 overflow-hidden" style={{background: 'linear-gradient(165deg, #183230 0%, #1f4a46 30%, #2a5f5a 60%, #336d68 100%)'}}>
-  {/* Geometric pattern overlay */}
-  <div className="absolute inset-0 pointer-events-none" style={{opacity: 0.04, backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")'}}></div>
+<section className="relative py-16 sm:py-20 md:py-24 overflow-hidden" style={{backgroundColor: '#7dafab'}}>
   
-  {/* Ambient orbs */}
-  <div className="absolute inset-0 overflow-hidden pointer-events-none">
-    <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full" style={{background: 'radial-gradient(circle, rgba(248,178,0,0.08) 0%, transparent 70%)'}}></div>
-    <div className="absolute -bottom-40 -left-40 w-[600px] h-[600px] rounded-full" style={{background: 'radial-gradient(circle, rgba(125,175,171,0.12) 0%, transparent 70%)'}}></div>
-    <div className="absolute top-1/3 right-1/4 w-80 h-80 rounded-full" style={{background: 'radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%)'}}></div>
-  </div>
-  
-  {/* Top decorative line */}
-  <div className="absolute top-0 left-0 right-0 h-[2px]" style={{background: 'linear-gradient(90deg, transparent 0%, #f8b200 25%, #7dafab 50%, #f8b200 75%, transparent 100%)'}}></div>
-
   <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 relative z-10">
     
-    {/* Section Header — Staggered Modern Typography */}
-    <div className="mb-16 sm:mb-20 md:mb-28 animate-fadeInUp">
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 md:gap-12">
-        <div className="flex-1">
-          <span className="inline-block text-[#f8b200] text-xs sm:text-sm uppercase tracking-[0.4em] font-bold mb-4 sm:mb-5">
-            {i18n.language === 'fr' ? 'À Propos du Concours' : 'About the Competition'}
-          </span>
-          <h2 className="font-serif font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white tracking-tight leading-[1.1]">
-            {t('about.title')}
-          </h2>
-          <div className="mt-5 sm:mt-6 flex items-center gap-3">
-            <div className="w-12 sm:w-16 h-[3px] bg-[#f8b200] rounded-full"></div>
-            <div className="w-3 h-3 rounded-full border-2 border-[#f8b200]"></div>
-          </div>
-        </div>
-        <p className="md:max-w-sm text-white text-base sm:text-lg leading-relaxed font-light opacity-90 text-justify">
-          {i18n.language === 'fr' 
-            ? 'Un concours international d\'architecture pour la conception d\'un pavillon temporaire au cœur du Jardin Majorelle.'
-            : 'An international architecture competition for the design of a temporary pavilion in the heart of Jardin Majorelle.'}
-        </p>
-      </div>
+    {/* Section Header — Centré comme dans la photo */}
+    <div className="text-center mb-16 sm:mb-20 md:mb-28 animate-fadeInUp">
+      <span className="inline-block bg-[#f8b200] text-white text-xs sm:text-sm uppercase tracking-[0.3em] font-bold px-6 py-2 rounded mb-6 sm:mb-8">
+        {i18n.language === 'fr' ? 'À PROPOS' : 'ABOUT'}
+      </span>
+      <h2 className="font-serif font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white tracking-tight leading-[1.1]">
+        {t('about.title')}
+      </h2>
     </div>
     
-    {/* Cards Grid — Modern Dark Glass */}
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 mb-12 sm:mb-16 md:mb-20">
+    
+    {/* Cards Grid — Style carte beige comme dans la photo */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
       
       {/* CARD 1: Le Défi */}
-      <div className="group relative rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-1 animate-fadeInUp" style={{animationDelay: '0.1s'}}>
-        <div className="absolute inset-0 bg-white/[0.06] backdrop-blur-sm border border-white/[0.08] rounded-2xl"></div>
-        <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#7dafab] to-[#7dafab]/30 rounded-l-2xl group-hover:w-1.5 transition-all duration-500"></div>
-        
-        <div className="relative z-10 p-7 sm:p-9">
-          <div className="flex items-start gap-5 mb-5">
-            <div className="w-11 h-11 rounded-xl bg-[#7dafab]/20 flex items-center justify-center flex-shrink-0 group-hover:bg-[#7dafab]/30 group-hover:scale-110 transition-all duration-500">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="#7dafab" className="w-5 h-5">
+      <div className="group relative rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl animate-fadeInUp" style={{animationDelay: '0.1s', backgroundColor: '#fffae3'}}>
+        <div className="relative z-10 p-8 sm:p-10">
+          <div className="flex justify-center mb-6">
+            <div className="w-14 h-14 rounded-full bg-[#7dafab]/20 flex items-center justify-center flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#7dafab" className="w-7 h-7">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
               </svg>
             </div>
-            <div>
-              <h3 className="font-serif font-bold text-lg sm:text-xl text-white group-hover:text-[#f8b200] transition-colors duration-300">
-                {t('about.challenge')}
-              </h3>
-            </div>
           </div>
-          <p className="text-white leading-relaxed text-base sm:text-lg pl-16 opacity-90 text-justify">
+          <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#183230] text-center mb-4 uppercase tracking-wider" style={{fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: '0.05em', fontWeight: 900}}>
+            {t('about.challenge')}
+          </h3>
+          <div className="w-24 h-[2px] bg-[#7dafab] mx-auto mb-6"></div>
+          <p className="font-sans text-[#183230] leading-relaxed text-sm sm:text-base text-justify">
             {t('about.challengeDesc')}
           </p>
         </div>
       </div>
       
       {/* CARD 2: Pourquoi Participer */}
-      <div className="group relative rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-1 animate-fadeInUp" style={{animationDelay: '0.2s'}}>
-        
-        {/* L'arrière-plan avec la couleur teal pour meilleure visibilité */}
-        <div className="absolute inset-0 bg-white/[0.06] backdrop-blur-sm border border-white/[0.08] rounded-2xl"></div>
-        
-        {/* L'accent jaune/doré (#f8b200) sur le côté gauche */}
-        <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#f8b200] to-[#f8b200]/30 rounded-l-2xl group-hover:w-1.5 transition-all duration-500"></div>
-        
-        <div className="relative z-10 p-7 sm:p-9">
-          <div className="flex items-start gap-5 mb-5">
-            
-            {/* L'icône avec un fond assorti */}
-            <div className="w-11 h-11 rounded-xl bg-[#f8b200]/20 flex items-center justify-center flex-shrink-0 group-hover:bg-[#f8b200]/30 group-hover:scale-110 transition-all duration-500">
-              {/* L'icône en couleur claire */}
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="#f8b200" className="w-5 h-5">
+      <div className="group relative rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl animate-fadeInUp" style={{animationDelay: '0.2s', backgroundColor: '#fffae3'}}>
+        <div className="relative z-10 p-8 sm:p-10">
+          <div className="flex justify-center mb-6">
+            <div className="w-14 h-14 rounded-full bg-[#7dafab]/20 flex items-center justify-center flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#7dafab" className="w-7 h-7">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0V5.625a2.25 2.25 0 11-4.5 0v7.125M12 3.75v-1.5" />
               </svg>
             </div>
-            
-            <div>
-              {/* Titre blanc lisible */}
-              <h3 className="font-serif font-bold text-lg sm:text-xl text-white group-hover:text-[#f8b200] transition-colors duration-300">
-                {t('about.why')}
-              </h3>
-            </div>
           </div>
-          
-          {/* Le Texte descriptif en blanc clair */}
-          <p className="text-white leading-relaxed text-sm sm:text-[15px] pl-16 opacity-90 text-justify">
+          <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#183230] text-center mb-4 uppercase tracking-wider" style={{fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: '0.05em', fontWeight: 900}}>
+            {t('about.why')}
+          </h3>
+          <div className="w-24 h-[2px] bg-[#7dafab] mx-auto mb-6"></div>
+          <p className="font-sans text-[#183230] leading-relaxed text-sm sm:text-base text-justify">
             {t('about.whyDesc')}
           </p>
-          
         </div>
       </div>
     </div>
 
     {/* Eligibility & Calendar — Side by side */}
-    <div className="grid md:grid-cols-2 gap-5 sm:gap-6 mb-12 sm:mb-16 md:mb-20">
+    <div className="grid md:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
       
-      {/* ELIGIBILITY */}
-      <div className="group relative rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-1 animate-fadeInUp" style={{animationDelay: '0.3s'}}>
-        <div className="absolute inset-0 bg-white/[0.06] backdrop-blur-sm border border-white/[0.08] rounded-2xl"></div>
-        <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#7dafab] to-[#7dafab]/30 rounded-l-2xl"></div>
-        
-        <div className="relative z-10 p-7 sm:p-9">
-          <div className="flex items-center gap-4 mb-7 pb-5 border-b border-white/10">
-            <div className="w-11 h-11 rounded-xl bg-[#7dafab]/20 flex items-center justify-center flex-shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="#7dafab" className="w-5 h-5">
+      {/* CALENDAR — Calendrier du Concours */}
+      <div className="group relative rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl animate-fadeInUp" style={{animationDelay: '0.3s', backgroundColor: '#fffae3'}}>
+        <div className="relative z-10 p-8 sm:p-10">
+          <div className="flex justify-center mb-6">
+            <div className="w-14 h-14 rounded-full bg-[#7dafab]/20 flex items-center justify-center flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#7dafab" className="w-7 h-7">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+              </svg>
+            </div>
+          </div>
+          <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#183230] text-center mb-4 uppercase tracking-wider" style={{fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: '0.05em', fontWeight: 900}}>
+            {t('calendar.title')}
+          </h3>
+          <div className="w-24 h-[2px] bg-[#7dafab] mx-auto mb-8"></div>
+          
+          {/* Timeline */}
+          <div className="space-y-4">
+            <div className="flex items-start gap-4">
+              <div className="w-8 h-8 rounded-full bg-[#7dafab] flex items-center justify-center flex-shrink-0 text-white font-bold text-sm">1</div>
+              <span className="font-sans text-[#183230] text-sm sm:text-base leading-relaxed pt-1">{t('calendar.announcement')}</span>
+            </div>
+            
+            <div className="flex items-start gap-4">
+              <div className="w-8 h-8 rounded-full bg-[#7dafab] flex items-center justify-center flex-shrink-0 text-white font-bold text-sm">2</div>
+              <span className="font-sans text-[#183230] text-sm sm:text-base leading-relaxed pt-1">{t('calendar.deadline')}</span>
+            </div>
+            
+            <div className="flex items-start gap-4">
+              <div className="w-8 h-8 rounded-full bg-[#7dafab] flex items-center justify-center flex-shrink-0 text-white font-bold text-sm">3</div>
+              <span className="font-sans text-[#183230] text-sm sm:text-base leading-relaxed pt-1">{t('calendar.selection')}</span>
+            </div>
+            
+            <div className="flex items-start gap-4">
+              <div className="w-8 h-8 rounded-full bg-[#7dafab] flex items-center justify-center flex-shrink-0 text-white font-bold text-sm">4</div>
+              <span className="font-sans text-[#183230] text-sm sm:text-base leading-relaxed pt-1">{t('calendar.opening')}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ELIGIBILITY — Critères d'Éligibilité */}
+      <div className="group relative rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl animate-fadeInUp" style={{animationDelay: '0.4s', backgroundColor: '#fffae3'}}>
+        <div className="relative z-10 p-8 sm:p-10">
+          <div className="flex justify-center mb-6">
+            <div className="w-14 h-14 rounded-full bg-[#7dafab]/20 flex items-center justify-center flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#7dafab" className="w-7 h-7">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
               </svg>
             </div>
-            <h3 className="font-serif font-bold text-lg sm:text-xl text-white">
-              {t('about.eligibility')}
-            </h3>
           </div>
-          <ul className="space-y-3.5">
+          <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#183230] text-center mb-4 uppercase tracking-wider" style={{fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: '0.05em', fontWeight: 900}}>
+            {t('about.eligibility')}
+          </h3>
+          <div className="w-24 h-[2px] bg-[#7dafab] mx-auto mb-8"></div>
+          
+          <ul className="space-y-4">
             {t('about.eligibilityItems', { returnObjects: true }).map((item, idx) => (
-              <li key={idx} className="flex items-start gap-3 group/item">
-                <svg className="w-4 h-4 text-[#7dafab] mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span className="text-white leading-relaxed text-sm sm:text-[15px] opacity-90 group-hover/item:opacity-100 transition-opacity text-justify">{item}</span>
+              <li key={idx} className="flex items-start gap-3">
+                <span className="text-[#183230] font-bold text-lg leading-none mt-0.5">•</span>
+                <span className="font-sans text-[#183230] leading-relaxed text-sm sm:text-base text-justify">{item}</span>
               </li>
             ))}
           </ul>
         </div>
       </div>
-
-      {/* CALENDAR — Vertical Timeline */}
-      <div className="group relative rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-1 animate-fadeInUp" style={{animationDelay: '0.4s'}}>
-        <div className="absolute inset-0 bg-white/[0.06] backdrop-blur-sm border border-white/[0.08] rounded-2xl"></div>
-        <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#f8b200] to-[#f8b200]/30 rounded-l-2xl"></div>
-        
-        <div className="relative z-10 p-7 sm:p-9">
-          <div className="flex items-center gap-4 mb-7 pb-5 border-b border-white/10">
-            <div className="w-11 h-11 rounded-xl bg-[#f8b200]/15 flex items-center justify-center flex-shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="#f8b200" className="w-5 h-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-              </svg>
-            </div>
-            <h3 className="font-serif font-bold text-lg sm:text-xl text-white">
-              {t('calendar.title')}
-            </h3>
-          </div>
-          
-          {/* Timeline */}
-          <div className="relative pl-6">
-            {/* Vertical line */}
-            <div className="absolute left-[7px] top-2 bottom-2 w-px bg-white/10"></div>
-            
-            <div className="space-y-5">
-              <div className="relative flex items-center gap-4">
-                <div className="absolute left-[-17px] w-3 h-3 rounded-full bg-white/20 border-2 border-[#7dafab]"></div>
-                <span className="text-white text-sm sm:text-[15px] leading-relaxed opacity-90">{t('calendar.announcement')}</span>
-              </div>
-              
-              <div className="relative flex items-center gap-4 -ml-6 px-5 py-3.5 rounded-xl" style={{background: 'linear-gradient(135deg, rgba(248,178,0,0.2) 0%, rgba(248,178,0,0.08) 100%)', border: '1px solid rgba(248,178,0,0.25)'}}>
-                <div className="absolute left-[7px] w-3 h-3 rounded-full bg-[#f8b200] shadow-[0_0_10px_rgba(248,178,0,0.5)]"></div>
-                <span className="text-white font-bold text-sm sm:text-[15px] leading-relaxed pl-6">{t('calendar.deadline')}</span>
-              </div>
-              
-              <div className="relative flex items-center gap-4">
-                <div className="absolute left-[-17px] w-3 h-3 rounded-full bg-white/20 border-2 border-white/30"></div>
-                <span className="text-white text-sm sm:text-[15px] leading-relaxed opacity-90">{t('calendar.selection')}</span>
-              </div>
-              
-              <div className="relative flex items-center gap-4">
-                <div className="absolute left-[-17px] w-3 h-3 rounded-full bg-white/20 border-2 border-white/30"></div>
-                <span className="text-white text-sm sm:text-[15px] leading-relaxed opacity-90">{t('calendar.opening')}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     {/* CAHIER DES CHARGES — Full-width CTA */}
-    <div className="relative rounded-2xl overflow-hidden animate-fadeInUp" style={{animationDelay: '0.5s'}}>
-      <div className="absolute inset-0" style={{background: 'linear-gradient(135deg, rgba(248,178,0,0.12) 0%, rgba(248,178,0,0.04) 40%, rgba(125,175,171,0.06) 100%)', border: '1px solid rgba(248,178,0,0.15)', borderRadius: '1rem'}}></div>
-      
-      <div className="relative z-10 p-8 sm:p-10 md:p-12 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-        <div className="flex-1">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-11 h-11 rounded-xl bg-[#f8b200]/15 flex items-center justify-center flex-shrink-0">
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="#f8b200" strokeWidth={1.8}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-            </div>
-            <div>
-              <h3 className="font-serif font-bold text-xl sm:text-2xl text-white">
-                {i18n.language === 'fr' ? 'Cahier des Charges' : 'Terms of Reference'}
-              </h3>
-              <p className="text-[#f8b200]/70 text-xs uppercase tracking-wider font-semibold mt-0.5">
-                {i18n.language === 'fr' ? 'Document Complet' : 'Complete Document'}
-              </p>
-            </div>
+    <div className="relative rounded-2xl overflow-hidden animate-fadeInUp" style={{animationDelay: '0.5s', backgroundColor: '#fffae3'}}>
+      <div className="relative z-10 p-8 sm:p-10 md:p-12 text-center">
+        <div className="flex justify-center mb-6">
+          <div className="w-14 h-14 rounded-full bg-[#7dafab]/20 flex items-center justify-center flex-shrink-0">
+            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="#7dafab" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
           </div>
-          <p className="text-white leading-relaxed text-sm sm:text-[15px] max-w-xl opacity-85 text-justify">
-            {i18n.language === 'fr' 
-              ? "Consultez le document détaillé comprenant toutes les spécifications techniques, le règlement complet et les plans de la Villa Oasis."
-              : "Access the detailed document including all technical specifications, full regulations, and Villa Oasis plans."
-            }
-          </p>
         </div>
+        <h3 className="font-serif font-bold text-2xl sm:text-3xl text-[#183230] mb-4 uppercase tracking-wider" style={{fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: '0.05em', fontWeight: 900}}>
+          {i18n.language === 'fr' ? 'Cahier des Charges' : 'Terms of Reference'}
+        </h3>
+        <div className="w-24 h-[2px] bg-[#7dafab] mx-auto mb-6"></div>
+        <p className="font-sans text-[#183230] leading-relaxed text-sm sm:text-base max-w-2xl mx-auto mb-8 text-justify">
+          {i18n.language === 'fr' 
+            ? "Consultez le document détaillé comprenant toutes les spécifications techniques, le règlement complet et les plans de la Villa Oasis."
+            : "Access the detailed document including all technical specifications, full regulations, and Villa Oasis plans."
+          }
+        </p>
 
         <a 
           href="/Cahier_des_Charges_Jardin_Majorelle_2026.pdf" 
           download="Cahier_des_Charges_Jardin_Majorelle_2026.pdf"
-          className="group/btn inline-flex items-center gap-3 px-7 py-4 rounded-xl font-bold uppercase tracking-[0.15em] text-xs sm:text-sm transition-all duration-300 hover:-translate-y-0.5 flex-shrink-0 text-[#183230] bg-[#f8b200] hover:bg-[#ffbe1a] shadow-[0_4px_20px_rgba(248,178,0,0.3)] hover:shadow-[0_8px_30px_rgba(248,178,0,0.4)]"
+          className="inline-flex items-center gap-3 px-8 py-4 rounded-xl font-bold uppercase tracking-[0.15em] text-sm transition-all duration-300 hover:scale-105 text-white bg-[#f8b200] hover:bg-[#ffbe1a] shadow-lg hover:shadow-xl"
         >
-          <svg className="w-4 h-4 transform group-hover/btn:translate-y-0.5 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
           </svg>
-          <span>{i18n.language === 'fr' ? 'Télécharger' : 'Download'}</span>
-          <svg className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-          </svg>
+          <span>{i18n.language === 'fr' ? 'Consulter le Cahier des Charges' : 'View Terms of Reference'}</span>
         </a>
       </div>
     </div>
@@ -1500,9 +1435,6 @@ function App() {
     
     /* --- FORMULAIRE --- */
     <div ref={formTopRef} className="relative rounded-2xl overflow-hidden" style={{background: 'linear-gradient(165deg, #183230 0%, #1f4a46 30%, #2a5f5a 60%, #336d68 100%)'}}>
-      
-      {/* Geometric pattern overlay */}
-      <div className="absolute inset-0 pointer-events-none" style={{opacity: 0.04, backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")'}}></div>
       
       {/* Ambient orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -1912,7 +1844,7 @@ function App() {
               </div>
               <ul className="space-y-2 sm:space-y-3 text-base sm:text-lg md:text-xl">
                 {/* Email */}
-                <li className="flex items-center text-[#183230] hover:text-amber-700 transition-colors cursor-pointer font-medium text-justify">
+                <li className="flex items-center text-[#183230] hover:text-amber-700 transition-colors cursor-pointer font-normal text-justify">
                   <svg className="w-5 h-5 sm:w-6 sm:h-6 mr-3" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                     <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
@@ -1921,7 +1853,7 @@ function App() {
                 </li>
 
                 {/* Lien 1 : Jardin Majorelle */}
-                <li className="flex items-center text-[#183230] hover:text-amber-700 transition-colors font-medium text-justify">
+                <li className="flex items-center text-[#183230] hover:text-amber-700 transition-colors font-normal text-justify">
                   <svg className="w-5 h-5 sm:w-6 sm:h-6 mr-3" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.498-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clipRule="evenodd" />
                   </svg>
@@ -1931,7 +1863,7 @@ function App() {
                 </li>
 
                 {/* Lien 2 : Musée YSL */}
-                <li className="flex items-center text-[#183230] hover:text-amber-700 transition-colors font-medium text-justify">
+                <li className="flex items-center text-[#183230] hover:text-amber-700 transition-colors font-normal text-justify">
                   <svg className="w-5 h-5 sm:w-6 sm:h-6 mr-3" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.498-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clipRule="evenodd" />
                   </svg>
@@ -1941,7 +1873,7 @@ function App() {
                 </li>
 
                 {/* Adresse */}
-                <li className="flex items-start text-[#183230] font-medium text-justify">
+                <li className="flex items-start text-[#183230] font-normal text-justify">
                   <svg className="w-5 h-5 sm:w-6 sm:h-6 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                   </svg>

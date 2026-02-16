@@ -85,8 +85,8 @@
 
 @font-face {
   font-family: 'Effra';
-src: url('./fonts/Effra-Regular.woff') format('woff'),
-       url('./fonts/Effra-Regular.otf') format('opentype');
+  src: url('./fonts/Effra-Light.woff') format('woff'),
+       url('./fonts/Effra-Light.otf') format('opentype');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -95,7 +95,7 @@ src: url('./fonts/Effra-Regular.woff') format('woff'),
 @font-face {
   font-family: 'Effra';
   src: url('./fonts/Effra-Regular.woff') format('woff'),
-       url('./fonts/Effra-Regular.otf') format ('opentype');
+       url('./fonts/Effra-Regular.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -122,24 +122,30 @@ src: url('./fonts/Effra-Regular.woff') format('woff'),
 /* ═══════ GLOBAL FONT STACK ═══════ */
 html {
   scroll-behavior: smooth;
-  font-family: 'IvyPresto Display', 'Playfair Display', 'Georgia', serif !important;
+  font-family: 'Effra', 'Inter', system-ui, sans-serif;
 }
 
 body {
-  font-family: 'IvyPresto Display', 'Playfair Display', 'Georgia', serif !important;
+  font-family: 'Effra', 'Inter', system-ui, sans-serif;
 }
 
-/* Force IvyPresto Display sur TOUS les éléments de texte */
+/* Effra par défaut pour le texte courant */
 *, *::before, *::after {
-  font-family: 'IvyPresto Display', 'Playfair Display', 'Georgia', serif !important;
+  font-family: 'Effra', 'Inter', system-ui, sans-serif;
 }
 
+/* IvyPresto Display UNIQUEMENT pour les titres */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'IvyPresto Display', 'Playfair Display', 'Georgia', serif !important;
 }
 
-p, span, div, li, label, a, button, input, textarea, select {
+/* Classes Tailwind respectées */
+.font-serif {
   font-family: 'IvyPresto Display', 'Playfair Display', 'Georgia', serif !important;
+}
+
+.font-sans {
+  font-family: 'Effra', 'Inter', system-ui, sans-serif !important;
 }
 
 /* Justification des textes pour des blocs propres et carrés */
@@ -164,6 +170,55 @@ div > p, div > span {
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* ═══════ MOBILE OPTIMIZATION FOR iOS & ANDROID ═══════ */
+
+/* Safe area insets for iOS notch and Android status bars */
+body {
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+/* Touch-friendly tap targets (minimum 44x44px for iOS, 48x48px for Android) */
+button, a, input, select, textarea {
+  min-height: 44px;
+  min-width: 44px;
+  touch-action: manipulation;
+}
+
+/* Prevent text selection on touch for UI elements */
+button, a[role="button"] {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Smooth scrolling for mobile */
+html {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Prevent zoom on input focus (iOS) */
+input, select, textarea {
+  font-size: 16px !important;
+}
+
+/* Remove iOS input shadows and styling */
+input, select, textarea {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Better touch scrolling momentum */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent double-tap zoom */
+button, a {
+  touch-action: manipulation;
 }
 
 /* Hero Ken Burns background */
