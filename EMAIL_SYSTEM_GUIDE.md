@@ -1,8 +1,8 @@
 # 📧 Email System - Complete Guide
 **Fondation Jardin Majorelle - Prix National d'Architecture 2026**
 
-Version: 2.2 - Enhanced & Fault-Tolerant  
-Last Updated: January 26, 2026
+Version: 2.3 - Enhanced & Bilingual (French/English)  
+Last Updated: February 9, 2026
 
 ---
 
@@ -19,59 +19,100 @@ Last Updated: January 26, 2026
 ## 🎯 System Overview
 
 ### Architecture
-The email system is **fault-tolerant** and **non-blocking**, ensuring file uploads and database operations always succeed even if email delivery fails.
+The email system is **fault-tolerant**, **non-blocking**, and **fully bilingual** (French & English), ensuring file uploads and database operations always succeed even if email delivery fails.
 
 ### Key Features
+- ✅ **Bilingual Support**: All emails sent in both French and English simultaneously
 - ✅ **Fault-Tolerant**: Email failures don't block critical operations
 - ✅ **Admin BCC**: All candidate emails automatically copied to admin
 - ✅ **Timeout Protection**: 10-second email timeout prevents hanging
 - ✅ **Comprehensive Logging**: All email attempts logged to `error_log.txt`
 - ✅ **HTML Templates**: Professional, responsive email designs
 - ✅ **Security**: Proper headers, UTF-8 support, anti-spam compliance
+- ✅ **Visual Language Separation**: Clear divider between French and English content
 
 ---
 
 ## 📨 Email Workflows
 
-### 1. **Jury Validation Email** (Approved Candidate)
+### 0. **Initial Registration Confirmation Email** (Bilingual)
+**Trigger**: Candidate submits registration form in `register.php`
+
+**Process**:
+1. Registration data saved to database
+2. CIN files uploaded successfully
+3. Bilingual confirmation email sent to candidate
+4. Admin receives notification for jury review
+
+**Email Content (Bilingual)**:
+- Subject: "✓ Inscription Reçue | Registration Received"
+- **French Section:**
+  - Personal greeting with candidate name
+  - Application number and CNOA confirmation
+  - Next steps (verification, jury review)
+  - Professional branding
+- **Visual Separator:** 🇬🇧 English Version badge
+- **English Section:**
+  - Complete translation of all French content
+  - Same structure and information
+  - Consistent professional tone
+
+**File**: [`api/register.php`](api/register.php#L153-L265)
+
+---
+
+### 1. **Jury Validation Email** (Approved Candidate - Bilingual)
 **Trigger**: Admin clicks "Valider & Inviter" in `admin_review.php`
 
 **Process**:
 1. Candidate status updated to `approved`
 2. Secure token (64 chars) generated for Step 2
-3. Email sent with personalized upload link
+3. Bilingual email sent with personalized upload link
 4. Admin receives BCC copy for tracking
 
-**Email Content**:
-- Subject: "Félicitations ! Vous êtes sélectionné(e)"
-- Personal greeting with candidate name
-- Unique secure upload link
-- Instructions and deadline
-- Professional branding
+**Email Content (Bilingual)**:
+- Subject: "✓ Congratulations! Candidature Approuvée | Application Approved"
+- **French Section:**
+  - Personal greeting with candidate name
+  - Validation badge and congratulations
+  - Unique secure upload link
+  - Instructions and deadline (March 15, 2026)
+  - Professional branding
+- **Visual Separator:** 🇬🇧 English Version badge
+- **English Section:**
+  - Complete translation of all French content
+  - Same upload link (works in any language)
+  - Deadline in English format
+  - Matching professional tone
 
-**File**: [`api/admin_review.php`](api/admin_review.php#L24-L58)
+**File**: [`api/admin_review.php`](api/admin_review.php#L67-L157)
 
 ---
 
-### 2. **Jury Rejection Email**
+### 2. **Jury Rejection Email** (Bilingual)
 **Trigger**: Admin clicks "Refuser le dossier" in `admin_review.php`
 
 **Process**:
 1. Candidate status updated to `rejected`
-2. Polite rejection email sent
+2. Bilingual polite rejection email sent
 3. Admin receives BCC copy
 
-**Email Content**:
-- Subject: "Suite de votre candidature"
-- Professional, respectful tone
-- Encouragement to reapply next year
-- No personal data disclosed
+**Email Content (Bilingual)**:
+- Subject: "Information concernant votre candidature | About Your Application"
+- **French Section:**
+  - Professional, respectful tone
+  - Encouragement to reapply next year
+  - No personal data disclosed
+- **Visual Separator:** 🇬🇧 English Version badge
+- **English Section:**
+  - Complete translation maintaining respectful tone
+  - Same encouragement and professional courtesy
 
-**File**: [`api/admin_review.php`](api/admin_review.php#L130-L160)
+**File**: [`api/admin_review.php`](api/admin_review.php#L167-L224)
 
 ---
 
-### 3. **Step 2 Confirmation Email**
+### 3. **Step 2 Confirmation Email** (Bilingual)
 **Trigger**: Candidate successfully uploads project files in Step 2
 
 **Process**:
@@ -79,17 +120,25 @@ The email system is **fault-tolerant** and **non-blocking**, ensuring file uploa
 2. Database updated with file paths
 3. Status changed to `completed`
 4. Token nullified (one-time use)
-5. **Email sent (isolated - won't block success response)**
+5. **Bilingual email sent (isolated - won't block success response)**
 6. Admin receives BCC copy
 
-**Email Content**:
-- Subject: "Confirmation de dépôt"
-- Confirmation of received documents
-- List of uploaded files (Bio, Note, APS)
-- Next steps and timeline
-- Success branding
+**Email Content (Bilingual)**:
+- Subject: "✓ Dossier complet reçu | Application Complete"
+- **French Section:**
+  - Confirmation of received documents
+  - List of uploaded files (Bio, Note, APS)
+  - Timeline for jury review
+  - Next steps and results date (May 15, 2026)
+  - Success branding
+- **Visual Separator:** 🇬🇧 English Version badge
+- **English Section:**
+  - Complete translation of confirmation
+  - Same document list
+  - Timeline in English
+  - Professional closing
 
-**File**: [`api/submit_project.php`](api/submit_project.php#L178-L227)
+**File**: [`api/submit_project.php`](api/submit_project.php#L175-L290)
 
 ---
 

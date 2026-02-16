@@ -1,12 +1,188 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════
+   CHARTE GRAPHIQUE — Fondation Jardin Majorelle
+   Fonts: IvyPresto (serif) → Playfair Display fallback
+          Effra (sans) → Inter fallback
+   Colors:
+   - Soft Teal: #7dafab
+   - Darker Teal: #336d68
+   - Golden Amber: #f8b200
+   - Light Cream: #fffae3
+   - Deep Teal: #183230
+   ═══════════════════════════════════════════ */
+
+/* Font Imports - Local Variable Fonts */
+@font-face {
+  font-family: 'Inter';
+  src: url('./fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('./fonts/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype-variations');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('./fonts/PlayfairDisplay-VariableFont_wght.ttf') format('truetype-variations');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('./fonts/PlayfairDisplay-Italic-VariableFont_wght.ttf') format('truetype-variations');
+  font-weight: 400 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ═══════ IvyPresto Display (Serif — Headings) ═══════ */
+
+@font-face {
+  font-family: 'IvyPresto Display';
+  src: url('./fonts/fonnts.com-Ivy-Presto-Display-Thin.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IvyPresto Display';
+  src: url('./fonts/fonnts.com-Ivy-Presto-Display-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IvyPresto Display';
+  src: url('./fonts/fonnts.com-Ivy-Presto-Display-.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IvyPresto Display';
+  src: url('./fonts/fonnts.com-Ivy-Presto-Display-Semi-Bold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ═══════ Effra (Sans-Serif — Body Text) ═══════
+   Primary sans-serif font for body text and UI
+   ═══════════════════════════════════════════════ */
+
+@font-face {
+  font-family: 'Effra';
+src: url('./fonts/Effra-Regular.woff') format('woff'),
+       url('./fonts/Effra-Regular.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Effra';
+  src: url('./fonts/Effra-Regular.woff') format('woff'),
+       url('./fonts/Effra-Regular.otf') format ('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Effra';
+  src: url('./fonts/Effra-Medium.woff') format('woff'),
+       url('./fonts/Effra-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Effra';
+  src: url('./fonts/Effra-Bold.woff') format('woff'),
+       url('./fonts/Effra-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ═══════ GLOBAL FONT STACK ═══════ */
 html {
   scroll-behavior: smooth;
+  font-family: 'IvyPresto Display', 'Playfair Display', 'Georgia', serif !important;
+}
+
+body {
+  font-family: 'IvyPresto Display', 'Playfair Display', 'Georgia', serif !important;
+}
+
+/* Force IvyPresto Display sur TOUS les éléments de texte */
+*, *::before, *::after {
+  font-family: 'IvyPresto Display', 'Playfair Display', 'Georgia', serif !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'IvyPresto Display', 'Playfair Display', 'Georgia', serif !important;
+}
+
+p, span, div, li, label, a, button, input, textarea, select {
+  font-family: 'IvyPresto Display', 'Playfair Display', 'Georgia', serif !important;
+}
+
+/* Justification des textes pour des blocs propres et carrés */
+p {
+  text-align: justify !important;
+}
+
+.text-justify {
+  text-align: justify !important;
+}
+
+/* Justification pour les éléments dans des listes */
+li p, li span {
+  text-align: justify !important;
+}
+
+/* Justification pour les divs contenant du texte */
+div > p, div > span {
+  text-align: justify !important;
 }
 
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Hero Ken Burns background */
+@keyframes kenBurns {
+  0%   { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.08) translate(-1%, -1%); }
+}
+
+/* Scroll indicator drop */
+@keyframes scrollLine {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  40%  { opacity: 1; }
+  100% { transform: translateY(200%); opacity: 0; }
+}
+
+/* Hero title shimmer sweep */
+@keyframes titleShimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
 }
 
 /* Animations for Step2 */
@@ -165,4 +341,227 @@ html {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
+}
+
+/* ═══════════════════════════════════════════
+   MOBILE COMPATIBILITY (iOS & Android)
+   ═══════════════════════════════════════════ */
+
+/* Safe Area Insets for iOS notched devices (iPhone X+) */
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+}
+
+/* Prevent text size adjustment on orientation change (iOS) */
+html {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Smooth scrolling for all elements on mobile */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fix input zoom on iOS - prevent auto-zoom on input focus */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+input[type="number"],
+textarea,
+select {
+  font-size: 16px !important; /* iOS won't zoom if font-size >= 16px */
+}
+
+/* Touch-friendly tap highlighting */
+* {
+  -webkit-tap-highlight-color: rgba(125, 175, 171, 0.2);
+}
+
+/* Disable callouts on tap hold (iOS) */
+a, button, input, textarea {
+  -webkit-touch-callout: none;
+}
+
+/* Enable callouts for specific text content */
+p, span, div {
+  -webkit-touch-callout: default;
+}
+
+/* Improve button/link touch targets - minimum 44x44px for accessibility */
+button, a, input[type="button"], input[type="submit"] {
+  min-height: 44px;
+  min-width: 44px;
+  touch-action: manipulation; /* Disable double-tap zoom on buttons */
+}
+
+/* Prevent pull-to-refresh interfering with scrolling */
+body {
+  overscroll-behavior-y: contain;
+}
+
+/* Fix viewport height on mobile browsers (accounts for address bar) */
+:root {
+  --vh: 1vh;
+}
+
+@supports (height: 100dvh) {
+  :root {
+    --vh: 1dvh; /* Dynamic viewport height when supported */
+  }
+}
+
+/* Better mobile viewport handling for hero section */
+@media (max-width: 768px) {
+  .h-screen {
+    min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport on supported browsers */
+  }
+  
+  /* Prevent horizontal overflow on mobile */
+  body, html {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+  
+  /* Ensure no element causes horizontal scroll */
+  * {
+    max-width: 100%;
+  }
+}
+
+/* Optimize animations for mobile performance */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Mobile-specific responsive adjustments */
+@media (max-width: 768px) {
+  /* Reduce padding on small screens */
+  body {
+    padding-top: max(env(safe-area-inset-top), 0px);
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
+  
+  /* Ensure images don't overflow */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Stack form elements vertically */
+  .flex-row {
+    flex-direction: column;
+  }
+  
+  /* Increase touch targets on mobile - minimum 44x44px (Apple HIG) */
+  button, a, input[type="submit"], input[type="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better text readability on small screens */
+  body {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  
+  /* Input fields should be at least 16px to prevent zoom on iOS */
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
+
+/* iOS specific fixes */
+@supports (-webkit-touch-callout: none) {
+  /* iOS Safari specific styles */
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"] {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  
+  /* Fix iOS input shadow */
+  input, textarea {
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 0;
+  }
+}
+
+/* Android specific fixes */
+@media screen and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: .001dpcm) {
+  /* Android Chrome specific styles */
+  select {
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237dafab' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+  }
+}
+
+/* Landscape mode adjustments for mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  /* Reduce vertical spacing in landscape */
+  .py-8 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  .my-8 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+
+/* PWA display mode detection */
+@media (display-mode: standalone) {
+  /* Styles when app is installed as PWA */
+  body {
+    padding-top: max(env(safe-area-inset-top), 20px);
+  }
+}
+
+/* High DPI screens (Retina displays) */
+@media 
+  (-webkit-min-device-pixel-ratio: 2), 
+  (min-resolution: 192dpi) {
+  /* Optimize for high-resolution displays */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Dark mode support for mobile devices */
+@media (prefers-color-scheme: dark) {
+  /* Your existing dark theme already handles this, 
+     but ensure system dark mode is respected */
+  :root {
+    color-scheme: dark;
+  }
+}
+
+/* Accessibility: Focus visible for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid #7dafab;
+  outline-offset: 2px;
+}
+
+/* Hide outline for mouse users, keep for keyboard users */
+*:focus:not(:focus-visible) {
+  outline: none;
 }

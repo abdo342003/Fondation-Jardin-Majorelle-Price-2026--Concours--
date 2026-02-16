@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS candidats (
     diplome VARCHAR(255),
     annee_obtention INT,
     num_ordre VARCHAR(50),
+    language VARCHAR(5) DEFAULT 'fr',
     status ENUM('pending', 'approved', 'rejected', 'completed') DEFAULT 'pending',
     token_step2 VARCHAR(255) DEFAULT NULL,
     bio_file VARCHAR(255) DEFAULT NULL,

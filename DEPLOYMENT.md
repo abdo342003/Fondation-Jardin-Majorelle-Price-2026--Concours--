@@ -85,24 +85,50 @@ This guide will help you deploy the Prix Fondation Jardin Majorelle 2026 applica
 
 3. **Upload to Hostinger**
    
-   Upload ALL contents of the `dist/` folder to:
-   - Either `public_html/` (for main domain)
-   - Or `public_html/concours/` (for subdirectory)
+   ⚠️ **IMPORTANT**: Upload ONLY the **CONTENTS** of the `dist/` folder, not the dist folder itself!
+   
+   **What to upload:**
+   - `dist/index.html` → Upload to `public_html/index.html`
+   - `dist/assets/` → Upload to `public_html/assets/`
+   - `dist/logo.svg` → Upload to `public_html/logo.svg`
+   - Any other files in `dist/` → Upload to `public_html/`
+
+   ❌ **WRONG**: Uploading `dist/` folder itself (creates `public_html/dist/`)
+   ✅ **CORRECT**: Uploading contents of `dist/` to `public_html/` directly
 
    **File structure after upload:**
    ```
    public_html/
-   ├── index.html
-   ├── assets/
+   ├── index.html          ← FROM dist/index.html (contains compiled JS references)
+   ├── logo.svg            ← FROM dist/
+   ├── assets/             ← FROM dist/assets/
    │   ├── index-[hash].js
    │   ├── index-[hash].css
    │   └── [other assets]
-   ├── api/
+   ├── api/                ← Your PHP files (already there)
    │   ├── db_connect.php
-   │   └── register.php
-   └── uploads/
-       └── cin/
+   │   ├── register.php
+   │   └── ...
+   └── uploads/            ← Upload directory (already there)
+       ├── cin/
+       └── projets/
    ```
+
+   **Common Mistake**: 
+   - ❌ Having `public_html/dist/index.html` 
+   - ✅ Should be `public_html/index.html`
+
+4. **Upload .htaccess File**
+
+   Upload the `.htaccess` file from your project root to `public_html/.htaccess`
+   
+   This file enables:
+   - React Router URL handling (prevents 404 on page refresh)
+   - Gzip compression for faster loading
+   - Browser caching
+   - Security headers
+   
+   **Note**: The `.htaccess` file is hidden. In File Manager, enable "Show Hidden Files" to see it.
 
 ### 4. Domain Configuration
 
