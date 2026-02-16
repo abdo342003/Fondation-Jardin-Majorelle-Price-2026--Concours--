@@ -174,28 +174,17 @@ div > p, div > span {
 
 /* ═══════ MOBILE OPTIMIZATION FOR iOS & ANDROID ═══════ */
 
-/* Safe area insets for iOS notch and Android status bars */
-body {
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-}
-
 /* Touch-friendly tap targets (minimum 44x44px for iOS, 48x48px for Android) */
-button, a, input, select, textarea {
+button, a {
   min-height: 44px;
-  min-width: 44px;
   touch-action: manipulation;
-}
-
-/* Prevent text selection on touch for UI elements */
-button, a[role="button"] {
+  -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   user-select: none;
-  -webkit-tap-highlight-color: transparent;
 }
 
 /* Smooth scrolling for mobile */
 html {
-  -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
 }
 
@@ -209,16 +198,6 @@ input, select, textarea {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-}
-
-/* Better touch scrolling momentum */
-* {
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Prevent double-tap zoom */
-button, a {
-  touch-action: manipulation;
 }
 
 /* Hero Ken Burns background */
